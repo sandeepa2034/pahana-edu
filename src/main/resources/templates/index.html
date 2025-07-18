@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${appName}">Pahana Edu</title>
+    <title th:text="${appName}">Pahana Edu Bookshop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -16,10 +16,20 @@
             transition: transform 0.3s ease;
             border: none;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: 100%;
         }
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .category-card {
+            transition: all 0.3s ease;
+            border: none;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        }
+        .category-card:hover {
+            background: linear-gradient(45deg, #e9ecef, #dee2e6);
+            transform: translateY(-3px);
         }
         .cart-badge {
             background-color: #dc3545;
@@ -31,11 +41,23 @@
             top: -5px;
             right: -5px;
         }
+        .book-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .price-tag {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <!-- Customer Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold text-primary" href="/" th:text="${appName}">Pahana Edu Bookshop</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -44,36 +66,24 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                        <a class="nav-link active" href="/"><i class="fas fa-home"></i> Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/books"><i class="fas fa-book"></i> Books</a>
+                        <a class="nav-link" href="/shop"><i class="fas fa-store"></i> Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/categories"><i class="fas fa-list"></i> Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about"><i class="fas fa-info-circle"></i> About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contact"><i class="fas fa-envelope"></i> Contact</a>
+                        <a class="nav-link" href="/help"><i class="fas fa-question-circle"></i> Help</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item position-relative">
                         <a class="nav-link" href="/cart">
                             <i class="fas fa-shopping-cart"></i> Cart
-                            <span class="cart-badge">0</span>
+                            <span class="cart-badge" id="cartCount">0</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/login"><i class="fas fa-user"></i> Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register"><i class="fas fa-user-plus"></i> Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-muted" href="/admin"><i class="fas fa-cog"></i> Admin</a>
                     </li>
                 </ul>
             </div>
@@ -88,11 +98,11 @@
                     <h1 class="display-4 fw-bold mb-4" th:text="${message}">Welcome to Colombo's Premier Bookshop</h1>
                     <p class="lead mb-4">Discover our extensive collection of books spanning all genres. From academic texts to bestselling novels, we serve hundreds of customers each month with quality books and exceptional service.</p>
                     <div class="d-flex gap-3">
-                        <a href="/books" class="btn btn-light btn-lg px-4">
+                        <a href="/shop" class="btn btn-light btn-lg px-4">
                             <i class="fas fa-book"></i> Browse Books
                         </a>
-                        <a href="/register" class="btn btn-outline-light btn-lg px-4">
-                            <i class="fas fa-user-plus"></i> Create Account
+                        <a href="/help" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-question-circle"></i> Get Help
                         </a>
                     </div>
                 </div>
@@ -111,75 +121,151 @@
                 <p class="lead text-muted">Discover our most popular and recommended books</p>
             </div>
             
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card product-card h-100">
-                        <img src="https://via.placeholder.com/300x400?text=Academic+Textbooks" class="card-img-top" alt="Academic Textbooks">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">Academic Textbooks</h5>
-                            <p class="card-text">Comprehensive collection of university and school textbooks covering all subjects from mathematics to literature.</p>
-                            <div class="mt-auto">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-primary fs-6">Education</span>
-                                    <span class="h5 text-primary mb-0">LKR 2,500</span>
-                                </div>
-                                <button class="btn btn-primary w-100" onclick="addToCart('academic-books', 2500)">
-                                    <i class="fas fa-cart-plus"></i> Add to Cart
-                                </button>
+            <!-- Dynamic Featured Items -->
+            <div th:if="${featuredItems != null and #lists.size(featuredItems) > 0}">
+                <div class="row g-4">
+                    <div class="col-lg-3 col-md-6 mb-4" th:each="item : ${featuredItems}">
+                        <div class="card product-card h-100">
+                            <div class="position-relative">
+                                <img th:src="${item.imageUrl}" 
+                                     th:alt="${item.title}" 
+                                     src="https://via.placeholder.com/300x400/4158D0/FFFFFF?text=Book+Cover" 
+                                     class="card-img-top book-img">
+                                <span class="position-absolute top-0 end-0 m-2 badge bg-success" 
+                                      th:if="${item.available}">Available</span>
+                                <span class="position-absolute top-0 end-0 m-2 badge bg-danger" 
+                                      th:unless="${item.available}">Out of Stock</span>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="card product-card h-100">
-                        <img src="https://via.placeholder.com/300x400?text=Fiction+Novels" class="card-img-top" alt="Fiction Novels">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">Bestselling Novels</h5>
-                            <p class="card-text">Latest fiction and bestselling novels from renowned authors. Perfect for leisure reading and book clubs.</p>
-                            <div class="mt-auto">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-success fs-6">Fiction</span>
-                                    <span class="h5 text-primary mb-0">LKR 1,800</span>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title fw-bold" th:text="${item.title}">Book Title</h6>
+                                <p class="text-muted small mb-1" th:text="'by ' + ${item.author}">Author</p>
+                                <p class="card-text small" th:text="${#strings.abbreviate(item.description, 80)}">Description</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge bg-primary" th:text="${item.category}">Category</span>
+                                        <span class="price-tag" th:text="${item.formattedPrice}">Rs. 0.00</span>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-primary btn-sm flex-grow-1 add-to-cart-btn" 
+                                                th:data-item-id="${item.id}"
+                                                th:data-item-price="${item.price}"
+                                                th:data-item-title="${item.title}"
+                                                th:disabled="${!item.available}">
+                                            <i class="fas fa-cart-plus"></i> Add to Cart
+                                        </button>
+                                        <a th:href="'/shop?search=' + ${item.title}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <button class="btn btn-primary w-100" onclick="addToCart('fiction-novels', 1800)">
-                                    <i class="fas fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="card product-card h-100">
-                        <img src="https://via.placeholder.com/300x400?text=Professional+Books" class="card-img-top" alt="Professional Books">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">Professional Development</h5>
-                            <p class="card-text">Business, technology, and professional development books to advance your career and knowledge.</p>
-                            <div class="mt-auto">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-warning text-dark fs-6">Business</span>
-                                    <span class="h5 text-primary mb-0">LKR 3,200</span>
-                                </div>
-                                <button class="btn btn-primary w-100" onclick="addToCart('professional-books', 3200)">
-                                    <i class="fas fa-cart-plus"></i> Add to Cart
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
+            <!-- Fallback content if no items -->
+            <div th:if="${featuredItems == null or #lists.size(featuredItems) == 0}" class="col-12 text-center">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    No featured items available at the moment. Please check our <a href="/shop">shop page</a> for all available books.
+                </div>
+            </div>
+            
             <div class="text-center mt-5">
-                <a href="/books" class="btn btn-outline-primary btn-lg">
+                <a href="/shop" class="btn btn-outline-primary btn-lg">
                     <i class="fas fa-plus-circle"></i> View All Books
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Benefits Section -->
+    <!-- Categories Section -->
     <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Browse by Category</h2>
+                <p class="lead text-muted">Explore our diverse collection of books across different categories</p>
+            </div>
+            
+            <!-- Dynamic Categories -->
+            <div th:if="${categories != null and #lists.size(categories) > 0}">
+                <div class="row g-4">
+                    <div class="col-lg-3 col-md-6 mb-4" th:each="category : ${categories}">
+                        <a th:href="'/shop?category=' + ${category}" class="text-decoration-none">
+                            <div class="card category-card h-100 text-center p-4">
+                                <div class="card-body">
+                                    <i class="fas fa-book fa-3x text-primary mb-3" 
+                                       th:class="${category == 'Programming' ? 'fas fa-code fa-3x text-primary mb-3' : 
+                                                  category == 'Mathematics' ? 'fas fa-calculator fa-3x text-success mb-3' : 
+                                                  category == 'Computer Science' ? 'fas fa-laptop-code fa-3x text-warning mb-3' : 
+                                                  category == 'Physics' ? 'fas fa-atom fa-3x text-info mb-3' :
+                                                  category == 'Database' ? 'fas fa-database fa-3x text-danger mb-3' :
+                                                  category == 'Software Engineering' ? 'fas fa-cogs fa-3x text-secondary mb-3' :
+                                                  'fas fa-book fa-3x text-primary mb-3'}"></i>
+                                    <h5 class="card-title" th:text="${category}">Category</h5>
+                                    <p class="card-text text-muted">Explore our collection of <span th:text="${#strings.toLowerCase(category)}">category</span> books</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fallback categories if no dynamic ones -->
+            <div th:if="${categories == null or #lists.size(categories) == 0}">
+                <div class="row g-4">
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <a href="/shop?category=Programming" class="text-decoration-none">
+                            <div class="card category-card h-100 text-center p-4">
+                                <div class="card-body">
+                                    <i class="fas fa-code fa-3x text-primary mb-3"></i>
+                                    <h5 class="card-title">Programming</h5>
+                                    <p class="card-text text-muted">Learn coding and software development</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <a href="/shop?category=Mathematics" class="text-decoration-none">
+                            <div class="card category-card h-100 text-center p-4">
+                                <div class="card-body">
+                                    <i class="fas fa-calculator fa-3x text-success mb-3"></i>
+                                    <h5 class="card-title">Mathematics</h5>
+                                    <p class="card-text text-muted">Mathematical concepts and theories</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <a href="/shop?category=Computer Science" class="text-decoration-none">
+                            <div class="card category-card h-100 text-center p-4">
+                                <div class="card-body">
+                                    <i class="fas fa-laptop-code fa-3x text-warning mb-3"></i>
+                                    <h5 class="card-title">Computer Science</h5>
+                                    <p class="card-text text-muted">Computer science fundamentals</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <a href="/shop?category=Physics" class="text-decoration-none">
+                            <div class="card category-card h-100 text-center p-4">
+                                <div class="card-body">
+                                    <i class="fas fa-atom fa-3x text-info mb-3"></i>
+                                    <h5 class="card-title">Physics</h5>
+                                    <p class="card-text text-muted">Physics and engineering concepts</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-5">
         <div class="container">
             <div class="row text-center">
                 <div class="col-md-4 mb-4">
@@ -219,11 +305,11 @@
             <h2 class="display-6 fw-bold mb-3">Ready to Explore Our Book Collection?</h2>
             <p class="lead mb-4">Join hundreds of book lovers who trust Pahana Edu Bookshop for their reading needs</p>
             <div class="d-flex justify-content-center gap-3">
-                <a href="/register" class="btn btn-light btn-lg px-4">
-                    <i class="fas fa-user-plus"></i> Create Account
+                <a href="/shop" class="btn btn-light btn-lg px-4">
+                    <i class="fas fa-shopping-cart"></i> Start Shopping
                 </a>
-                <a href="/contact" class="btn btn-outline-light btn-lg px-4">
-                    <i class="fas fa-phone"></i> Visit Our Store
+                <a href="/help" class="btn btn-outline-light btn-lg px-4">
+                    <i class="fas fa-phone"></i> Contact Support
                 </a>
             </div>
         </div>
@@ -257,22 +343,71 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Simple cart functionality for demo
-        let cart = [];
-        let cartCount = 0;
-
-        function addToCart(bookId, price) {
-            cart.push({id: bookId, price: price});
-            cartCount++;
-            document.querySelector('.cart-badge').textContent = cartCount;
+        // Shopping cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        function addToCart(itemId, price, title) {
+            const existingItem = cart.find(item => item.id === itemId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: itemId,
+                    title: title,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
             
             // Show success message
-            alert('Book added to cart! You can proceed to checkout or continue browsing.');
+            showAlert(`"${title}" added to cart!`, 'success');
         }
-
-        // Update cart badge on page load
+        
+        function updateCartCount() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            const cartBadge = document.getElementById('cartCount');
+            if (cartBadge) {
+                cartBadge.textContent = totalItems;
+            }
+        }
+        
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.top = '20px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 3000);
+        }
+        
+        // Handle add to cart button clicks
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('.cart-badge').textContent = cartCount;
+            updateCartCount();
+            
+            // Add event listeners to all add-to-cart buttons
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = this.dataset.itemId;
+                    const itemPrice = parseFloat(this.dataset.itemPrice);
+                    const itemTitle = this.dataset.itemTitle;
+                    
+                    addToCart(itemId, itemPrice, itemTitle);
+                });
+            });
         });
     </script>
 </body>

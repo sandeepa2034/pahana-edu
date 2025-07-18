@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${appName}">Pahana Edu Bookshop - Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .product-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .book-img {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .price-tag {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-weight: bold;
+        }
+        .filter-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .cart-badge {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="/" th:text="${appName}">Pahana Edu Bookshop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/shop"><i class="fas fa-store"></i> Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/help"><i class="fas fa-question-circle"></i> Help</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="/cart">
+                            <i class="fas fa-shopping-cart"></i> Cart
+                            <span class="cart-badge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-user"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="bg-primary text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="display-6 fw-bold mb-0">Book Shop</h1>
+                    <p class="lead mb-0">Discover your next favorite book</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-end mb-0">
+                            <li class="breadcrumb-item"><a href="/" class="text-white-50">Home</a></li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">Shop</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Filters Sidebar -->
+                <div class="col-lg-3 mb-4">
+                    <div class="filter-section">
+                        <h5 class="fw-bold mb-4"><i class="fas fa-filter"></i> Filters</h5>
+                        
+                        <!-- Search Filter -->
+                        <form method="get" action="/shop" class="mb-4">
+                            <div class="mb-3">
+                                <label for="search" class="form-label fw-bold">Search Books</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="search" name="search" 
+                                           th:value="${currentSearch}" placeholder="Title, author, or keyword...">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Category Filter -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Categories</h6>
+                            <div class="list-group">
+                                <a href="/shop" class="list-group-item list-group-item-action"
+                                   th:classappend="${currentCategory == null ? 'active' : ''}">
+                                    <i class="fas fa-th-large"></i> All Categories
+                                </a>
+                                <a th:each="category : ${categories}" 
+                                   th:href="'/shop?category=' + ${category}"
+                                   th:text="${category}"
+                                   class="list-group-item list-group-item-action"
+                                   th:classappend="${currentCategory == category ? 'active' : ''}">
+                                    Category Name
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Price Range Filter -->
+                        <form method="get" action="/shop" class="mb-4">
+                            <h6 class="fw-bold">Price Range</h6>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm" 
+                                           name="minPrice" th:value="${currentMinPrice}" 
+                                           placeholder="Min (Rs)" min="0" step="100">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm" 
+                                           name="maxPrice" th:value="${currentMaxPrice}" 
+                                           placeholder="Max (Rs)" min="0" step="100">
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm w-100">
+                                        Apply Filter
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Quick Filters -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Quick Filters</h6>
+                            <div class="d-grid gap-2">
+                                <a href="/shop?minPrice=0&maxPrice=2000" class="btn btn-outline-secondary btn-sm">
+                                    Under Rs. 2,000
+                                </a>
+                                <a href="/shop?minPrice=2000&maxPrice=3000" class="btn btn-outline-secondary btn-sm">
+                                    Rs. 2,000 - 3,000
+                                </a>
+                                <a href="/shop?minPrice=3000" class="btn btn-outline-secondary btn-sm">
+                                    Above Rs. 3,000
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="col-lg-9">
+                    <!-- Results Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h5 class="mb-1">
+                                <span th:if="${currentCategory != null}" th:text="${currentCategory + ' Books'}">Category Books</span>
+                                <span th:if="${currentSearch != null}" th:text="'Search results for: ' + ${currentSearch}">Search Results</span>
+                                <span th:if="${currentCategory == null and currentSearch == null}">All Books</span>
+                            </h5>
+                            <p class="text-muted mb-0">
+                                <span th:text="${#lists.size(items)}">0</span> books found
+                            </p>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" 
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-sort"></i> Sort by
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/shop?sort=title&direction=asc">Title A-Z</a></li>
+                                <li><a class="dropdown-item" href="/shop?sort=title&direction=desc">Title Z-A</a></li>
+                                <li><a class="dropdown-item" href="/shop?sort=price&direction=asc">Price Low-High</a></li>
+                                <li><a class="dropdown-item" href="/shop?sort=price&direction=desc">Price High-Low</a></li>
+                                <li><a class="dropdown-item" href="/shop?sort=author&direction=asc">Author A-Z</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Books Grid -->
+                    <div class="row g-4">
+                        <!-- Dynamic Items -->
+                        <div th:if="${items != null and #lists.size(items) > 0}">
+                            <div class="col-lg-4 col-md-6 mb-4" th:each="item : ${items}">
+                                <div class="card product-card">
+                                    <div class="position-relative">
+                                        <img th:src="${item.imageUrl}" 
+                                             th:alt="${item.title}" 
+                                             src="https://via.placeholder.com/300x400?text=Book+Cover" 
+                                             class="card-img-top book-img">
+                                        <span class="position-absolute top-0 end-0 m-2 badge bg-success" 
+                                              th:if="${item.available}">Available</span>
+                                        <span class="position-absolute top-0 end-0 m-2 badge bg-danger" 
+                                              th:if="${!item.available}">Out of Stock</span>
+                                        <span class="position-absolute top-0 start-0 m-2 badge bg-warning" 
+                                              th:if="${item.lowStock}">Low Stock</span>
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <h6 class="card-title" th:text="${item.title}">Book Title</h6>
+                                        <p class="text-muted small" th:text="'by ' + ${item.author}">Author</p>
+                                        <p class="card-text small" th:text="${#strings.abbreviate(item.description, 100)}">Description</p>
+                                        
+                                        <!-- Book Details -->
+                                        <div class="small text-muted mb-2">
+                                            <div th:if="${item.isbn}">
+                                                <strong>ISBN:</strong> <span th:text="${item.isbn}">ISBN</span>
+                                            </div>
+                                            <div th:if="${item.publisher}">
+                                                <strong>Publisher:</strong> <span th:text="${item.publisher}">Publisher</span>
+                                            </div>
+                                            <div th:if="${item.publishYear}">
+                                                <strong>Year:</strong> <span th:text="${item.publishYear}">Year</span>
+                                            </div>
+                                            <div>
+                                                <strong>Stock:</strong> <span th:text="${item.stock} + ' available'">Stock</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-auto">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <span class="badge bg-primary" th:text="${item.category}">Category</span>
+                                                <span class="price-tag" th:text="${item.formattedPrice}">Rs. 0.00</span>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-primary btn-sm flex-grow-1 add-to-cart-btn" 
+                                                        th:data-item-id="${item.id}"
+                                                        th:data-item-price="${item.price}"
+                                                        th:data-item-title="${item.title}"
+                                                        th:disabled="${!item.available}">
+                                                    <i class="fas fa-cart-plus"></i> 
+                                                    <span th:text="${item.available ? 'Add to Cart' : 'Out of Stock'}">Add to Cart</span>
+                                                </button>
+                                                <button class="btn btn-outline-primary btn-sm view-details-btn" 
+                                                        th:data-item-id="${item.id}">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- No Results Message -->
+                        <div th:if="${items == null or #lists.size(items) == 0}" class="col-12">
+                            <div class="text-center py-5">
+                                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No books found</h5>
+                                <p class="text-muted">Try adjusting your search criteria or browse all categories.</p>
+                                <a href="/shop" class="btn btn-primary">
+                                    <i class="fas fa-refresh"></i> View All Books
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-start">
+                    <h6 class="fw-bold">Pahana Edu Bookshop</h6>
+                    <p class="small text-muted">Colombo's premier bookshop serving students and professionals with quality books and exceptional service.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold">Quick Links</h6>
+                    <div class="d-flex flex-column">
+                        <a href="/" class="text-light text-decoration-none small">Home</a>
+                        <a href="/shop" class="text-light text-decoration-none small">Shop</a>
+                        <a href="/help" class="text-light text-decoration-none small">Help & Support</a>
+                        <a href="/login" class="text-light text-decoration-none small">Login</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <h6 class="fw-bold">Visit Our Store</h6>
+                    <p class="small text-muted">123 Main Street<br>Colombo 07, Sri Lanka<br>Phone: +94 11 234 5678</p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <p class="small text-muted mb-0">
+                &copy; 2024 Pahana Edu Bookshop. All rights reserved. | 
+                <span th:text="'Connected to MongoDB Atlas'">Database Status</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Cart functionality -->
+    <script>
+        // Shopping cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        function addToCart(itemId, price, title) {
+            const existingItem = cart.find(item => item.id === itemId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: itemId,
+                    title: title,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Show success message
+            showAlert(`"${title}" added to cart!`, 'success');
+        }
+        
+        function updateCartCount() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            const cartBadge = document.getElementById('cartCount');
+            if (cartBadge) {
+                cartBadge.textContent = totalItems;
+            }
+        }
+        
+        function viewDetails(itemId) {
+            // For now, just show an alert. In a real app, this would open a detail modal or page
+            showAlert('Item details feature coming soon!', 'info');
+        }
+        
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.top = '20px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 3000);
+        }
+        
+        // Handle button clicks
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            
+            // Add event listeners to all add-to-cart buttons
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = this.dataset.itemId;
+                    const itemPrice = parseFloat(this.dataset.itemPrice);
+                    const itemTitle = this.dataset.itemTitle;
+                    
+                    addToCart(itemId, itemPrice, itemTitle);
+                });
+            });
+            
+            // Add event listeners to all view-details buttons
+            document.querySelectorAll('.view-details-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = this.dataset.itemId;
+                    viewDetails(itemId);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
