@@ -111,16 +111,6 @@ application-*.properties
 *.sqlite
 *.h2.db
 
-# MongoDB specific
-mongodb-data/
-mongo-data/
-*.log.gz
-*.log.*
-
-# Database dumps
-*.dump
-*.bson
-
 # Logs
 logs/
 *.log

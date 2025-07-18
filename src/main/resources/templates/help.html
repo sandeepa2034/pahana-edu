@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${appName}">Pahana Edu Bookshop - Help</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="/" th:text="${appName}">Pahana Edu Bookshop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/shop"><i class="fas fa-store"></i> Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/help"><i class="fas fa-question-circle"></i> Help</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-user"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="bg-primary text-white py-4">
+        <div class="container">
+            <h1 class="display-6 fw-bold mb-0">Help & Support</h1>
+            <p class="lead mb-0">Get assistance with your bookshop experience</p>
+        </div>
+    </section>
+
+    <!-- Help Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- FAQ Section -->
+                    <h2 class="mb-4">Frequently Asked Questions</h2>
+                    
+                    <div class="accordion" id="helpAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    How do I browse and purchase books?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    <p>To browse and purchase books:</p>
+                                    <ol>
+                                        <li>Visit our <a href="/shop">Shop page</a> to view all available books</li>
+                                        <li>Use filters to search by category, price range, or keywords</li>
+                                        <li>Click "Add to Cart" for books you want to purchase</li>
+                                        <li>Review your cart and proceed to checkout</li>
+                                        <li>No account creation required for purchases!</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    Do I need to create an account to shop?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>No!</strong> You can browse and purchase books as a guest without creating an account.</p>
+                                    <p>However, creating an account allows you to:</p>
+                                    <ul>
+                                        <li>Save your favorite books</li>
+                                        <li>Track your order history</li>
+                                        <li>Receive personalized recommendations</li>
+                                        <li>Get updates on new arrivals</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    What categories of books do you offer?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    <p>We offer books in various categories including:</p>
+                                    <ul>
+                                        <li><strong>Programming:</strong> Software development, coding languages</li>
+                                        <li><strong>Computer Science:</strong> Algorithms, data structures, theory</li>
+                                        <li><strong>Mathematics:</strong> Pure and applied mathematics</li>
+                                        <li><strong>Physics:</strong> Theoretical and applied physics</li>
+                                        <li><strong>Database:</strong> Database design and management</li>
+                                        <li><strong>Software Engineering:</strong> Best practices and methodologies</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    How do I search for specific books?
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    <p>You can find books using several methods:</p>
+                                    <ul>
+                                        <li><strong>Search Bar:</strong> Enter book title, author name, or keywords</li>
+                                        <li><strong>Category Filter:</strong> Browse books by specific categories</li>
+                                        <li><strong>Price Range:</strong> Filter books within your budget</li>
+                                        <li><strong>Sort Options:</strong> Sort by title, author, or price</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                    What payment methods do you accept?
+                                </button>
+                            </h2>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    <p>We accept multiple payment methods for your convenience:</p>
+                                    <ul>
+                                        <li>Cash (for in-store purchases)</li>
+                                        <li>Credit/Debit Cards</li>
+                                        <li>Digital Payments (mobile wallets)</li>
+                                        <li>Bank Transfers</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Section -->
+                    <div class="mt-5">
+                        <h3 class="mb-4">Still Need Help?</h3>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-store fa-3x text-primary mb-3"></i>
+                                        <h5 class="card-title">Visit Our Store</h5>
+                                        <p class="card-text">
+                                            123 Main Street<br>
+                                            Colombo 07, Sri Lanka<br>
+                                            <strong>Hours:</strong> Mon-Sat 9AM-6PM
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-phone fa-3x text-success mb-3"></i>
+                                        <h5 class="card-title">Contact Us</h5>
+                                        <p class="card-text">
+                                            <strong>Phone:</strong> +94 11 234 5678<br>
+                                            <strong>Email:</strong> info@pahanaedu.lk<br>
+                                            <strong>WhatsApp:</strong> +94 77 123 4567
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="mt-5 text-center">
+                        <h4 class="mb-4">Quick Actions</h4>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="/shop" class="btn btn-primary">
+                                <i class="fas fa-shopping-bag"></i> Start Shopping
+                            </a>
+                            <a href="/" class="btn btn-outline-primary">
+                                <i class="fas fa-home"></i> Back to Home
+                            </a>
+                            <a href="/login" class="btn btn-outline-success">
+                                <i class="fas fa-user"></i> Login / Register
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <p class="mb-0">&copy; 2024 Pahana Edu Bookshop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
