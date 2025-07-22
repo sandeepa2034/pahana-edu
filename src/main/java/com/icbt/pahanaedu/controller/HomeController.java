@@ -24,11 +24,11 @@ public class HomeController {
     public String home(Model model) {
         // Initialize sample data if needed
         itemService.initializeSampleData();
-        
+
         // Get featured items for landing page
         List<Item> featuredItems = itemService.getFeaturedItems();
         List<String> categories = itemService.getAllCategories();
-        
+
         model.addAttribute("appName", "Pahana Edu Bookshop");
         model.addAttribute("message", "Welcome to Colombo's Premier Bookshop");
         model.addAttribute("featuredItems", featuredItems);
@@ -47,12 +47,12 @@ public class HomeController {
             @RequestParam(value = "sort", defaultValue = "title") String sort,
             @RequestParam(value = "direction", defaultValue = "asc") String direction,
             Model model) {
-        
+
         // Initialize sample data if needed
         itemService.initializeSampleData();
-        
+
         List<Item> items;
-        
+
         // Apply filters
         if (search != null && !search.trim().isEmpty()) {
             items = itemService.searchItems(search.trim());
@@ -63,10 +63,10 @@ public class HomeController {
         } else {
             items = itemService.getAvailableItems();
         }
-        
+
         // Get all categories for filter dropdown
         List<String> categories = itemService.getAllCategories();
-        
+
         model.addAttribute("appName", "Pahana Edu Bookshop - Shop");
         model.addAttribute("items", items);
         model.addAttribute("categories", categories);
@@ -74,7 +74,7 @@ public class HomeController {
         model.addAttribute("currentSearch", search);
         model.addAttribute("currentMinPrice", minPrice);
         model.addAttribute("currentMaxPrice", maxPrice);
-        
+
         return "shop";
     }
 
@@ -84,10 +84,11 @@ public class HomeController {
         return "help";
     }
 
+    // Removed dashboard mapping since it conflicts with AuthController
     // @GetMapping("/dashboard")
     // public String dashboard(Model model) {
-    //     model.addAttribute("appName", "Pahana Edu Bookshop - Admin");
-    //     return "dashboard";
+    // model.addAttribute("appName", "Pahana Edu Bookshop - Admin");
+    // return "dashboard";
     // }
 
 }

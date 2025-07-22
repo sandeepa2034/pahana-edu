@@ -2,11 +2,13 @@
 
 ![Java](https://img.shields.io/badge/Java-23-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.5-green)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-green)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-success)
 ![Maven](https://img.shields.io/badge/Maven-Build-blue)
+![Thymeleaf](https://img.shields.io/badge/Thymeleaf-Template-green)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-A comprehensive web-based billing management system for Pahana Edu Bookshop in Colombo City. Built with Spring Boot, MongoDB, and Thymeleaf to manage customer accounts and billing information efficiently.
+A comprehensive web-based billing management system for Pahana Edu Bookshop in Colombo City. Built with Spring Boot, MongoDB Atlas, and Thymeleaf to manage customer accounts and billing information efficiently. The application provides a modern, responsive interface for both customers and administrators.
 
 ## 🚀 Features
 
@@ -68,13 +70,22 @@ A comprehensive web-based billing management system for Pahana Edu Bookshop in C
 ## 🛠️ Technology Stack
 
 - **Backend Framework**: Spring Boot 3.2.5
-- **Language**: Java 23
-- **Database**: MongoDB
-- **Security**: Spring Security with BCrypt
-- **Template Engine**: Thymeleaf
-- **Frontend**: HTML5, CSS3, Bootstrap 5, Font Awesome
-- **Build Tool**: Maven
-- **Testing**: JUnit 5, Spring Boot Test, Testcontainers
+- **Language**: Java 23 (using latest features)
+- **Database**: MongoDB Atlas (Cloud-hosted NoSQL database)
+- **Security**: Spring Security with BCrypt password encoding
+- **Template Engine**: Thymeleaf with Spring integration
+- **Frontend**:
+  - HTML5, CSS3
+  - Bootstrap 5 for responsive design
+  - Font Awesome 6 for icons
+  - JavaScript for client-side interactions
+- **Build Tool**: Maven with dependency management
+- **Testing**: 
+  - JUnit 5 for unit tests
+  - Spring Boot Test for integration testing
+  - Testcontainers for MongoDB testing
+- **Data Validation**: Jakarta Bean Validation API
+- **Development Tools**: Spring Boot DevTools (live reload)
 
 ## 📁 Project Structure
 
@@ -86,18 +97,50 @@ pahana-edu/
 │   │   │   └── com/icbt/pahanaedu/
 │   │   │       ├── PahanaEduApplication.java
 │   │   │       ├── controller/
-│   │   │       ├── model/
-│   │   │       ├── repository/
-│   │   │       ├── service/
-│   │   │       └── config/
+│   │   │       │   ├── HomeController.java         # Handles main page routing
+│   │   │       │   ├── AuthController.java         # Login/register functionality
+│   │   │       │   └── api/                        # REST API controllers
+│   │   │       │       ├── ApiController.java
+│   │   │       │       ├── CustomerController.java
+│   │   │       │       └── ItemController.java
+│   │   │       ├── model/                          # MongoDB document models
+│   │   │       │   ├── Bill.java
+│   │   │       │   ├── Customer.java
+│   │   │       │   ├── Item.java                   # Book/product model
+│   │   │       │   └── User.java
+│   │   │       ├── repository/                     # MongoDB repositories
+│   │   │       │   ├── BillRepository.java
+│   │   │       │   ├── CustomerRepository.java
+│   │   │       │   ├── ItemRepository.java
+│   │   │       │   └── UserRepository.java
+│   │   │       ├── service/                        # Business logic
+│   │   │       │   ├── CustomerService.java
+│   │   │       │   ├── ItemService.java
+│   │   │       │   └── UserService.java
+│   │   │       └── config/                         # Configuration classes
+│   │   │           ├── AppConfig.java              # Application configuration
+│   │   │           └── SecurityConfig.java         # Spring Security configuration
 │   │   └── resources/
-│   │       ├── templates/
-│   │       ├── static/
-│   │       └── application.properties
+│   │       ├── templates/                          # Thymeleaf templates
+│   │       │   ├── index.html                      # Landing page
+│   │       │   ├── shop.html                       # Book catalog page
+│   │       │   ├── login.html                      # User login page
+│   │       │   ├── register.html                   # User registration page
+│   │       │   └── help.html                       # Help documentation
+│   │       ├── static/                             # Static resources
+│   │       │   ├── css/
+│   │       │   └── js/
+│   │       ├── application.properties              # Main configuration
+│   │       └── application-dev.properties          # Development configuration
 │   └── test/
 │       ├── java/
+│       │   └── com/icbt/pahanaedu/
+│       │       └── PahanaEduApplicationTests.java
 │       └── resources/
-├── docs/
+│           └── application-test.properties         # Test configuration
+├── mongodb/
+│   └── sample-data/                                # MongoDB sample data
+├── docs/                                           # Documentation
 ├── sql/
 ├── pom.xml
 ├── .gitignore
@@ -121,9 +164,22 @@ pahana-edu/
    cd pahana-edu
    ```
 
-2. **Configure MongoDB**
+2. **MongoDB Atlas Configuration**
    
-   **Option A: Local MongoDB Installation**
+   The application is already configured to use MongoDB Atlas. The connection string is set in `application.properties`:
+   ```properties
+   spring.data.mongodb.uri=mongodb+srv://sandeepa:b93hiP5KQ8Q81lU0@pahanacluster.wspwo6f.mongodb.net/pahana_edu_db
+   ```
+   
+   If you want to use your own MongoDB instance:
+   
+   **Option A: Your own MongoDB Atlas cluster**
+   - Create a free account at [MongoDB Atlas](https://www.mongodb.com/atlas)
+   - Create a new cluster
+   - Get your connection string
+   - Update `application.properties` with your connection string
+   
+   **Option B: Local MongoDB Installation**
    - Download and install MongoDB from [https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)
    - Start MongoDB service:
      ```bash
@@ -136,14 +192,9 @@ pahana-edu/
      # On Linux
      sudo systemctl start mongod
      ```
-   
-   **Option B: MongoDB Atlas (Cloud)**
-   - Create a free account at [MongoDB Atlas](https://www.mongodb.com/atlas)
-   - Create a new cluster
-   - Get your connection string
    - Update `application.properties`:
      ```properties
-     spring.data.mongodb.uri=mongodb+srv://username:password@cluster.mongodb.net/pahana_edu_db
+     spring.data.mongodb.uri=mongodb://localhost:27017/pahana_edu_db
      ```
 
 3. **Install Dependencies and Build**
@@ -158,36 +209,57 @@ pahana-edu/
 
 5. **Run the Application**
    ```bash
+   # Run with default profile
+   mvn spring-boot:run
+   
+   # Run with dev profile (for development)
    mvn spring-boot:run "-Dspring-boot.run.profiles=dev"
    ```
 
 6. **Access the Application**
    - Open your browser and navigate to: `http://localhost:8080`
-   - Browse books as a customer or login as admin
-   - Default admin credentials: `admin` / `admin123`
+   - Explore the bookshop as a guest user
+   - Browse the catalog at: `http://localhost:8080/shop`
+   - View help documentation at: `http://localhost:8080/help`
+   - Login with default admin credentials: `admin` / `admin123`
 
 ### Database Setup
 
-The application uses MongoDB and will automatically create the required collections on startup. No manual database setup is required.
+The application uses MongoDB and will automatically create the required collections on startup. Sample data is loaded automatically through the `ItemService.initializeSampleData()` method when the application starts.
 
-#### MongoDB Configuration Options
+#### Current MongoDB Configuration
 
-**Local MongoDB (Default):**
+The application is configured to use MongoDB Atlas:
 ```properties
-spring.data.mongodb.host=localhost
-spring.data.mongodb.port=27017
-spring.data.mongodb.database=pahana_edu_db
+spring.data.mongodb.uri=mongodb+srv://sandeepa:b93hiP5KQ8Q81lU0@pahanacluster.wspwo6f.mongodb.net/pahana_edu_db
+spring.data.mongodb.auto-index-creation=true
 ```
 
-**MongoDB Atlas:**
-```properties
-spring.data.mongodb.uri=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/pahana_edu_db
-```
+#### MongoDB Collections
 
-**Docker MongoDB:**
-```bash
-docker run -d -p 27017:27017 --name mongodb mongo:latest
-```
+The application uses the following collections:
+- `users` - User accounts for authentication
+- `items` - Books and other products available in the shop
+- `customers` - Customer information and order history
+- `bills` - Order and billing information
+
+#### Data Models
+
+1. **User Model**
+   - Core fields: username, password (BCrypt encoded), roles
+   - Used for authentication and authorization
+
+2. **Item (Book) Model**
+   - Core fields: title, author, price, stock, description, category
+   - Additional fields: ISBN, imageUrl, publisher, publishYear, available
+
+3. **Customer Model**
+   - Core fields: name, phone (primary key), email, address
+   - Used for customer management
+
+4. **Bill Model**
+   - Core fields: customer, items, total, date
+   - Used for order processing and reporting
 
 ## 🧪 Testing
 
@@ -269,16 +341,22 @@ ENTRYPOINT ["java","-jar","/app.jar"]
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📋 TODO
+## 📋 Project Status
 
-- [ ] Implement User Authentication with Spring Security
-- [ ] Create Customer Account Management with phone number as primary key
-- [ ] Develop Book/Item Management system
-- [ ] Build Bill Calculation functionality for bookshop purchases
-- [ ] Add PDF generation for customer bills
-- [ ] Implement book search and filtering
-- [ ] Add customer and inventory validation
-- [ ] Create comprehensive test suite
+- [x] Project structure setup with Spring Boot 3.2.5 and Java 23
+- [x] MongoDB Atlas connection configured and working
+- [x] User Authentication framework with Spring Security implemented
+- [x] Basic Customer and Item models created with validation
+- [x] Landing page and shop page with dynamic product display
+- [x] Book/Item Management system with categories and filtering
+- [x] Responsive UI using Bootstrap 5 and Font Awesome
+- [x] Shopping cart functionality (client-side)
+- [ ] Bill generation and checkout process
+- [ ] PDF generation for customer bills
+- [ ] Admin dashboard for inventory management
+- [ ] Customer account management enhancement
+- [ ] User profile management
+- [ ] Complete comprehensive test suite
 - [ ] Set up CI/CD pipeline
 - [ ] Deploy to cloud platform
 
@@ -292,10 +370,32 @@ For support and questions:
 - Create an issue in the GitHub repository
 - Contact the development team
 
-## 📸 Screenshots
+## 📸 Current Implementation
 
-*Screenshots will be added once the UI is implemented*
+The application currently has the following pages and functionality implemented:
+
+1. **Landing Page (`/`)** - Displays featured books and category navigation
+2. **Shop Page (`/shop`)** - Catalog of all books with filtering by category and search
+3. **Login Page (`/login`)** - User authentication form
+4. **Registration Page (`/register`)** - New user registration
+5. **Help Page (`/help`)** - Documentation and support information
+
+The application currently supports:
+- Dynamic display of books from MongoDB
+- Responsive design using Bootstrap 5
+- Client-side shopping cart functionality
+- Book filtering by category and search
+- Basic authentication framework
+
+## 🚀 Next Steps
+
+1. **Admin Dashboard** - Create protected admin area for inventory management
+2. **Checkout Process** - Implement bill generation and payment flow
+3. **User Profiles** - Enhance user account management
+4. **PDF Bills** - Add bill generation in PDF format
+5. **Testing** - Complete comprehensive test coverage
+6. **Cloud Deployment** - Deploy to a cloud platform for production use
 
 ---
 
-**Note**: This project is a web-based billing system for Pahana Edu Bookshop in Colombo City, developed as part of the ICBT CIS6003 module coursework to replace manual customer account management with an efficient computerized system.
+**Note**: This project is a web-based billing system for Pahana Edu Bookshop in Colombo City, developed as part of the ICBT CIS6003 module coursework to replace manual customer account management with an efficient computerized system. The current implementation provides a working bookshop frontend with dynamic data from MongoDB Atlas.
