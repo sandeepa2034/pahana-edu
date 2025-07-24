@@ -303,6 +303,74 @@ export SERVER_PORT=8080
 export SPRING_PROFILES_ACTIVE=dev
 ```
 
+## 🎨 Design System & Color Palette
+
+The application uses a professional academic color palette designed to create a scholarly and trustworthy appearance suitable for an educational bookshop.
+
+### Academic Color Palette
+
+| Color Name | Hex Code | RGB | Usage |
+|------------|----------|-----|-------|
+| **Oxford Blue** | `#002147` | `rgb(0, 33, 71)` | Primary navigation, headers, main CTAs |
+| **Ivory Cream** | `#F8F5EC` | `rgb(248, 245, 236)` | Background, card backgrounds |
+| **Dusty Rose** | `#C4A69F` | `rgb(196, 166, 159)` | Secondary buttons, accents |
+| **Muted Sage** | `#A8B5A2` | `rgb(168, 181, 162)` | Success states, nature elements |
+| **Antique Gold** | `#C6A664` | `rgb(198, 166, 100)` | Highlights, borders, active states |
+| **Charcoal Gray** | `#3E3E3E` | `rgb(62, 62, 62)` | Text, secondary content |
+| **Maroon Red** | `#6C2C2F` | `rgb(108, 44, 47)` | Error states, warnings |
+
+### Extended Palette (Gradients & States)
+
+| Color Name | Hex Code | Usage |
+|------------|----------|-------|
+| **Oxford Blue Light** | `#1a3659` | Gradient variations, hover states |
+| **Oxford Blue Dark** | `#001122` | Deep shadows, intense elements |
+| **Ivory Cream Dark** | `#F0ECE1` | Subtle borders, form elements |
+| **Dusty Rose Light** | `#D4B6AF` | Light accent variations |
+| **Sage Dark** | `#98A592` | Darker sage variations |
+| **Gold Light** | `#D6B674` | Light gold accents |
+
+### CSS Custom Properties
+
+The color palette is implemented using CSS custom properties for easy maintenance and consistency:
+
+```css
+:root {
+    /* Primary Palette */
+    --oxford-blue: #002147;
+    --ivory-cream: #F8F5EC;
+    --dusty-rose: #C4A69F;
+    --muted-sage: #A8B5A2;
+    --antique-gold: #C6A664;
+    --charcoal-gray: #3E3E3E;
+    --maroon-red: #6C2C2F;
+    
+    /* Extended Palette */
+    --oxford-blue-light: #1a3659;
+    --oxford-blue-dark: #001122;
+    --ivory-cream-dark: #F0ECE1;
+    --dusty-rose-light: #D4B6AF;
+    --sage-dark: #98A592;
+    --gold-light: #D6B674;
+}
+```
+
+### Design Principles
+
+1. **Academic Elegance**: The color palette evokes trust, knowledge, and professionalism
+2. **Accessibility**: All color combinations meet WCAG 2.1 AA contrast requirements
+3. **Consistency**: Colors are used systematically across all pages and components
+4. **Responsive Design**: The design adapts beautifully across all device sizes
+5. **Modern UI/UX**: Clean typography, generous whitespace, and intuitive navigation
+
+### Implementation
+
+- **Navigation**: Oxford Blue gradient backgrounds with Antique Gold accents
+- **Cards & Components**: Ivory Cream backgrounds with subtle shadows
+- **Buttons**: Gradient combinations using primary and secondary colors
+- **Typography**: Charcoal Gray for body text, Oxford Blue for headings
+- **Interactive Elements**: Smooth transitions and hover effects using palette variations
+
 ## 📝 Development Guidelines
 
 1. Follow Java naming conventions
