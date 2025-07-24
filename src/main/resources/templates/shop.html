@@ -7,93 +7,456 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .product-card {
-            transition: transform 0.3s ease;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            height: 100%;
+        /* Professional Academic Color Palette */
+        :root {
+            --oxford-blue: #002147;
+            --ivory-cream: #F8F5EC;
+            --dusty-rose: #C4A69F;
+            --muted-sage: #A8B5A2;
+            --antique-gold: #C6A664;
+            --charcoal-gray: #3E3E3E;
+            --maroon-red: #6C2C2F;
+            
+            /* Extended palette for gradients and states */
+            --oxford-blue-light: #1a3659;
+            --oxford-blue-dark: #001122;
+            --ivory-cream-dark: #F0ECE1;
+            --dusty-rose-light: #D4B6AF;
+            --sage-dark: #98A592;
+            --gold-light: #D6B674;
         }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        
+        /* Global Styles */
+        body {
+            background-color: var(--ivory-cream);
+            color: var(--charcoal-gray);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
         }
-        .book-img {
-            height: 250px;
-            object-fit: cover;
-            width: 100%;
+        
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--oxford-blue) 0%, var(--oxford-blue-light) 100%) !important;
+            border-bottom: 3px solid var(--antique-gold);
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 33, 71, 0.15);
         }
-        .price-tag {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            color: white;
-            border-radius: 20px;
-            padding: 5px 15px;
-            font-weight: bold;
+        
+        .navbar-brand {
+            color: var(--ivory-cream) !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
+        
+        .navbar-nav .nav-link {
+            color: var(--ivory-cream) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            padding: 0.75rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            background: var(--antique-gold);
+            color: var(--oxford-blue) !important;
+            transform: translateY(-2px);
+        }
+        
+        /* Shop Header */
+        .shop-header {
+            background: linear-gradient(135deg, var(--oxford-blue-light) 0%, var(--muted-sage) 100%);
+            color: var(--ivory-cream);
+            padding: 80px 0 60px 0;
+        }
+        
+        /* Filter Section */
         .filter-section {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
+            background: var(--ivory-cream);
+            border: 2px solid var(--ivory-cream-dark);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 33, 71, 0.1);
+            position: sticky;
+            top: 20px;
         }
-        .cart-badge {
-            background-color: #dc3545;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 12px;
+        
+        .filter-title {
+            color: var(--oxford-blue);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--antique-gold);
+        }
+        
+        .form-label {
+            color: var(--charcoal-gray);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid var(--ivory-cream-dark);
+            border-radius: 8px;
+            background: var(--ivory-cream);
+            color: var(--charcoal-gray);
+            padding: 0.75rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--antique-gold);
+            box-shadow: 0 0 0 0.2rem rgba(198, 166, 100, 0.25);
+            background: var(--ivory-cream);
+        }
+        
+        .btn-filter {
+            background: linear-gradient(135deg, var(--oxford-blue), var(--oxford-blue-light));
+            border: none;
+            color: var(--ivory-cream);
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .btn-filter:hover {
+            background: linear-gradient(135deg, var(--oxford-blue-light), var(--muted-sage));
+            color: var(--ivory-cream);
+            transform: translateY(-2px);
+        }
+        
+        .btn-clear {
+            background: transparent;
+            border: 2px solid var(--dusty-rose);
+            color: var(--dusty-rose);
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        
+        .btn-clear:hover {
+            background: var(--dusty-rose);
+            color: var(--ivory-cream);
+        }
+        
+        /* Professional Book Cards */
+        .book-card {
+            background: var(--ivory-cream);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            height: 100%;
+            box-shadow: 0 8px 32px rgba(0, 33, 71, 0.1);
+        }
+        
+        .book-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 33, 71, 0.2);
+            border-color: var(--antique-gold);
+        }
+        
+        .book-cover-container {
+            height: 280px;
+            background: linear-gradient(135deg, var(--oxford-blue) 0%, var(--oxford-blue-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .book-cover-container::after {
+            content: '';
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 0%, rgba(198,166,100,0.1) 100%);
+        }
+        
+        .book-cover-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--ivory-cream);
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .book-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+        
+        .availability-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--muted-sage);
+            color: var(--ivory-cream);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 3;
+        }
+        
+        .availability-badge.out-of-stock {
+            background: var(--maroon-red);
+        }
+        
+        .book-content {
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            background: var(--ivory-cream);
+        }
+        
+        .book-category {
+            background: linear-gradient(135deg, var(--dusty-rose), var(--dusty-rose-light));
+            color: var(--oxford-blue);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+            width: fit-content;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .book-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--oxford-blue);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .book-author {
+            color: var(--charcoal-gray);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        .book-description {
+            color: var(--charcoal-gray);
+            font-size: 0.8rem;
+            line-height: 1.5;
+            margin-bottom: auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            opacity: 0.8;
+        }
+        
+        .book-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--ivory-cream-dark);
+        }
+        
+        .book-price {
+            background: linear-gradient(135deg, var(--antique-gold), var(--gold-light));
+            color: var(--oxford-blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(198,166,100,0.3);
+        }
+        
+        .book-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--oxford-blue), var(--oxford-blue-light));
+            border: none;
+            color: var(--ivory-cream);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 33, 71, 0.3);
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 33, 71, 0.4);
+            background: linear-gradient(135deg, var(--oxford-blue-light), var(--muted-sage));
+            color: var(--ivory-cream);
+        }
+        
+        .btn-outline-custom {
+            background: transparent;
+            border: 2px solid var(--dusty-rose);
+            color: var(--dusty-rose);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-custom:hover {
+            background: var(--dusty-rose);
+            color: var(--ivory-cream);
+            transform: translateY(-2px);
+        }
+        
+        /* Cart Badge */
+        .cart-badge {
+            background: linear-gradient(135deg, var(--maroon-red), #8B3A3A);
+            color: var(--ivory-cream);
+            border-radius: 50%;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(108, 44, 47, 0.4);
+        }
+        
+        /* Sections */
+        .section-title {
+            color: var(--oxford-blue);
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            color: var(--charcoal-gray);
+            opacity: 0.8;
+        }
+        
+        /* Footer */
+        .footer-custom {
+            background: var(--oxford-blue);
+            color: var(--ivory-cream);
+            border-top: 4px solid var(--antique-gold);
+        }
+        
+        .footer-title {
+            color: var(--antique-gold);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-link {
+            color: var(--ivory-cream);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--antique-gold);
+            opacity: 1;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .filter-section {
+                position: relative;
+                margin-bottom: 2rem;
+            }
+            
+            .book-content {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="/" th:text="${appName}">Pahana Edu Bookshop</a>
+            <a class="navbar-brand" href="/" th:text="${appName}">
+                <i class="fas fa-book-open me-2"></i>Pahana Edu Bookshop
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/shop"><i class="fas fa-store"></i> Shop</a>
+                        <a class="nav-link active" href="/shop"><i class="fas fa-store me-1"></i>Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/help"><i class="fas fa-question-circle"></i> Help</a>
+                        <a class="nav-link" href="/help"><i class="fas fa-question-circle me-1"></i>Help</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item position-relative">
                         <a class="nav-link" href="/cart">
-                            <i class="fas fa-shopping-cart"></i> Cart
-                            <span class="cart-badge">0</span>
+                            <i class="fas fa-shopping-cart me-1"></i>Cart
+                            <span class="cart-badge" id="cartCount">0</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login"><i class="fas fa-user"></i> Login</a>
+                        <a class="nav-link" href="/login"><i class="fas fa-user me-1"></i>Login</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="bg-primary text-white py-4">
+    <!-- Shop Header -->
+    <section class="shop-header">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h1 class="display-6 fw-bold mb-0">Book Shop</h1>
-                    <p class="lead mb-0">Discover your next favorite book</p>
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold mb-3">Scholarly Collection</h1>
+                    <p class="lead mb-0 opacity-90">Browse our curated library of academic texts, research publications, and intellectual treasures</p>
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col-md-4 text-end">
                     <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-end mb-0">
-                            <li class="breadcrumb-item"><a href="/" class="text-white-50">Home</a></li>
-                            <li class="breadcrumb-item active text-white" aria-current="page">Shop</li>
+                        <ol class="breadcrumb justify-content-end mb-0" style="--bs-breadcrumb-divider-color: var(--antique-gold);">
+                            <li class="breadcrumb-item">
+                                <a href="/" style="color: var(--antique-gold); text-decoration: none;">
+                                    <i class="fas fa-home me-1"></i>Library
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" style="color: var(--ivory-cream);" aria-current="page">
+                                <i class="fas fa-books me-1"></i>Collection
+                            </li>
                         </ol>
                     </nav>
                 </div>
@@ -108,16 +471,18 @@
                 <!-- Filters Sidebar -->
                 <div class="col-lg-3 mb-4">
                     <div class="filter-section">
-                        <h5 class="fw-bold mb-4"><i class="fas fa-filter"></i> Filters</h5>
+                        <h5 class="filter-title">
+                            <i class="fas fa-search me-2"></i>Discover Books
+                        </h5>
                         
                         <!-- Search Filter -->
                         <form method="get" action="/shop" class="mb-4">
                             <div class="mb-3">
-                                <label for="search" class="form-label fw-bold">Search Books</label>
+                                <label for="search" class="form-label">Search Collection</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="search" name="search" 
-                                           th:value="${currentSearch}" placeholder="Title, author, or keyword...">
-                                    <button class="btn btn-primary" type="submit">
+                                           th:value="${currentSearch}" placeholder="Title, author, subject...">
+                                    <button class="btn btn-filter" type="submit" style="width: auto; margin-top: 0;">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
@@ -126,17 +491,17 @@
 
                         <!-- Category Filter -->
                         <div class="mb-4">
-                            <h6 class="fw-bold">Categories</h6>
-                            <div class="list-group">
-                                <a href="/shop" class="list-group-item list-group-item-action"
-                                   th:classappend="${currentCategory == null ? 'active' : ''}">
-                                    <i class="fas fa-th-large"></i> All Categories
+                            <h6 class="form-label">Academic Disciplines</h6>
+                            <div class="d-grid gap-2">
+                                <a href="/shop" class="btn btn-outline-custom"
+                                   th:classappend="${currentCategory == null ? 'btn-primary-custom' : ''}">
+                                    <i class="fas fa-graduation-cap me-2"></i>All Disciplines
                                 </a>
                                 <a th:each="category : ${categories}" 
                                    th:href="'/shop?category=' + ${category}"
                                    th:text="${category}"
-                                   class="list-group-item list-group-item-action"
-                                   th:classappend="${currentCategory == category ? 'active' : ''}">
+                                   class="btn btn-outline-custom"
+                                   th:classappend="${currentCategory == category ? 'btn-primary-custom' : ''}">
                                     Category Name
                                 </a>
                             </div>
@@ -144,69 +509,77 @@
 
                         <!-- Price Range Filter -->
                         <form method="get" action="/shop" class="mb-4">
-                            <h6 class="fw-bold">Price Range</h6>
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <input type="number" class="form-control form-control-sm" 
-                                           name="minPrice" th:value="${currentMinPrice}" 
-                                           placeholder="Min (Rs)" min="0" step="100">
+                            <div class="mb-3">
+                                <label class="form-label">Price Range (LKR)</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="number" class="form-control" name="minPrice" 
+                                               th:value="${currentMinPrice}" placeholder="Min" min="0">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number" class="form-control" name="maxPrice" 
+                                               th:value="${currentMaxPrice}" placeholder="Max" min="0">
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <input type="number" class="form-control form-control-sm" 
-                                           name="maxPrice" th:value="${currentMaxPrice}" 
-                                           placeholder="Max (Rs)" min="0" step="100">
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-outline-primary btn-sm w-100">
-                                        Apply Filter
-                                    </button>
-                                </div>
+                                <button type="submit" class="btn-filter">Apply Filter</button>
                             </div>
                         </form>
 
-                        <!-- Quick Filters -->
+                        <!-- Quick Price Filters -->
                         <div class="mb-4">
-                            <h6 class="fw-bold">Quick Filters</h6>
+                            <h6 class="form-label">Budget Range</h6>
                             <div class="d-grid gap-2">
-                                <a href="/shop?minPrice=0&maxPrice=2000" class="btn btn-outline-secondary btn-sm">
-                                    Under Rs. 2,000
+                                <a href="/shop?minPrice=0&maxPrice=2000" class="btn btn-outline-custom">
+                                    <i class="fas fa-coins me-2"></i>Under LKR 2,000
                                 </a>
-                                <a href="/shop?minPrice=2000&maxPrice=3000" class="btn btn-outline-secondary btn-sm">
-                                    Rs. 2,000 - 3,000
+                                <a href="/shop?minPrice=2000&maxPrice=3500" class="btn btn-outline-custom">
+                                    <i class="fas fa-wallet me-2"></i>LKR 2,000 - 3,500
                                 </a>
-                                <a href="/shop?minPrice=3000" class="btn btn-outline-secondary btn-sm">
-                                    Above Rs. 3,000
+                                <a href="/shop?minPrice=3500" class="btn btn-outline-custom">
+                                    <i class="fas fa-gem me-2"></i>Above LKR 3,500
                                 </a>
                             </div>
                         </div>
+                        
+                        <!-- Clear All Filters -->
+                        <a href="/shop" class="btn-clear">
+                            <i class="fas fa-times me-2"></i>Clear All Filters
+                        </a>
                     </div>
                 </div>
 
                 <!-- Products Grid -->
                 <div class="col-lg-9">
                     <!-- Results Header -->
-                    <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 p-3" 
+                         style="background: var(--ivory-cream); border: 2px solid var(--ivory-cream-dark); border-radius: 12px;">
                         <div>
-                            <h5 class="mb-1">
-                                <span th:if="${currentCategory != null}" th:text="${currentCategory + ' Books'}">Category Books</span>
-                                <span th:if="${currentSearch != null}" th:text="'Search results for: ' + ${currentSearch}">Search Results</span>
-                                <span th:if="${currentCategory == null and currentSearch == null}">All Books</span>
+                            <h5 class="section-title mb-1">
+                                <span th:if="${currentCategory != null}" th:text="${currentCategory + ' Collection'}">Category Collection</span>
+                                <span th:if="${currentSearch != null}" th:text="'Results for: ' + ${currentSearch}">Search Results</span>
+                                <span th:if="${currentCategory == null and currentSearch == null}">Complete Library</span>
                             </h5>
-                            <p class="text-muted mb-0">
-                                <span th:text="${#lists.size(items)}">0</span> books found
+                            <p class="section-subtitle mb-0">
+                                <i class="fas fa-book me-1"></i>
+                                <span th:text="${#lists.size(items)}">0</span> scholarly works available
                             </p>
                         </div>
                         <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" 
+                            <button class="btn btn-outline-custom dropdown-toggle" type="button" 
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-sort"></i> Sort by
+                                <i class="fas fa-sort-alpha-down me-1"></i>Sort Collection
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/shop?sort=title&direction=asc">Title A-Z</a></li>
-                                <li><a class="dropdown-item" href="/shop?sort=title&direction=desc">Title Z-A</a></li>
-                                <li><a class="dropdown-item" href="/shop?sort=price&direction=asc">Price Low-High</a></li>
-                                <li><a class="dropdown-item" href="/shop?sort=price&direction=desc">Price High-Low</a></li>
-                                <li><a class="dropdown-item" href="/shop?sort=author&direction=asc">Author A-Z</a></li>
+                            <ul class="dropdown-menu" style="border: 2px solid var(--antique-gold);">
+                                <li><a class="dropdown-item" href="/shop?sort=title&direction=asc">
+                                    <i class="fas fa-sort-alpha-down me-2"></i>Title A-Z</a></li>
+                                <li><a class="dropdown-item" href="/shop?sort=title&direction=desc">
+                                    <i class="fas fa-sort-alpha-up me-2"></i>Title Z-A</a></li>
+                                <li><a class="dropdown-item" href="/shop?sort=price&direction=asc">
+                                    <i class="fas fa-sort-numeric-down me-2"></i>Price Low-High</a></li>
+                                <li><a class="dropdown-item" href="/shop?sort=price&direction=desc">
+                                    <i class="fas fa-sort-numeric-up me-2"></i>Price High-Low</a></li>
+                                <li><a class="dropdown-item" href="/shop?sort=author&direction=asc">
+                                    <i class="fas fa-user-graduate me-2"></i>Author A-Z</a></li>
                             </ul>
                         </div>
                     </div>
@@ -214,59 +587,68 @@
                     <!-- Books Grid -->
                     <div class="row g-4">
                         <!-- Dynamic Items -->
-                        <div th:if="${items != null and #lists.size(items) > 0}">
+                        <div th:if="${items != null and #lists.size(items) > 0}" class="row g-4">
                             <div class="col-lg-4 col-md-6 mb-4" th:each="item : ${items}">
-                                <div class="card product-card">
-                                    <div class="position-relative">
-                                        <img th:src="${item.imageUrl}" 
-                                             th:alt="${item.title}" 
-                                             src="https://via.placeholder.com/300x400?text=Book+Cover" 
-                                             class="card-img-top book-img">
-                                        <span class="position-absolute top-0 end-0 m-2 badge bg-success" 
-                                              th:if="${item.available}">Available</span>
-                                        <span class="position-absolute top-0 end-0 m-2 badge bg-danger" 
-                                              th:if="${!item.available}">Out of Stock</span>
-                                        <span class="position-absolute top-0 start-0 m-2 badge bg-warning" 
-                                              th:if="${item.lowStock}">Low Stock</span>
+                                <div class="book-card">
+                                    <div class="book-cover-container">
+                                        <div class="book-cover-content">
+                                            <i class="fas fa-book-open book-icon"></i>
+                                            <div class="fw-bold" th:text="${item.title}">Book Title</div>
+                                        </div>
+                                        <div class="availability-badge" 
+                                             th:class="${item.available} ? 'availability-badge' : 'availability-badge out-of-stock'"
+                                             th:text="${item.available} ? 'Available' : 'Out of Stock'">
+                                            Available
+                                        </div>
                                     </div>
-                                    <div class="card-body d-flex flex-column">
-                                        <h6 class="card-title" th:text="${item.title}">Book Title</h6>
-                                        <p class="text-muted small" th:text="'by ' + ${item.author}">Author</p>
-                                        <p class="card-text small" th:text="${#strings.abbreviate(item.description, 100)}">Description</p>
+                                    
+                                    <div class="book-content">
+                                        <span class="book-category" th:text="${item.category}">Category</span>
                                         
-                                        <!-- Book Details -->
-                                        <div class="small text-muted mb-2">
-                                            <div th:if="${item.isbn}">
-                                                <strong>ISBN:</strong> <span th:text="${item.isbn}">ISBN</span>
+                                        <h3 class="book-title" th:text="${item.title}">Book Title</h3>
+                                        
+                                        <p class="book-author">
+                                            <i class="fas fa-user-edit me-2"></i>
+                                            <span th:text="${item.author}">Author Name</span>
+                                        </p>
+                                        
+                                        <p class="book-description" th:text="${item.description}">
+                                            Book description goes here...
+                                        </p>
+                                        
+                                        <!-- Additional Details -->
+                                        <div class="small mb-3" style="color: var(--charcoal-gray); opacity: 0.7;">
+                                            <div th:if="${item.isbn}" class="mb-1">
+                                                <i class="fas fa-barcode me-1"></i>
+                                                <span th:text="${item.isbn}">ISBN</span>
                                             </div>
-                                            <div th:if="${item.publisher}">
-                                                <strong>Publisher:</strong> <span th:text="${item.publisher}">Publisher</span>
+                                            <div th:if="${item.publisher}" class="mb-1">
+                                                <i class="fas fa-building me-1"></i>
+                                                <span th:text="${item.publisher}">Publisher</span>
                                             </div>
-                                            <div th:if="${item.publishYear}">
-                                                <strong>Year:</strong> <span th:text="${item.publishYear}">Year</span>
-                                            </div>
-                                            <div>
-                                                <strong>Stock:</strong> <span th:text="${item.stock} + ' available'">Stock</span>
+                                            <div class="mb-1">
+                                                <i class="fas fa-boxes me-1"></i>
+                                                <span th:text="${item.stock} + ' in stock'">Stock</span>
                                             </div>
                                         </div>
                                         
-                                        <div class="mt-auto">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <span class="badge bg-primary" th:text="${item.category}">Category</span>
-                                                <span class="price-tag" th:text="${item.formattedPrice}">Rs. 0.00</span>
+                                        <div class="book-footer">
+                                            <div class="book-price">
+                                                <i class="fas fa-rupee-sign me-1"></i>
+                                                <span th:text="${#numbers.formatDecimal(item.price, 1, 2)}">0.00</span>
                                             </div>
-                                            <div class="d-flex gap-2">
-                                                <button class="btn btn-primary btn-sm flex-grow-1 add-to-cart-btn" 
+                                            
+                                            <div class="book-actions">
+                                                <button class="btn-outline-custom view-details-btn"
+                                                        th:data-item-id="${item.id}">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn-primary-custom add-to-cart-btn" 
                                                         th:data-item-id="${item.id}"
                                                         th:data-item-price="${item.price}"
                                                         th:data-item-title="${item.title}"
                                                         th:disabled="${!item.available}">
-                                                    <i class="fas fa-cart-plus"></i> 
-                                                    <span th:text="${item.available ? 'Add to Cart' : 'Out of Stock'}">Add to Cart</span>
-                                                </button>
-                                                <button class="btn btn-outline-primary btn-sm view-details-btn" 
-                                                        th:data-item-id="${item.id}">
-                                                    <i class="fas fa-eye"></i>
+                                                    <i class="fas fa-cart-plus me-1"></i>Add
                                                 </button>
                                             </div>
                                         </div>
@@ -277,13 +659,18 @@
                         
                         <!-- No Results Message -->
                         <div th:if="${items == null or #lists.size(items) == 0}" class="col-12">
-                            <div class="text-center py-5">
-                                <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                                <h5 class="text-muted">No books found</h5>
-                                <p class="text-muted">Try adjusting your search criteria or browse all categories.</p>
-                                <a href="/shop" class="btn btn-primary">
-                                    <i class="fas fa-refresh"></i> View All Books
-                                </a>
+                            <div class="text-center py-5" style="background: var(--ivory-cream); border: 2px solid var(--ivory-cream-dark); border-radius: 16px;">
+                                <i class="fas fa-university fa-4x mb-3" style="color: var(--dusty-rose); opacity: 0.7;"></i>
+                                <h5 class="section-title">No Books Found in This Collection</h5>
+                                <p class="section-subtitle">Your search criteria yielded no results. Consider exploring our complete library or adjusting your filters.</p>
+                                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                    <a href="/shop" class="btn-primary-custom">
+                                        <i class="fas fa-books me-2"></i>Browse Complete Library
+                                    </a>
+                                    <a href="/help" class="btn-outline-custom">
+                                        <i class="fas fa-question-circle me-2"></i>Get Assistance
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -293,32 +680,35 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4">
+    <footer class="footer-custom py-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 text-start">
-                    <h6 class="fw-bold">Pahana Edu Bookshop</h6>
-                    <p class="small text-muted">Colombo's premier bookshop serving students and professionals with quality books and exceptional service.</p>
+                    <h6 class="footer-title">
+                        <i class="fas fa-book-open me-2"></i>Pahana Edu Bookshop
+                    </h6>
+                    <p class="small opacity-75">Colombo's distinguished academic bookshop, fostering intellectual growth through carefully curated scholarly publications and timeless literature.</p>
                 </div>
                 <div class="col-md-4">
-                    <h6 class="fw-bold">Quick Links</h6>
+                    <h6 class="footer-title">Scholarly Resources</h6>
                     <div class="d-flex flex-column">
-                        <a href="/" class="text-light text-decoration-none small">Home</a>
-                        <a href="/shop" class="text-light text-decoration-none small">Shop</a>
-                        <a href="/help" class="text-light text-decoration-none small">Help & Support</a>
-                        <a href="/login" class="text-light text-decoration-none small">Login</a>
+                        <a href="/" class="footer-link small mb-1">Library Home</a>
+                        <a href="/shop" class="footer-link small mb-1">Complete Collection</a>
+                        <a href="/help" class="footer-link small mb-1">Research Support</a>
+                        <a href="/login" class="footer-link small mb-1">Member Access</a>
                     </div>
                 </div>
                 <div class="col-md-4 text-end">
-                    <h6 class="fw-bold">Visit Our Store</h6>
-                    <p class="small text-muted">123 Main Street<br>Colombo 07, Sri Lanka<br>Phone: +94 11 234 5678</p>
+                    <h6 class="footer-title">Visit Our Library</h6>
+                    <p class="small opacity-75">123 Galle Road<br>Colombo 03, Sri Lanka<br>Phone: +94 11 234 5678<br>Email: scholars@pahanaedu.lk</p>
                 </div>
             </div>
-            <hr class="my-4">
-            <p class="small text-muted mb-0">
-                &copy; 2024 Pahana Edu Bookshop. All rights reserved. | 
-                <span th:text="'Connected to MongoDB Atlas'">Database Status</span>
-            </p>
+            <hr style="border-color: var(--antique-gold); opacity: 0.3;" class="my-4">
+            <div class="text-center">
+                <p class="small mb-0 opacity-75">
+                    &copy; 2025 Pahana Edu Bookshop. Fostering knowledge, nurturing minds.
+                </p>
+            </div>
         </div>
     </footer>
 
