@@ -1,7 +1,9 @@
 package com.icbt.pahanaedu.service;
 
 import com.icbt.pahanaedu.model.Customer;
+import com.icbt.pahanaedu.model.Bill;
 import com.icbt.pahanaedu.repository.CustomerRepository;
+import com.icbt.pahanaedu.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,9 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+    
+    @Autowired
+    private BillRepository billRepository;
 
     // Create a new customer
     public Customer createCustomer(Customer customer) {
@@ -248,5 +253,99 @@ public class CustomerService {
 
             customerRepository.saveAll(sampleCustomers);
         }
+    }
+    
+    // New methods for CustomerController support
+    
+    /**
+     * Save customer (create or update)
+     */
+    public Customer saveCustomer(Customer customer) {
+        if (customer.getId() == null) {
+            customer.setRegistrationDate(LocalDateTime.now());
+        }
+        return customerRepository.save(customer);
+    }
+    
+    /**
+     * Search customers with pagination
+     */
+    public Page<Customer> searchCustomers(String searchTerm, Pageable pageable) {
+        return customerRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
+                searchTerm, searchTerm, searchTerm, pageable);
+    }
+    
+    /**
+     * Get total customers count
+     */
+    public long getTotalCustomers() {
+        return customerRepository.count();
+    }
+    
+    /**
+     * Find customer by phone (using existing phoneNumber field)
+     */
+    public Optional<Customer> findByPhone(String phone) {
+        return customerRepository.findByPhoneNumber(phone);
+    }
+    
+    /**
+     * Find or create customer for guest checkout
+     */
+    public Customer findOrCreateCustomer(String fullName, String phone, String email, String address) {
+        Optional<Customer> existingCustomer = findByPhone(phone);
+        
+        if (existingCustomer.isPresent()) {
+            Customer customer = existingCustomer.get();
+            // Update customer info if provided
+            if (email != null && !email.trim().isEmpty()) {
+                customer.setEmail(email.trim());
+            }
+            if (address != null && !address.trim().isEmpty()) {
+                customer.setAddress(address.trim());
+            }
+            return customerRepository.save(customer);
+        } else {
+            // Create new customer
+            Customer newCustomer = new Customer();
+            
+            // Parse full name into first and last name
+            String[] nameParts = fullName.trim().split("\\s+", 2);
+            newCustomer.setFirstName(nameParts[0]);
+            if (nameParts.length > 1) {
+                newCustomer.setLastName(nameParts[1]);
+            } else {
+                newCustomer.setLastName("");
+            }
+            
+            newCustomer.setPhoneNumber(phone);
+            newCustomer.setEmail(email);
+            newCustomer.setAddress(address);
+            newCustomer.setRegistrationDate(LocalDateTime.now());
+            newCustomer.setActive(true);
+            
+            return customerRepository.save(newCustomer);
+        }
+    }
+    
+    /**
+     * Save bill
+     */
+    public Bill saveBill(Bill bill) {
+        return billRepository.save(bill);
+    }
+    
+    /**
+     * Get customer order history by phone
+     */
+    public List<Bill> getCustomerOrderHistory(String phone) {
+        return billRepository.findByCustomerPhoneOrderByOrderDateDesc(phone);
+    }
+    
+    /**
+     * Get orders by customer name (simplified approach)
+     */
+    public List<Bill> getOrdersByCustomerName(String customerName) {
+        return billRepository.findByCustomerNameContainingIgnoreCaseOrderByOrderDateDesc(customerName);
     }
 }

@@ -3,6 +3,7 @@ package com.icbt.pahanaedu.controller;
 import com.icbt.pahanaedu.model.User;
 import com.icbt.pahanaedu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -92,8 +93,8 @@ public class AuthController {
         }
         
         try {
-            // Register the user
-            userService.registerUser(user.getUsername(), user.getPassword(), role);
+            // Register the user with phone number
+            userService.registerUser(user.getUsername(), user.getPhone(), user.getPassword(), role);
             
             redirectAttributes.addFlashAttribute("message", 
                 "Registration successful! You can now log in with your credentials.");
@@ -129,17 +130,29 @@ public class AuthController {
         
         // Redirect based on role
         if (user.getRole().equals("ADMIN")) {
-            // Add admin-specific data
-            model.addAttribute("totalUsers", userService.getTotalUsers());
-            model.addAttribute("activeUsers", userService.getActiveUsers());
-            model.addAttribute("adminCount", userService.getAdminCount());
-            model.addAttribute("userCount", userService.getUserCount());
-            
-            return "admin/dashboard";
+            return "redirect:/admin/dashboard";
         } else {
-            // User dashboard
-            return "user/dashboard";
+            return "redirect:/user/dashboard";
         }
+    }
+    
+    /**
+     * User dashboard
+     */
+    @GetMapping("/user/dashboard")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public String userDashboard(Authentication authentication, Model model) {
+        String username = authentication.getName();
+        User user = userService.findByUsername(username).orElse(null);
+        
+        if (user == null) {
+            return "redirect:/login";
+        }
+        
+        model.addAttribute("user", user);
+        model.addAttribute("username", username);
+        
+        return "user/dashboard";
     }
     
     /**

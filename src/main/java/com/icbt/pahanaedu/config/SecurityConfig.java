@@ -27,8 +27,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/", "/home", "/register", "/login", "/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/admin/**", "/dashboard", "/customers").authenticated()
+                .requestMatchers("/", "/home", "/shop", "/help", "/register", "/login", "/css/**", "/js/**", "/images/**", "/api/checkout").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**", "/my-orders", "/profile").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/dashboard").authenticated()
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form
@@ -40,7 +42,12 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .permitAll()
+            )
+            .exceptionHandling(exceptions -> exceptions
+                .accessDeniedPage("/access-denied")
             )
             .csrf(csrf -> csrf.disable());
 

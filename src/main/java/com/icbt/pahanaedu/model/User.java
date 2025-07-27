@@ -25,6 +25,11 @@ public class User implements UserDetails {
     @Indexed(unique = true)
     private String username;
     
+    @NotBlank(message = "Phone number is required")
+    @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 characters")
+    @Indexed(unique = true, sparse = true)
+    private String phone;
+    
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
@@ -41,8 +46,9 @@ public class User implements UserDetails {
     public User() {}
     
     // Constructor with essential fields
-    public User(String username, String password, String role) {
+    public User(String username, String phone, String password, String role) {
         this.username = username;
+        this.phone = phone;
         this.password = password;
         this.role = role;
     }
@@ -63,6 +69,14 @@ public class User implements UserDetails {
     
     public void setUsername(String username) {
         this.username = username;
+    }
+    
+    public String getPhone() {
+        return phone;
+    }
+    
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
     
     @Override
@@ -129,6 +143,7 @@ public class User implements UserDetails {
         return "User{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
+                ", phone='" + phone + '\'' +
                 ", role='" + role + '\'' +
                 ", enabled=" + enabled +
                 '}';

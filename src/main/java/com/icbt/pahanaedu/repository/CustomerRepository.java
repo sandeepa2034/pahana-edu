@@ -1,6 +1,8 @@
 package com.icbt.pahanaedu.repository;
 
 import com.icbt.pahanaedu.model.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,6 +22,10 @@ public interface CustomerRepository extends MongoRepository<Customer, String> {
 
     // Find customers by name (case-insensitive)
     List<Customer> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstName, String lastName);
+
+    // Find customers by name or email with pagination (for search)
+    Page<Customer> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
+            String firstName, String lastName, String email, Pageable pageable);
 
     // Find active customers
     List<Customer> findByActiveTrue();

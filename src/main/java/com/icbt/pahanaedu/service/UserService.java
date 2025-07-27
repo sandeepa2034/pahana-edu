@@ -32,18 +32,30 @@ public class UserService implements UserDetailsService {
     }
     
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsernameIgnoreCase(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    public UserDetails loadUserByUsername(String usernameOrPhone) throws UsernameNotFoundException {
+        // Try to find by username first
+        Optional<User> user = userRepository.findByUsernameIgnoreCase(usernameOrPhone);
+        
+        // If not found by username, try by phone
+        if (user.isEmpty()) {
+            user = userRepository.findByPhone(usernameOrPhone);
+        }
+        
+        return user.orElseThrow(() -> 
+            new UsernameNotFoundException("User not found with username or phone: " + usernameOrPhone));
     }
     
     /**
      * Register a new user with encrypted password
      */
-    public User registerUser(String username, String password, String role) {
+    public User registerUser(String username, String phone, String password, String role) {
         // Validate input
         if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be empty");
+        }
+        
+        if (phone == null || phone.trim().isEmpty()) {
+            throw new IllegalArgumentException("Phone number cannot be empty");
         }
         
         if (password == null || password.length() < 6) {
@@ -59,9 +71,15 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Username already exists");
         }
         
+        // Check if phone already exists
+        if (userRepository.existsByPhone(phone)) {
+            throw new IllegalArgumentException("Phone number already exists");
+        }
+        
         // Create new user with encrypted password
         User user = new User();
         user.setUsername(username.trim());
+        user.setPhone(phone.trim());
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(role);
         user.setEnabled(true);
@@ -74,6 +92,13 @@ public class UserService implements UserDetailsService {
      */
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsernameIgnoreCase(username);
+    }
+    
+    /**
+     * Find user by phone number
+     */
+    public Optional<User> findByPhone(String phone) {
+        return userRepository.findByPhone(phone);
     }
     
     /**
@@ -152,14 +177,5 @@ public class UserService implements UserDetailsService {
     
     public long getUserCount() {
         return userRepository.countByRole("USER");
-    }
-    
-    /**
-     * Create default admin user if none exists
-     */
-    public void createDefaultAdmin() {
-        if (userRepository.countByRole("ADMIN") == 0) {
-            registerUser("admin", "admin123", "ADMIN");
-        }
     }
 }

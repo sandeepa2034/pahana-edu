@@ -89,4 +89,10 @@ public interface BillRepository extends MongoRepository<Bill, String> {
     // Find top customers by total purchase amount
     @Query(value = "{ 'paymentStatus': 'PAID' }", sort = "{ 'totalAmount': -1 }")
     List<Bill> findTopBillsByAmount();
+
+    // Find bills by customer phone (ordered by date descending)
+    List<Bill> findByCustomerPhoneOrderByOrderDateDesc(String customerPhone);
+
+    // Find bills by customer name (partial match, ordered by date descending)
+    List<Bill> findByCustomerNameContainingIgnoreCaseOrderByOrderDateDesc(String customerName);
 }

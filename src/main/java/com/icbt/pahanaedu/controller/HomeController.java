@@ -84,4 +84,12 @@ public class HomeController {
         return "help";
     }
 
+    /**
+     * Show checkout page
+     */
+    @GetMapping("/checkout")
+    public String checkout(Model model) {
+        model.addAttribute("appName", "Pahana Edu Bookshop - Checkout");
+        return "checkout";
+    }
 }
