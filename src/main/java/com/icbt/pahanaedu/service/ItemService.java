@@ -112,15 +112,22 @@ public class ItemService {
     public void initializeSampleData() {
         if (itemRepository.count() == 0) {
             List<Item> sampleItems = List.of(
-                    new Item("Java Programming", "James Gosling", "Complete guide to Java programming language", 2500.00, 25, "Programming"),
-                    new Item("Spring Boot in Action", "Craig Walls", "Learn Spring Boot framework with practical examples", 3200.00, 15, "Programming"),
-                    new Item("Data Structures and Algorithms", "Robert Sedgewick", "Comprehensive guide to data structures and algorithms", 2800.00, 20, "Computer Science"),
-                    new Item("MongoDB: The Definitive Guide", "Shannon Bradshaw", "Master MongoDB database development", 2900.00, 12, "Database"),
-                    new Item("Clean Code", "Robert C. Martin", "A handbook of agile software craftsmanship", 2400.00, 18, "Software Engineering"),
-                    new Item("The Pragmatic Programmer", "David Thomas", "Your journey to mastery", 2600.00, 22, "Software Engineering"),
-                    new Item("Introduction to Mathematics", "John Smith", "Fundamental concepts in mathematics", 1800.00, 30, "Mathematics"),
-                    new Item("Physics for Engineers", "Mary Johnson", "Applied physics concepts for engineering students", 3500.00, 8, "Physics")
-            );
+                    new Item("Java Programming", "James Gosling", "Complete guide to Java programming language",
+                            2500.00, 25, "Programming"),
+                    new Item("Spring Boot in Action", "Craig Walls",
+                            "Learn Spring Boot framework with practical examples", 3200.00, 15, "Programming"),
+                    new Item("Data Structures and Algorithms", "Robert Sedgewick",
+                            "Comprehensive guide to data structures and algorithms", 2800.00, 20, "Computer Science"),
+                    new Item("MongoDB: The Definitive Guide", "Shannon Bradshaw", "Master MongoDB database development",
+                            2900.00, 12, "Database"),
+                    new Item("Clean Code", "Robert C. Martin", "A handbook of agile software craftsmanship", 2400.00,
+                            18, "Software Engineering"),
+                    new Item("The Pragmatic Programmer", "David Thomas", "Your journey to mastery", 2600.00, 22,
+                            "Software Engineering"),
+                    new Item("Introduction to Mathematics", "John Smith", "Fundamental concepts in mathematics",
+                            1800.00, 30, "Mathematics"),
+                    new Item("Physics for Engineers", "Mary Johnson",
+                            "Applied physics concepts for engineering students", 3500.00, 8, "Physics"));
 
             // Set additional properties for sample items
             for (int i = 0; i < sampleItems.size(); i++) {

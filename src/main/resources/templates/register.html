@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -436,31 +436,44 @@
             <div class="form-header">
                 <h2>Create Account</h2>
                 <p>Please fill in the information below</p>
+                
+                <!-- Display error message -->
+                <div th:if="${error}" class="alert alert-danger" style="background: #ffebee; color: #c62828; padding: 12px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #c62828;">
+                    <i class="fas fa-exclamation-triangle"></i> <span th:text="${error}">Error message</span>
+                </div>
+                
+                <!-- Display success message -->
+                <div th:if="${message}" class="alert alert-success" style="background: #e8f5e8; color: #2e7d32; padding: 12px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #2e7d32;">
+                    <i class="fas fa-check-circle"></i> <span th:text="${message}">Success message</span>
+                </div>
             </div>
             
-            <form>
+            <form th:action="@{/register}" th:object="${user}" method="post">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <div class="input-container">
                         <i>👤</i>
-                        <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                        <input type="text" id="username" th:field="*{username}" placeholder="Choose a username" required>
                     </div>
+                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: #c62828; font-size: 0.8rem;"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="phone">Phone Number</label>
                     <div class="input-container">
-                        <i>✉️</i>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        <i>📱</i>
+                        <input type="tel" id="phone" th:field="*{phone}" placeholder="Enter your phone number (+94xxxxxxxxx)" required>
                     </div>
+                    <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="color: #c62828; font-size: 0.8rem;"></span>
                 </div>
                 
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-container">
                         <i>🔒</i>
-                        <input type="password" id="password" name="password" placeholder="Create a password" required>
+                        <input type="password" id="password" th:field="*{password}" placeholder="Create a password (min 6 characters)" required>
                     </div>
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: #c62828; font-size: 0.8rem;"></span>
                     <div class="password-strength">
                         <div class="strength-bar weak"></div>
                     </div>
@@ -468,10 +481,10 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="confirm-password">Confirm Password</label>
+                    <label for="confirmPassword">Confirm Password</label>
                     <div class="input-container">
                         <i>🔒</i>
-                        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
                     </div>
                 </div>
                 
@@ -479,13 +492,13 @@
                     <h3>Account Type</h3>
                     <div class="type-options">
                         <div class="type-card selected" onclick="selectAccountType(this)">
-                            <input type="radio" name="account-type" value="customer" checked>
+                            <input type="radio" name="role" value="USER" checked>
                             <div class="icon">👨‍🎓</div>
                             <h4>Customer</h4>
-                            <p>Student or parent account for billing management</p>
+                            <p>Student or parent account for book purchases</p>
                         </div>
                         <div class="type-card" onclick="selectAccountType(this)">
-                            <input type="radio" name="account-type" value="admin">
+                            <input type="radio" name="role" value="ADMIN">
                             <div class="icon">👨‍💼</div>
                             <h4>Admin</h4>
                             <p>Administrative account for system management</p>

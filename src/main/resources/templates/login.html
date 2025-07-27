@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pahana Edu - Login</title>
     <style>
+        * {
+            margin: 0;
+              .login-btn:hover {
+            background: #6C2C2F;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 33, 71, 0.3);
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .alert-danger {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+
+        .alert-success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border-left: 4px solid #2e7d32;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -346,14 +376,29 @@
             <div class="form-header">
                 <h2>Sign In</h2>
                 <p>Please sign in to your account</p>
+                
+                <!-- Display error message for login failures -->
+                <div th:if="${param.error}" class="alert alert-danger" style="background: #ffebee; color: #c62828; padding: 12px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #c62828;">
+                    <i class="fas fa-exclamation-triangle"></i> Invalid username/phone or password. Please try again.
+                </div>
+                
+                <!-- Display logout success message -->
+                <div th:if="${param.logout}" class="alert alert-success" style="background: #e8f5e8; color: #2e7d32; padding: 12px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #2e7d32;">
+                    <i class="fas fa-check-circle"></i> You have been logged out successfully.
+                </div>
+                
+                <!-- Display registration success message -->
+                <div th:if="${message}" class="alert alert-success" style="background: #e8f5e8; color: #2e7d32; padding: 12px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #2e7d32;">
+                    <i class="fas fa-check-circle"></i> <span th:text="${message}">Success message</span>
+                </div>
             </div>
             
-            <form>
+            <form th:action="@{/login}" method="post">
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label for="username">Username or Phone</label>
                     <div class="input-container">
                         <i>👤</i>
-                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                        <input type="text" id="username" name="username" placeholder="Enter your username or phone number" required>
                     </div>
                 </div>
                 
@@ -367,7 +412,7 @@
                 
                 <div class="form-options">
                     <div class="checkbox-container">
-                        <input type="checkbox" id="remember" name="remember">
+                        <input type="checkbox" id="remember" name="remember-me">
                         <label for="remember">Remember me</label>
                     </div>
                     <a href="#" class="forgot-password">Forgot Password?</a>

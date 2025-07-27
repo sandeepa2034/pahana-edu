@@ -23,6 +23,18 @@ public interface UserRepository extends MongoRepository<User, String> {
     boolean existsByUsernameIgnoreCase(String username);
     
     /**
+     * Find user by phone number
+     * Used for phone-based authentication
+     */
+    Optional<User> findByPhone(String phone);
+    
+    /**
+     * Check if phone number exists
+     * Used for registration validation
+     */
+    boolean existsByPhone(String phone);
+    
+    /**
      * Find all users by role
      * Useful for admin operations
      */
