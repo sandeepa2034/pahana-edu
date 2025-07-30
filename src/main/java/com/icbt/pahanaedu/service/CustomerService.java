@@ -24,16 +24,47 @@ public class CustomerService {
 
     // Create a new customer
     public Customer createCustomer(Customer customer) {
-        // Check if email or phone already exists
-        if (customerRepository.existsByEmail(customer.getEmail())) {
+        System.out.println("=== CUSTOMER CREATION DEBUG ===");
+        System.out.println("Customer phone: " + customer.getPhoneNumber());
+        System.out.println("Customer email: " + customer.getEmail());
+        System.out.println("Customer firstName: " + customer.getFirstName());
+        System.out.println("Customer lastName: " + customer.getLastName());
+        
+        // First, clean up any existing null phone records to avoid duplicate key errors
+        try {
+            cleanupNullPhoneRecords();
+            System.out.println("Cleaned up null phone records");
+        } catch (Exception e) {
+            System.out.println("Warning: Could not clean up null phone records: " + e.getMessage());
+        }
+        
+        // Validate phone number format if provided
+        if (customer.getPhoneNumber() != null && !customer.getPhoneNumber().trim().isEmpty()) {
+            String phonePattern = "^\\+?[0-9]{10,15}$";
+            if (!customer.getPhoneNumber().matches(phonePattern)) {
+                System.out.println("Invalid phone number format: " + customer.getPhoneNumber());
+                throw new RuntimeException("Please provide a valid phone number (10-15 digits, optional + prefix)");
+            }
+        } else {
+            // Set to null if empty string to avoid index conflicts
+            customer.setPhoneNumber(null);
+        }
+        
+        // Check if email or phone already exists (only check non-null values)
+        if (customer.getEmail() != null && customerRepository.existsByEmail(customer.getEmail())) {
+            System.out.println("Email already exists: " + customer.getEmail());
             throw new RuntimeException("Customer with email " + customer.getEmail() + " already exists");
         }
-        if (customerRepository.existsByPhoneNumber(customer.getPhoneNumber())) {
+        if (customer.getPhoneNumber() != null && customerRepository.existsByPhoneNumber(customer.getPhoneNumber())) {
+            System.out.println("Phone already exists: " + customer.getPhoneNumber());
             throw new RuntimeException("Customer with phone number " + customer.getPhoneNumber() + " already exists");
         }
 
         customer.setRegistrationDate(LocalDateTime.now());
-        return customerRepository.save(customer);
+        System.out.println("Saving customer to database...");
+        Customer savedCustomer = customerRepository.save(customer);
+        System.out.println("Customer saved successfully with ID: " + savedCustomer.getId());
+        return savedCustomer;
     }
 
     // Get all customers
@@ -347,5 +378,23 @@ public class CustomerService {
      */
     public List<Bill> getOrdersByCustomerName(String customerName) {
         return billRepository.findByCustomerNameContainingIgnoreCaseOrderByOrderDateDesc(customerName);
+    }
+    
+    /**
+     * Clean up existing null phone records to avoid duplicate key errors
+     */
+    public void cleanupNullPhoneRecords() {
+        try {
+            // Find and delete customers with null phone numbers
+            List<Customer> customersWithNullPhone = customerRepository.findByPhoneNumberIsNull();
+            if (!customersWithNullPhone.isEmpty()) {
+                System.out.println("Found " + customersWithNullPhone.size() + " customers with null phone numbers. Cleaning up...");
+                customerRepository.deleteAll(customersWithNullPhone);
+                System.out.println("Successfully cleaned up customers with null phone numbers.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error cleaning up null phone records: " + e.getMessage());
+            // Don't throw the exception, just log it
+        }
     }
 }

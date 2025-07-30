@@ -4,6 +4,7 @@ import com.icbt.pahanaedu.model.Customer;
 import com.icbt.pahanaedu.model.Bill;
 import com.icbt.pahanaedu.model.Item;
 import com.icbt.pahanaedu.model.User;
+import com.icbt.pahanaedu.repository.BillRepository;
 import com.icbt.pahanaedu.service.CustomerService;
 import com.icbt.pahanaedu.service.ItemService;
 import com.icbt.pahanaedu.service.UserService;
@@ -40,6 +41,9 @@ public class CustomerController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BillRepository billRepository;
 
     /**
      * List all customers (Admin only)
@@ -152,13 +156,14 @@ public class CustomerController {
     /**
      * Guest checkout API endpoint
      */
-    @PostMapping("/api/checkout")
+    @PostMapping("/api/guest-checkout")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> guestCheckout(@RequestBody Map<String, Object> orderData) {
         Map<String, Object> response = new HashMap<>();
         
         try {
             // Extract customer information
+            @SuppressWarnings("unchecked")
             Map<String, String> customerData = (Map<String, String>) orderData.get("customer");
             String fullName = customerData.get("fullName");
             String phone = customerData.get("phone");
@@ -166,6 +171,7 @@ public class CustomerController {
             String address = customerData.get("address");
 
             // Extract cart items
+            @SuppressWarnings("unchecked")
             List<Map<String, Object>> cartItems = (List<Map<String, Object>>) orderData.get("items");
 
             // Find or create customer
@@ -173,6 +179,7 @@ public class CustomerController {
 
             // Create bill
             Bill bill = new Bill();
+            bill.setCustomer(customer);
             bill.setCustomerPhone(phone);
             bill.setCustomerName(fullName);
             bill.setOrderDate(LocalDateTime.now());
@@ -254,5 +261,82 @@ public class CustomerController {
         }
         
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Process checkout and create order
+     */
+    @PostMapping("/api/checkout")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> processCheckout(@RequestBody Map<String, Object> orderData) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // Extract customer information
+            String fullName = (String) orderData.get("fullName");
+            String phone = (String) orderData.get("phone");
+            String email = (String) orderData.get("email");
+            String address = (String) orderData.get("address");
+            
+            // Find or create customer
+            Customer customer = customerService.findOrCreateCustomer(fullName, phone, email, address);
+            
+            // Extract cart items
+            @SuppressWarnings("unchecked")
+            List<Map<String, Object>> cartItems = (List<Map<String, Object>>) orderData.get("items");
+            
+            if (cartItems == null || cartItems.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Cart is empty");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            // Create bill
+            Bill bill = new Bill();
+            bill.setCustomer(customer);
+            bill.setOrderDate(LocalDateTime.now());
+            bill.setOrderStatus("CONFIRMED");
+            
+            double totalAmount = 0.0;
+            List<Bill.OrderItem> billItems = new java.util.ArrayList<>();
+            
+            for (Map<String, Object> cartItem : cartItems) {
+                String itemId = (String) cartItem.get("id");
+                String title = (String) cartItem.get("title");
+                Double price = ((Number) cartItem.get("price")).doubleValue();
+                Integer quantity = ((Number) cartItem.get("quantity")).intValue();
+                
+                Bill.OrderItem billItem = new Bill.OrderItem();
+                billItem.setItemId(itemId);
+                billItem.setItemTitle(title);
+                billItem.setItemPrice(price);
+                billItem.setQuantity(quantity);
+                billItem.setLineTotal(price * quantity);
+                
+                billItems.add(billItem);
+                totalAmount += billItem.getLineTotal();
+            }
+            
+            bill.setItems(billItems);
+            bill.setTotalAmount(totalAmount);
+            
+            // Save the bill
+            Bill savedBill = billRepository.save(bill);
+            
+            // Update customer purchase statistics
+            customerService.updatePurchaseStats(customer.getId(), savedBill.getId(), totalAmount);
+            
+            response.put("success", true);
+            response.put("message", "Order placed successfully!");
+            response.put("orderId", savedBill.getId());
+            response.put("totalAmount", totalAmount);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error processing order: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 }

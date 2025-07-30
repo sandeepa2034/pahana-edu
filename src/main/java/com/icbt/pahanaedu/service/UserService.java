@@ -49,30 +49,43 @@ public class UserService implements UserDetailsService {
      * Register a new user with encrypted password
      */
     public User registerUser(String username, String phone, String password, String role) {
+        System.out.println("=== USER REGISTRATION DEBUG ===");
+        System.out.println("Username: " + username);
+        System.out.println("Phone: " + phone);
+        System.out.println("Role: " + role);
+        
         // Validate input
         if (username == null || username.trim().isEmpty()) {
+            System.out.println("Username is empty");
             throw new IllegalArgumentException("Username cannot be empty");
         }
         
         if (phone == null || phone.trim().isEmpty()) {
+            System.out.println("Phone is empty");
             throw new IllegalArgumentException("Phone number cannot be empty");
         }
         
         if (password == null || password.length() < 6) {
+            System.out.println("Password too short: " + (password != null ? password.length() : "null"));
             throw new IllegalArgumentException("Password must be at least 6 characters long");
         }
         
         if (role == null || (!role.equals("ADMIN") && !role.equals("USER"))) {
+            System.out.println("Invalid role: " + role);
             throw new IllegalArgumentException("Role must be either ADMIN or USER");
         }
         
         // Check if username already exists
-        if (userRepository.existsByUsernameIgnoreCase(username)) {
+        boolean usernameExists = userRepository.existsByUsernameIgnoreCase(username);
+        System.out.println("Username exists check: " + usernameExists);
+        if (usernameExists) {
             throw new IllegalArgumentException("Username already exists");
         }
         
         // Check if phone already exists
-        if (userRepository.existsByPhone(phone)) {
+        boolean phoneExists = userRepository.existsByPhone(phone);
+        System.out.println("Phone exists check: " + phoneExists);
+        if (phoneExists) {
             throw new IllegalArgumentException("Phone number already exists");
         }
         
@@ -84,7 +97,10 @@ public class UserService implements UserDetailsService {
         user.setRole(role);
         user.setEnabled(true);
         
-        return userRepository.save(user);
+        System.out.println("Saving user to database...");
+        User savedUser = userRepository.save(user);
+        System.out.println("User saved successfully with ID: " + savedUser.getId() + ", Username: " + savedUser.getUsername());
+        return savedUser;
     }
     
     /**
