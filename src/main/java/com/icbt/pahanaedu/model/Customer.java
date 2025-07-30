@@ -23,11 +23,9 @@ public class Customer {
     private String lastName;
 
     @Email(message = "Please provide a valid email address")
-    @Indexed(unique = true)
     private String email;
 
-    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Please provide a valid phone number")
-    @Indexed(unique = true)
+    // Phone number - validation handled in service layer to allow null/empty values
     private String phoneNumber;
 
     private String address;

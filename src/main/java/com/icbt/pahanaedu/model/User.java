@@ -22,12 +22,10 @@ public class User implements UserDetails {
     
     @NotBlank(message = "Username is required")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
-    @Indexed(unique = true)
     private String username;
     
     @NotBlank(message = "Phone number is required")
     @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 characters")
-    @Indexed(unique = true, sparse = true)
     private String phone;
     
     @NotBlank(message = "Password is required")

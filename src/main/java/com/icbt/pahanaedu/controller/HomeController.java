@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ public class HomeController {
     private ItemService itemService;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, Authentication authentication) {
         // Initialize sample data if needed
         itemService.initializeSampleData();
 
@@ -33,6 +34,15 @@ public class HomeController {
         model.addAttribute("message", "Welcome to Colombo's Premier Bookshop");
         model.addAttribute("featuredItems", featuredItems);
         model.addAttribute("categories", categories);
+        
+        // Add authentication context for Thymeleaf security
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("isAuthenticated", true);
+            model.addAttribute("username", authentication.getName());
+        } else {
+            model.addAttribute("isAuthenticated", false);
+        }
+        
         return "index";
     }
 
@@ -46,7 +56,8 @@ public class HomeController {
             @RequestParam(value = "size", defaultValue = "12") int size,
             @RequestParam(value = "sort", defaultValue = "title") String sort,
             @RequestParam(value = "direction", defaultValue = "asc") String direction,
-            Model model) {
+            Model model,
+            Authentication authentication) {
 
         // Initialize sample data if needed
         itemService.initializeSampleData();
@@ -75,13 +86,48 @@ public class HomeController {
         model.addAttribute("currentMinPrice", minPrice);
         model.addAttribute("currentMaxPrice", maxPrice);
 
+        // Add authentication context for Thymeleaf security
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("isAuthenticated", true);
+            model.addAttribute("username", authentication.getName());
+        } else {
+            model.addAttribute("isAuthenticated", false);
+        }
+
         return "shop";
     }
 
     @GetMapping("/help")
-    public String help(Model model) {
+    public String help(Model model, Authentication authentication) {
         model.addAttribute("appName", "Pahana Edu Bookshop - Help & Support");
+        
+        // Add authentication context for Thymeleaf security
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("isAuthenticated", true);
+            model.addAttribute("username", authentication.getName());
+        } else {
+            model.addAttribute("isAuthenticated", false);
+        }
+        
         return "help";
+    }
+
+    /**
+     * Show shopping cart page
+     */
+    @GetMapping("/cart")
+    public String cart(Model model, Authentication authentication) {
+        model.addAttribute("appName", "Pahana Edu Bookshop - Shopping Cart");
+        
+        // Add authentication context for Thymeleaf security
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("isAuthenticated", true);
+            model.addAttribute("username", authentication.getName());
+        } else {
+            model.addAttribute("isAuthenticated", false);
+        }
+        
+        return "cart";
     }
 
     /**

@@ -61,6 +61,9 @@ public interface CustomerRepository extends MongoRepository<Customer, String> {
 
     // Check if phone number exists
     boolean existsByPhoneNumber(String phoneNumber);
+    
+    // Find customers with null phone numbers
+    List<Customer> findByPhoneNumberIsNull();
 
     // Count active customers
     long countByActiveTrue();

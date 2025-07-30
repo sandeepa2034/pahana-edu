@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${appName}">Pahana Edu Bookshop</title>
+
+    <!-- Modern Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Dependencies -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/css/modern-design-system.css" rel="stylesheet" />
+    <link href="/css/index.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <!-- Modern Navigation -->
+    <nav class="navbar-modern fixed-top">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <a class="navbar-brand-modern" href="/">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span th:text="${appName}">Pahana Edu Bookshop</span>
+                </a>
+
+                <div class="d-none d-lg-flex align-items-center gap-4">
+                    <nav class="d-flex gap-2">
+                        <a class="nav-link-modern active" href="/">
+                            <i class="fas fa-home"></i>Home
+                        </a>
+                        <a class="nav-link-modern" href="/shop">
+                            <i class="fas fa-store"></i>Shop
+                        </a>
+                        <a class="nav-link-modern" href="/help">
+                            <i class="fas fa-life-ring"></i>Help
+                        </a>
+                        <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <a class="position-relative" href="/cart">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-shopping-cart me-1"></i>Cart
+                        </button>
+                        <span class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount">0</span>
+                    </a>
+
+                    <!-- Login Button for Non-Authenticated Users -->
+                    <div sec:authorize="!isAuthenticated()">
+                        <a href="/login" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+
+                    <!-- User Dropdown for Authenticated Users -->
+                    <div sec:authorize="isAuthenticated()" class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span sec:authentication="name">User</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 modern-dropdown">
+                            <li>
+                                <a class="dropdown-item py-2" href="/user/dashboard">
+                                    <i class="fas fa-tachometer-alt me-2 text-primary"></i>Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="/my-orders">
+                                    <i class="fas fa-shopping-bag me-2 text-primary"></i>My Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="/profile">
+                                    <i class="fas fa-user-cog me-2 text-primary"></i>Profile
+                                </a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a class="dropdown-item py-2" href="/admin/dashboard">
+                                    <i class="fas fa-shield-alt me-2 text-warning"></i>Admin Panel
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item py-2 text-danger" href="/logout">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex flex-column gap-2 mt-3 d-lg-none">
+                    <a class="nav-link-modern active" href="/">
+                        <i class="fas fa-home"></i>Home
+                    </a>
+                    <a class="nav-link-modern" href="/shop">
+                        <i class="fas fa-store"></i>Shop
+                    </a>
+                    <a class="nav-link-modern" href="/help">
+                        <i class="fas fa-life-ring"></i>Help
+                    </a>
+                    <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
+                        <i class="fas fa-tachometer-alt"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+              <li>
+                <a class="dropdown-item py-2 text-danger" href="/logout">
+                  <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+              </li>
+            </ul>
+          </div>
+          <button
+            class="btn btn-outline-primary d-lg-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <div
+              class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-3 gap-lg-4 ms-auto mt-3 mt-lg-0"
+            >
+              <nav class="d-flex flex-column flex-lg-row gap-2">
+                <a class="nav-link-modern active" href="/">
+                  <i class="fas fa-home"></i>Home
+                </a>
+                <a class="nav-link-modern" href="/shop">
+                  <i class="fas fa-store"></i>Shop
+                </a>
+                <a class="nav-link-modern" href="/help">
+                  <i class="fas fa-life-ring"></i>Help
+                </a>
+              </nav>
+
+              <div
+                class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-3"
+              >
+                <a class="position-relative" href="/cart">
+                  <button class="btn btn-outline-primary">
+                    <i class="fas fa-shopping-cart me-1"></i>
+                    Cart
+                  </button>
+                  <span
+                    class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                    id="cartCount"
+                    >0</span
+                  >
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Modern Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-content text-center">
+          <div class="hero-badge animate-fade-in-up">
+            <i class="fas fa-star"></i>
+            Trusted by 10,000+ Students & Professionals
+          </div>
+
+          <h1
+            class="hero-title animate-fade-in-up"
+            style="animation-delay: 0.1s"
+            th:text="${message}"
+          >
+            Discover Knowledge That Transforms Minds
+          </h1>
+
+          <p
+            class="hero-subtitle animate-fade-in-up"
+            style="animation-delay: 0.2s"
+          >
+            Explore our carefully curated collection of academic texts,
+            professional references, and timeless literature. Your gateway to
+            academic excellence and intellectual growth.
+          </p>
+
+          <div
+            class="d-flex justify-content-center gap-4 flex-wrap animate-fade-in-up"
+            style="animation-delay: 0.3s"
+          >
+            <a href="/shop" class="btn-modern btn-primary btn-lg">
+              <i class="fas fa-book-open"></i>
+              Explore Collection
+            </a>
+            <a href="/help" class="btn-modern btn-secondary btn-lg">
+              <i class="fas fa-map-marker-alt"></i>
+              Visit Our Store
+            </a>
+          </div>
+
+          <div
+            class="hero-stats animate-fade-in-up"
+            style="animation-delay: 0.4s"
+          >
+            <div class="row text-center">
+              <div class="col-md-4">
+                <div class="stat-item">
+                  <span class="stat-number">10,000+</span>
+                  <span class="stat-label">Books Available</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="stat-item">
+                  <span class="stat-number">5,000+</span>
+                  <span class="stat-label">Happy Customers</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="stat-item">
+                  <span class="stat-number">15+</span>
+                  <span class="stat-label">Years Experience</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Books Section -->
+    <section class="features-section">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="text-4xl font-bold text-primary mb-4">
+            Featured Scholarly Collection
+          </h2>
+          <p class="text-xl text-secondary max-width-600 mx-auto">
+            Carefully selected books that embody academic excellence and
+            intellectual pursuit
+          </p>
+        </div>
+
+        <!-- Dynamic Featured Items -->
+        <div
+          th:if="${featuredItems != null and #lists.size(featuredItems) > 0}"
+        >
+          <div class="row g-4">
+            <div
+              class="col-lg-3 col-md-6"
+              th:each="item,itemStat : ${featuredItems}"
+            >
+              <div class="book-card-modern">
+                <div class="book-image-container">
+                  <!-- CSS-based book cover with dynamic colors -->
+                  <div
+                    class="book-cover-placeholder"
+                    th:class="'book-cover-placeholder book-cover-' + (${itemStat.index % 4} + 1)"
+                  >
+                    <div class="book-cover-content">
+                      <i class="fas fa-book-open text-white fs-1 mb-3"></i>
+                      <div
+                        class="book-cover-title text-white fw-bold text-center"
+                        th:text="${item.title}"
+                      >
+                        Book Title
+                      </div>
+                    </div>
+                  </div>
+                  <div class="book-badge" th:if="${item.available}">
+                    Available
+                  </div>
+                  <div
+                    class="book-badge bg-danger"
+                    th:unless="${item.available}"
+                  >
+                    Out of Stock
+                  </div>
+                </div>
+
+                <div class="book-card-body">
+                  <div class="book-category" th:text="${item.category}">
+                    Category
+                  </div>
+                  <h3 class="book-title" th:text="${item.title}">Book Title</h3>
+                  <p class="book-author">
+                    <i class="fas fa-user me-1 text-primary"></i>
+                    <span th:text="${item.author}">Author Name</span>
+                  </p>
+                  <p class="book-description" th:text="${item.description}">
+                    Book description goes here...
+                  </p>
+
+                  <div class="book-card-footer">
+                    <div class="book-price">
+                      LKR
+                      <span
+                        th:text="${#numbers.formatDecimal(item.price, 1, 2)}"
+                        >0.00</span
+                      >
+                    </div>
+                    <div class="d-flex gap-2">
+                      <a
+                        th:href="'/shop?search=' + ${item.title}"
+                        class="btn btn-outline-primary btn-sm"
+                      >
+                        <i class="fas fa-eye me-1"></i>View
+                      </a>
+                      <button
+                        class="btn btn-primary btn-sm add-to-cart-btn"
+                        th:data-item-id="${item.id}"
+                        th:data-item-price="${item.price}"
+                        th:data-item-title="${item.title}"
+                        th:disabled="${!item.available}"
+                      >
+                        <i class="fas fa-cart-plus me-1"></i>Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fallback content if no items -->
+        <div
+          th:if="${featuredItems == null or #lists.size(featuredItems) == 0}"
+          class="text-center"
+        >
+          <div class="card-modern p-6">
+            <i
+              class="fas fa-book-open text-primary"
+              style="font-size: 4rem; margin-bottom: 1rem"
+            ></i>
+            <h4 class="text-primary mb-3">Featured Collection Coming Soon</h4>
+            <p class="text-secondary mb-4">
+              Our curators are selecting the finest scholarly works for you.
+            </p>
+            <a href="/shop" class="btn-modern btn-primary">
+              <i class="fas fa-search"></i>
+              Browse All Books
+            </a>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <a href="/shop" class="btn-modern btn-accent btn-lg">
+            <i class="fas fa-library"></i>
+            Explore Complete Library
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modern Features Section -->
+    <section class="features-section">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="text-4xl font-bold text-primary mb-4">
+            Why Choose Pahana Edu?
+          </h2>
+          <p class="text-xl text-secondary max-width-600 mx-auto">
+            We're more than just a bookshop - we're your partner in academic
+            excellence
+          </p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-shipping-fast"></i>
+              </div>
+              <h3 class="feature-title">Island-wide Delivery</h3>
+              <p class="feature-description">
+                Fast and secure delivery across Sri Lanka. Your books reach you
+                in perfect condition, ready to fuel your intellectual journey.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-medal"></i>
+              </div>
+              <h3 class="feature-title">Curated Excellence</h3>
+              <p class="feature-description">
+                Hand-picked titles that meet the highest standards of academic
+                rigor. Every book is selected for its educational value and
+                scholarly merit.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3 class="feature-title">Trusted Community</h3>
+              <p class="feature-description">
+                Join thousands of students, professors, and professionals who
+                trust us for their academic and professional development needs.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-headset"></i>
+              </div>
+              <h3 class="feature-title">Expert Support</h3>
+              <p class="feature-description">
+                Our knowledgeable team is here to help you find the right books
+                for your studies, research, or professional development.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <h3 class="feature-title">15+ Years Experience</h3>
+              <p class="feature-description">
+                Over a decade of serving Sri Lanka's academic community with
+                dedication, expertise, and commitment to educational excellence.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h3 class="feature-title">Secure Shopping</h3>
+              <p class="feature-description">
+                Shop with confidence using our secure payment system. Your
+                personal and financial information is always protected.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="text-4xl font-bold text-primary mb-4">
+            What Our Customers Say
+          </h2>
+          <p class="text-xl text-secondary max-width-600 mx-auto">
+            Hear from the scholars, students, and professionals who trust us
+          </p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                "Pahana Edu has been my go-to source for academic books
+                throughout my PhD. Their collection is unmatched and delivery is
+                always prompt."
+              </p>
+              <div class="testimonial-author">Dr. Priya Seneviratne</div>
+              <div class="testimonial-role">
+                Professor of Computer Science, University of Colombo
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                "The quality of books and customer service is exceptional. I've
+                been ordering from them for 5 years and never been
+                disappointed."
+              </p>
+              <div class="testimonial-author">Rohan Perera</div>
+              <div class="testimonial-role">
+                Software Engineer & Part-time Lecturer
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                "As a medical student, I need reliable sources. Pahana Edu's
+                collection of medical textbooks is comprehensive and always
+                up-to-date."
+              </p>
+              <div class="testimonial-author">Ayesha Fernando</div>
+              <div class="testimonial-role">
+                Medical Student, Faculty of Medicine
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="hero-section" style="padding: 6rem 0">
+      <div class="container text-center">
+        <div class="hero-content">
+          <h2 class="hero-title" style="font-size: 3rem; margin-bottom: 2rem">
+            Ready to Begin Your Learning Journey?
+          </h2>
+          <p class="hero-subtitle" style="margin-bottom: 3rem">
+            Join thousands of students and professionals who trust Pahana Edu
+            for their academic success.
+          </p>
+          <div class="d-flex justify-content-center gap-4 flex-wrap">
+            <a href="/shop" class="btn-modern btn-primary btn-lg">
+              <i class="fas fa-rocket"></i>
+              Start Exploring
+            </a>
+            <a href="/help" class="btn-modern btn-secondary btn-lg">
+              <i class="fas fa-map-marker-alt"></i>
+              Visit Our Store
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-main">
+            <!-- Brand Section -->
+            <div class="footer-brand">
+              <div class="footer-logo">
+                <div class="logo-icon">
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+                <span class="logo-text">Pahana Edu</span>
+              </div>
+              <p class="footer-description">
+                Empowering minds through quality education and exceptional
+                books. Your trusted partner in academic excellence and lifelong
+                learning.
+              </p>
+              <div class="footer-social">
+                <a href="#" class="social-link" title="Facebook">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-link" title="Twitter">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link" title="Instagram">
+                  <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link" title="LinkedIn">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="social-link" title="YouTube">
+                  <i class="fab fa-youtube"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+              <h4>Quick Links</h4>
+              <ul class="footer-links">
+                <li>
+                  <a href="/"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li>
+                  <a href="/shop"><i class="fas fa-shopping-cart"></i> Shop</a>
+                </li>
+                <li>
+                  <a href="/help"
+                    ><i class="fas fa-question-circle"></i> Help Center</a
+                  >
+                </li>
+                <li>
+                  <a href="/about"
+                    ><i class="fas fa-info-circle"></i> About Us</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <!-- Categories -->
+            <div class="footer-section">
+              <h4>Categories</h4>
+              <ul class="footer-links">
+                <li>
+                  <a href="/shop?category=textbooks">Academic Textbooks</a>
+                </li>
+                <li><a href="/shop?category=reference">Reference Books</a></li>
+                <li>
+                  <a href="/shop?category=fiction">Fiction & Literature</a>
+                </li>
+                <li>
+                  <a href="/shop?category=science">Science & Technology</a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Customer Support -->
+            <div class="footer-section">
+              <h4>Support</h4>
+              <ul class="footer-links">
+                <li><a href="/contact">Contact Support</a></li>
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/shipping">Shipping Information</a></li>
+                <li><a href="/returns">Returns & Exchanges</a></li>
+              </ul>
+            </div>
+
+            <!-- Contact & Newsletter -->
+            <div class="footer-section">
+              <h4>Get In Touch</h4>
+              <div class="footer-contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                  <div>123 Galle Road</div>
+                  <div>Colombo 03, Sri Lanka</div>
+                </div>
+              </div>
+              <div class="footer-contact-item">
+                <i class="fas fa-phone"></i>
+                <div>+94 11 234 5678</div>
+              </div>
+              <div class="footer-contact-item">
+                <i class="fas fa-envelope"></i>
+                <div>info@pahanaedu.lk</div>
+              </div>
+              <div class="footer-contact-item">
+                <i class="fas fa-clock"></i>
+                <div>Mon-Sat: 9AM-7PM</div>
+              </div>
+
+              <div style="margin-top: 2rem">
+                <p
+                  style="
+                    margin-bottom: 1rem;
+                    color: var(--neutral-300);
+                    font-size: var(--text-sm);
+                  "
+                >
+                  Subscribe for updates & exclusive offers
+                </p>
+                <form class="newsletter-form">
+                  <input
+                    type="email"
+                    placeholder="Your email address"
+                    class="newsletter-input"
+                    required
+                  />
+                  <button type="submit" class="newsletter-btn">
+                    Subscribe
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <div class="footer-copyright">
+              &copy; 2025 Pahana Edu Bookshop. All rights reserved. Built with
+              care for education.
+            </div>
+            <div class="footer-legal">
+              <a href="/privacy">Privacy Policy</a>
+              <a href="/terms">Terms of Service</a>
+              <a href="/cookies">Cookie Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Shopping cart functionality
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      function addToCart(itemId, price, title) {
+        const existingItem = cart.find((item) => item.id === itemId);
+
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: itemId,
+            title: title,
+            price: price,
+            quantity: 1,
+          });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+
+        // Show success message
+        showAlert(`"${title}" added to cart!`, "success");
+      }
+
+      function updateCartCount() {
+        const totalItems = cart.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        const cartBadge = document.getElementById("cartCount");
+        if (cartBadge) {
+          cartBadge.textContent = totalItems;
+        }
+      }
+
+      function showAlert(message, type) {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.top = "20px";
+        alertDiv.style.right = "20px";
+        alertDiv.style.zIndex = "9999";
+        alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+        document.body.appendChild(alertDiv);
+
+        setTimeout(() => {
+          if (alertDiv.parentNode) {
+            alertDiv.parentNode.removeChild(alertDiv);
+          }
+        }, 3000);
+      }
+
+      // Handle add to cart button clicks
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCartCount();
+
+        // Add event listeners to all add-to-cart buttons
+        document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
+          button.addEventListener("click", function () {
+            const itemId = this.dataset.itemId;
+            const itemPrice = parseFloat(this.dataset.itemPrice);
+            const itemTitle = this.dataset.itemTitle;
+
+            addToCart(itemId, itemPrice, itemTitle);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
