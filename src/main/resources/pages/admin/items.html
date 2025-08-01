@@ -315,16 +315,26 @@
                 </div>
               </div>
               <div
-                th:each="book : ${books}"
+                th:each="book,bookStat : ${books}"
                 class="col-lg-3 col-md-4 col-sm-6 book-item"
               >
                 <div class="book-card h-100">
                   <div class="book-image">
-                    <img
-                      th:src="${book.imageUrl ?: '/images/books/default-book.png'}"
-                      th:alt="${book.title}"
-                      class="img-fluid"
-                    />
+                    <!-- CSS-based book cover with dynamic colors -->
+                    <div
+                      class="book-cover-placeholder"
+                      th:class="'book-cover-placeholder book-cover-' + (${bookStat.index % 4} + 1)"
+                    >
+                      <div class="book-cover-content">
+                        <i class="fas fa-book-open text-white fs-1 mb-3"></i>
+                        <div
+                          class="book-cover-title text-white fw-bold text-center"
+                          th:text="${book.title}"
+                        >
+                          Book Title
+                        </div>
+                      </div>
+                    </div>
                     <div class="book-overlay">
                       <button
                         class="btn btn-light btn-sm"
@@ -435,14 +445,16 @@
                         </div>
                       </td>
                     </tr>
-                    <tr th:each="book : ${books}" class="book-row">
+                    <tr th:each="book,bookStat : ${books}" class="book-row">
                       <td>
                         <div class="d-flex align-items-center">
-                          <img
-                            th:src="${book.imageUrl ?: '/images/books/default-book.png'}"
-                            th:alt="${book.title}"
+                          <div
                             class="book-thumbnail me-3"
-                          />
+                            th:class="'book-thumbnail me-3 book-cover-' + (${bookStat.index % 4} + 1)"
+                            style="width: 60px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 8px;"
+                          >
+                            <i class="fas fa-book text-white"></i>
+                          </div>
                           <div>
                             <div class="fw-semibold" th:text="${book.title}">
                               Book Title
@@ -671,24 +683,21 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <label class="form-label">Book Cover</label>
-                  <div class="upload-area" onclick="document.getElementById('bookCover').click()">
-                    <div id="coverPreview" style="display: none">
-                      <img id="previewImage" alt="Book Cover Preview" />
+                  <label class="form-label">Book Cover Preview</label>
+                  <div class="text-center">
+                    <div class="book-cover-placeholder book-cover-1" 
+                         style="width: 180px; height: 240px; margin: 0 auto; border-radius: 12px;">
+                      <div class="book-cover-content">
+                        <i class="fas fa-book-open text-white fs-1 mb-3"></i>
+                        <div class="book-cover-title text-white fw-bold text-center" 
+                             id="titlePreview">Book Title</div>
+                      </div>
                     </div>
-                    <div id="uploadPlaceholder">
-                      <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-muted"></i>
-                      <p class="mb-1">Click to upload cover</p>
-                      <small class="text-muted">PNG, JPG up to 2MB</small>
-                    </div>
+                    <small class="text-muted mt-2 d-block">
+                      <i class="fas fa-info-circle me-1"></i>
+                      Cover will be generated automatically based on title
+                    </small>
                   </div>
-                  <input
-                    type="file"
-                    id="bookCover"
-                    name="imageFile"
-                    accept="image/*"
-                    style="display: none"
-                  />
                 </div>
               </div>
             </div>
@@ -835,24 +844,22 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <label class="form-label">Book Cover</label>
-                  <div class="upload-area" onclick="document.getElementById('editBookCover').click()">
-                    <div id="editCoverPreview">
-                      <img id="editPreviewImage" alt="Book Cover Preview" />
+                  <label class="form-label">Book Cover Preview</label>
+                  <div class="text-center">
+                    <div class="book-cover-placeholder book-cover-2" 
+                         style="width: 180px; height: 240px; margin: 0 auto; border-radius: 12px;"
+                         id="editBookCoverPreview">
+                      <div class="book-cover-content">
+                        <i class="fas fa-book-open text-white fs-1 mb-3"></i>
+                        <div class="book-cover-title text-white fw-bold text-center" 
+                             id="editTitlePreview">Book Title</div>
+                      </div>
                     </div>
-                    <div id="editUploadPlaceholder">
-                      <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-muted"></i>
-                      <p class="mb-1">Click to change cover</p>
-                      <small class="text-muted">PNG, JPG up to 2MB</small>
-                    </div>
+                    <small class="text-muted mt-2 d-block">
+                      <i class="fas fa-info-circle me-1"></i>
+                      Cover design based on book title
+                    </small>
                   </div>
-                  <input
-                    type="file"
-                    id="editBookCover"
-                    name="imageFile"
-                    accept="image/*"
-                    style="display: none"
-                  />
                 </div>
               </div>
             </div>
@@ -951,35 +958,6 @@
                     color: var(--primary-600);
                     font-size: var(--text-lg);
                 }
-                
-                .book-thumbnail {
-                    width: 60px;
-                    height: 80px;
-                    object-fit: cover;
-                    border-radius: var(--radius-md);
-                    border: 1px solid var(--neutral-200);
-                }
-                
-                .upload-area {
-                    border: 2px dashed var(--neutral-300);
-                    border-radius: var(--radius-lg);
-                    padding: 2rem;
-                    text-align: center;
-                    cursor: pointer;
-                    transition: all var(--transition-fast);
-                    background: var(--bg-secondary);
-                }
-                
-                .upload-area:hover {
-                    border-color: var(--primary-500);
-                    background: var(--primary-50);
-                }
-                
-                .book-cover-upload img {
-                    max-width: 100%;
-                    max-height: 200px;
-                    border-radius: var(--radius-md);
-                }
             `;
         document.head.appendChild(style);
       });
@@ -1017,19 +995,20 @@
           });
         });
 
-      // Image upload preview
+      // Title preview functionality for add form
       document
-        .getElementById("bookCover")
-        .addEventListener("change", function (e) {
-          const file = e.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              document.getElementById("previewImage").src = e.target.result;
-              document.getElementById("coverPreview").style.display = "block";
-            };
-            reader.readAsDataURL(file);
-          }
+        .getElementById("title")
+        .addEventListener("input", function (e) {
+          const title = e.target.value || "Book Title";
+          document.getElementById("titlePreview").textContent = title;
+        });
+
+      // Title preview functionality for edit form  
+      document
+        .getElementById("editTitle")
+        .addEventListener("input", function (e) {
+          const title = e.target.value || "Book Title";
+          document.getElementById("editTitlePreview").textContent = title;
         });
 
       // Book management functions
@@ -1055,15 +1034,11 @@
             document.getElementById('editPublishYear').value = book.publishYear || '';
             document.getElementById('editDescription').value = book.description;
             
+            // Update title preview
+            document.getElementById('editTitlePreview').textContent = book.title || 'Book Title';
+            
             // Set form action
             document.getElementById('editBookForm').action = `/admin/items/${bookId}/update`;
-            
-            // Handle image preview
-            if (book.imageUrl) {
-              document.getElementById('editPreviewImage').src = book.imageUrl;
-              document.getElementById('editCoverPreview').style.display = 'block';
-              document.getElementById('editUploadPlaceholder').style.display = 'none';
-            }
             
             // Show modal
             const modal = new bootstrap.Modal(document.getElementById('editBookModal'));

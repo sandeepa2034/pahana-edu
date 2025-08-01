@@ -3,760 +3,644 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - Pahana Education</title>
+    <title>My Profile - Pahana Edu Bookshop</title>
     
-    <!-- Bootstrap CSS -->
+    <!-- Modern Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS Dependencies -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --primary-blue: #002147;
-            --cream-white: #F8F5EC;
-            --dusty-rose: #C4A69F;
-            --sage-green: #A8B5A2;
-            --antique-gold: #C6A664;
-            --charcoal: #3E3E3E;
-            --maroon: #6C2C2F;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--cream-white) 0%, #f0f0f0 100%);
-            min-height: 100vh;
-        }
-
-        /* Navigation */
-        .navbar {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--maroon) 100%);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem 0;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: white !important;
-            text-decoration: none;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--antique-gold) !important;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--maroon) 100%);
-            color: white;
-            padding: 4rem 0 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .breadcrumb {
-            background: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .breadcrumb-item a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-        }
-
-        .breadcrumb-item.active {
-            color: var(--antique-gold);
-        }
-
-        /* Profile Section */
-        .profile-section {
-            padding: 3rem 0;
-        }
-
-        .profile-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .profile-header {
-            background: linear-gradient(135deg, var(--sage-green) 0%, var(--dusty-rose) 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--antique-gold) 0%, var(--primary-blue) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: white;
-            margin: 0 auto 1rem;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .info-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .info-card h5 {
-            color: var(--primary-blue);
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-            border-bottom: 2px solid var(--sage-green);
-            padding-bottom: 0.5rem;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            font-weight: 600;
-            color: var(--charcoal);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-value {
-            color: var(--primary-blue);
-            font-weight: 500;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-custom {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--maroon) 100%);
-            border: none;
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 33, 71, 0.3);
-            color: white;
-        }
-
-        .btn-secondary-custom {
-            background: var(--sage-green);
-            border: none;
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-secondary-custom:hover {
-            background: var(--dusty-rose);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--sage-green) 0%, var(--dusty-rose) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--charcoal);
-            font-weight: 500;
-        }
-
-        /* Footer */
-        .footer {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--maroon) 100%);
-            color: white;
-            padding: 3rem 0 1rem;
-            margin-top: 4rem;
-        }
-
-        .footer h5 {
-            color: var(--antique-gold);
-            margin-bottom: 1rem;
-        }
-
-        .footer a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: var(--antique-gold);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 2rem 0 1rem;
-            }
-
-            .profile-header {
-                padding: 1.5rem;
-            }
-
-            .profile-avatar {
-                width: 100px;
-                height: 100px;
-                font-size: 2.5rem;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .info-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-        }
-
-        /* Alert Styles */
-        .alert-success {
-            background: linear-gradient(135deg, var(--sage-green) 0%, rgba(168, 181, 162, 0.2) 100%);
-            border: 1px solid var(--sage-green);
-            color: var(--primary-blue);
-        }
-
-        .alert-info {
-            background: linear-gradient(135deg, var(--dusty-rose) 0%, rgba(196, 166, 159, 0.2) 100%);
-            border: 1px solid var(--dusty-rose);
-            color: var(--primary-blue);
-        }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/modern-design-system.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
+    <!-- Modern Navigation -->
+    <nav class="navbar-modern fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-graduation-cap me-2"></i>Pahana Education
-            </a>
-            
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fas fa-bars text-white"></i>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/shop">Shop</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/help">Help</a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav ms-auto">
-                    <!-- Cart -->
-                    <li class="nav-item">
-                        <a class="nav-link position-relative" href="/cart">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill" 
-                                  style="background: var(--antique-gold); font-size: 0.7rem;">0</span>
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <a class="navbar-brand-modern" href="/">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Pahana Edu Bookshop</span>
+                </a>
+
+                <div class="d-none d-lg-flex align-items-center gap-4">
+                    <nav class="d-flex gap-2">
+                        <a class="nav-link-modern" href="/">
+                            <i class="fas fa-home"></i>Home
                         </a>
-                    </li>
-                    
-                    <!-- User Menu -->
-                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i><span sec:authentication="name">User</span>
+                        <a class="nav-link-modern" href="/shop">
+                            <i class="fas fa-store"></i>Shop
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/profile">My Profile</a></li>
-                            <li><a class="dropdown-item" href="/my-orders">My Orders</a></li>
-                            <li><a class="dropdown-item" href="/user/dashboard">Dashboard</a></li>
-                            <!-- Admin Menu -->
-                            <div sec:authorize="hasRole('ADMIN')">
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/admin/dashboard">Admin Dashboard</a></li>
-                                <li><a class="dropdown-item" href="/admin/customers">Manage Customers</a></li>
-                                <li><a class="dropdown-item" href="/admin/items">Manage Items</a></li>
-                            </div>
+                        <a class="nav-link-modern" href="/help">
+                            <i class="fas fa-life-ring"></i>Help
+                        </a>
+                        <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <a class="position-relative" href="/cart">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-shopping-cart me-1"></i>Cart
+                        </button>
+                        <span class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount">0</span>
+                    </a>
+
+                    <!-- Login Button for Non-Authenticated Users -->
+                    <div sec:authorize="!isAuthenticated()">
+                        <a href="/login" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+
+                    <!-- User Dropdown for Authenticated Users -->
+                    <div sec:authorize="isAuthenticated()" class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span sec:authentication="name">User</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 modern-dropdown">
+                            <li>
+                                <a class="dropdown-item py-2" href="/user/dashboard">
+                                    <i class="fas fa-tachometer-alt me-2 text-primary"></i>Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="/my-orders">
+                                    <i class="fas fa-shopping-bag me-2 text-primary"></i>My Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="/profile">
+                                    <i class="fas fa-user-cog me-2 text-primary"></i>Profile
+                                </a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a class="dropdown-item py-2" href="/admin/dashboard">
+                                    <i class="fas fa-shield-alt me-2 text-warning"></i>Admin Panel
+                                </a>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <form th:action="@{/logout}" method="post" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">Logout</button>
-                                </form>
+                                <a class="dropdown-item py-2 text-danger" href="/logout">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
                             </li>
                         </ul>
-                    </li>
-                    
-                    <!-- Login/Register for guests -->
-                    <li class="nav-item" sec:authorize="!isAuthenticated()">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                </ul>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex flex-column gap-2 mt-3 d-lg-none">
+                    <a class="nav-link-modern" href="/">
+                        <i class="fas fa-home"></i>Home
+                    </a>
+                    <a class="nav-link-modern" href="/shop">
+                        <i class="fas fa-store"></i>Shop
+                    </a>
+                    <a class="nav-link-modern" href="/help">
+                        <i class="fas fa-life-ring"></i>Help
+                    </a>
+                    <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
+                        <i class="fas fa-tachometer-alt"></i>Dashboard
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Modern Hero Section -->
     <section class="hero-section">
         <div class="container">
-            <div class="hero-content">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item active">My Profile</li>
-                    </ol>
-                </nav>
-                <h1 class="display-4 fw-bold mb-3">My Profile</h1>
-                <p class="lead mb-0">Manage your account settings and personal information</p>
+            <div class="hero-content text-center">
+                <div class="hero-badge animate-fade-in-up">
+                    <i class="fas fa-user-circle"></i>
+                    My Profile
+                </div>
+                
+                <h1 class="hero-title animate-fade-in-up" style="animation-delay: 0.1s">
+                    Account Management
+                </h1>
+                
+                <p class="hero-subtitle animate-fade-in-up" style="animation-delay: 0.2s">
+                    Manage your personal information, preferences, and account settings
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Profile Section -->
-    <section class="profile-section">
+    <!-- Profile Content Section -->
+    <section class="features-section">
         <div class="container">
-            <!-- Success/Error Messages -->
-            <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>
-                <span th:text="${message}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-            
-            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i>
-                <span th:text="${error}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-
             <div class="row">
-                <!-- Profile Header -->
-                <div class="col-12">
-                    <div class="profile-card">
-                        <div class="profile-header">
-                            <div class="profile-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <h2 class="mb-2" th:text="${user?.username ?: 'User'}">Username</h2>
-                            <p class="mb-0" th:text="${user?.phone ?: 'No phone number'}">Phone Number</p>
-                            <div class="mt-3">
-                                <span class="badge bg-light text-dark" 
-                                      th:text="${user?.role ?: 'USER'}" 
-                                      th:classappend="${user?.role == 'ADMIN'} ? 'bg-warning text-dark' : 'bg-primary'">
-                                    USER
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <!-- Account Information -->
+                <!-- Profile Information -->
                 <div class="col-lg-8">
-                    <!-- Personal Information -->
-                    <div class="info-card">
-                        <h5><i class="fas fa-user-circle me-2"></i>Personal Information</h5>
-                        
-                        <div class="info-row">
-                            <div class="info-label">
-                                <i class="fas fa-id-card"></i>
-                                Username
-                            </div>
-                            <div class="info-value" th:text="${user?.username ?: 'Not set'}">username</div>
+                    <div class="card-modern mb-4">
+                        <div class="card-header-modern">
+                            <h4 class="mb-0">
+                                <i class="fas fa-user me-2 text-primary"></i>
+                                Personal Information
+                            </h4>
                         </div>
                         
-                        <div class="info-row">
-                            <div class="info-label">
-                                <i class="fas fa-phone"></i>
-                                Phone Number
+                        <div class="card-body">
+                            <!-- Success/Error Messages -->
+                            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <span th:text="${success}">Success message</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
-                            <div class="info-value" th:text="${user?.phone ?: 'Not set'}">phone</div>
-                        </div>
-                        
-                        <div class="info-row">
-                            <div class="info-label">
-                                <i class="fas fa-user-tag"></i>
-                                Account Type
+                            
+                            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                <span th:text="${error}">Error message</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
-                            <div class="info-value">
-                                <span class="badge" 
-                                      th:text="${user?.role ?: 'USER'}" 
-                                      th:classappend="${user?.role == 'ADMIN'} ? 'bg-warning text-dark' : 'bg-primary'">
-                                    USER
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <div class="info-row">
-                            <div class="info-label">
-                                <i class="fas fa-toggle-on"></i>
-                                Account Status
-                            </div>
-                            <div class="info-value">
-                                <span class="badge bg-success" th:if="${user?.enabled}">Active</span>
-                                <span class="badge bg-danger" th:unless="${user?.enabled}">Inactive</span>
-                            </div>
+                            
+                            <!-- Profile Form -->
+                            <form id="profileForm" method="post" action="/profile/update">
+                                <div class="row">
+                                    <div class="col-md-4 text-center mb-4">
+                                        <div class="profile-avatar mx-auto mb-3">
+                                            <div class="avatar-circle">
+                                                <i class="fas fa-user text-white" style="font-size: 3rem;"></i>
+                                            </div>
+                                        </div>
+                                        <h5 class="fw-bold" th:text="${user.username}">Username</h5>
+                                        <p class="text-secondary">
+                                            <span th:if="${user.role == 'ADMIN'}" class="badge bg-warning">Administrator</span>
+                                            <span th:if="${user.role == 'USER'}" class="badge bg-primary">User</span>
+                                        </p>
+                                        <small class="text-muted">Member since registration</small>
+                                    </div>
+                                    
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <!-- Username (Read-only) -->
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label text-secondary">Username</label>
+                                                <div class="form-control-plaintext fw-bold" th:text="${user.username}">Username</div>
+                                            </div>
+                                            
+                                            <!-- Role (Read-only) -->
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label text-secondary">Role</label>
+                                                <div class="form-control-plaintext">
+                                                    <span th:if="${user.role == 'ADMIN'}" class="badge bg-warning">Administrator</span>
+                                                    <span th:if="${user.role == 'USER'}" class="badge bg-primary">User</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- First Name -->
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label text-secondary">First Name</label>
+                                                <div class="profile-field-container">
+                                                    <div class="form-control-plaintext display-mode" id="displayFirstName" 
+                                                         th:text="${user.firstName != null and user.firstName != ''} ? ${user.firstName} : 'Not provided'">Not provided</div>
+                                                    <input type="text" class="form-control edit-mode d-none" name="firstName" 
+                                                           th:value="${user.firstName}" placeholder="Enter first name">
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Last Name -->
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label text-secondary">Last Name</label>
+                                                <div class="profile-field-container">
+                                                    <div class="form-control-plaintext display-mode" id="displayLastName"
+                                                         th:text="${user.lastName != null and user.lastName != ''} ? ${user.lastName} : 'Not provided'">Not provided</div>
+                                                    <input type="text" class="form-control edit-mode d-none" name="lastName" 
+                                                           th:value="${user.lastName}" placeholder="Enter last name">
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Email Address -->
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label text-secondary">Email Address</label>
+                                                <div class="profile-field-container">
+                                                    <div class="form-control-plaintext display-mode" id="displayEmail"
+                                                         th:text="${user.email != null and user.email != ''} ? ${user.email} : 'Not provided'">Not provided</div>
+                                                    <input type="email" class="form-control edit-mode d-none" name="email" 
+                                                           th:value="${user.email}" placeholder="Enter email address">
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Phone Number -->
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label text-secondary">Phone Number</label>
+                                                <div class="profile-field-container">
+                                                    <div class="form-control-plaintext display-mode" id="displayPhone"
+                                                         th:text="${user.phone != null and user.phone != ''} ? ${user.phone} : 'Not provided'">Not provided</div>
+                                                    <input type="tel" class="form-control edit-mode d-none" name="phone" 
+                                                           th:value="${user.phone}" placeholder="Enter phone number">
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Address -->
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-secondary">Address</label>
+                                                <div class="profile-field-container">
+                                                    <div class="form-control-plaintext display-mode" id="displayAddress"
+                                                         th:text="${user.address != null and user.address != ''} ? ${user.address} : 'Address not provided'">Address not provided</div>
+                                                    <textarea class="form-control edit-mode d-none" name="address" rows="2" 
+                                                              th:text="${user.address}" placeholder="Enter your address"></textarea>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- City and Country -->
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label text-secondary">City</label>
+                                                <div class="profile-field-container">
+                                                    <div class="form-control-plaintext display-mode" id="displayCity"
+                                                         th:text="${user.city != null and user.city != ''} ? ${user.city} : 'Not provided'">Not provided</div>
+                                                    <input type="text" class="form-control edit-mode d-none" name="city" 
+                                                           th:value="${user.city}" placeholder="Enter city">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label text-secondary">Country</label>
+                                                <div class="profile-field-container">
+                                                    <div class="form-control-plaintext display-mode" id="displayCountry"
+                                                         th:text="${user.country != null and user.country != ''} ? ${user.country} : 'Not provided'">Not provided</div>
+                                                    <input type="text" class="form-control edit-mode d-none" name="country" 
+                                                           th:value="${user.country}" placeholder="Enter country">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Action Buttons -->
+                                        <div class="mt-4">
+                                            <!-- Display Mode Buttons -->
+                                            <div class="display-mode">
+                                                <button type="button" class="btn btn-primary" onclick="toggleEditMode()">
+                                                    <i class="fas fa-edit me-1"></i>Edit Profile
+                                                </button>
+                                            </div>
+                                            
+                                            <!-- Edit Mode Buttons -->
+                                            <div class="edit-mode d-none">
+                                                <button type="submit" class="btn btn-success me-2">
+                                                    <i class="fas fa-save me-1"></i>Save Changes
+                                                </button>
+                                                <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">
+                                                    <i class="fas fa-times me-1"></i>Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-
-                    <!-- Account Security -->
-                    <div class="info-card">
-                        <h5><i class="fas fa-shield-alt me-2"></i>Account Security</h5>
-                        
-                        <div class="info-row">
-                            <div class="info-label">
-                                <i class="fas fa-key"></i>
-                                Password
-                            </div>
-                            <div class="info-value">
-                                <button class="btn btn-sm btn-outline-primary" onclick="showPasswordForm()">
-                                    <i class="fas fa-edit me-1"></i>Change Password
-                                </button>
-                            </div>
+                    
+                    <!-- Account Information -->
+                    <div class="card-modern">
+                        <div class="card-header-modern">
+                            <h4 class="mb-0">
+                                <i class="fas fa-info-circle me-2 text-primary"></i>
+                                Account Information
+                            </h4>
                         </div>
                         
-                        <div class="info-row">
-                            <div class="info-label">
-                                <i class="fas fa-clock"></i>
-                                Last Login
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <h6 class="alert-heading">
+                                    <i class="fas fa-user-shield me-2"></i>Your Account
+                                </h6>
+                                <p class="mb-0">
+                                    Your account is secured and managed by the Pahana Edu system. 
+                                    You can browse books, add them to cart, and complete purchases securely.
+                                </p>
                             </div>
-                            <div class="info-value">Recently</div>
-                        </div>
-                        
-                        <div class="info-row">
-                            <div class="info-label">
-                                <i class="fas fa-user-check"></i>
-                                Account Created
+                            
+                            <div class="row text-center">
+                                <div class="col-md-4">
+                                    <div class="feature-card">
+                                        <div class="feature-icon">
+                                            <i class="fas fa-shield-alt"></i>
+                                        </div>
+                                        <h6>Secure Access</h6>
+                                        <p class="small text-secondary">Your account is protected</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="feature-card">
+                                        <div class="feature-icon">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </div>
+                                        <h6>Shopping Cart</h6>
+                                        <p class="small text-secondary">Persistent cart storage</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="feature-card">
+                                        <div class="feature-icon">
+                                            <i class="fas fa-history"></i>
+                                        </div>
+                                        <h6>Order History</h6>
+                                        <p class="small text-secondary">Track your purchases</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="info-value">Member since registration</div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Quick Actions & Stats -->
+                
+                <!-- Sidebar -->
                 <div class="col-lg-4">
-                    <!-- Activity Stats -->
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-shopping-bag"></i>
-                            </div>
-                            <div class="stat-number">0</div>
-                            <div class="stat-label">Total Orders</div>
+                    <!-- Account Statistics -->
+                    <div class="card-modern mb-4">
+                        <div class="card-header-modern">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-line me-2 text-primary"></i>
+                                Activity Stats
+                            </h5>
                         </div>
                         
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-heart"></i>
+                        <div class="card-body">
+                            <div class="stat-item mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-secondary">Account Type</span>
+                                    <span class="fw-bold text-primary">
+                                        <span sec:authorize="hasRole('ADMIN')">Administrator</span>
+                                        <span sec:authorize="hasRole('USER')">Standard User</span>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="stat-number">0</div>
-                            <div class="stat-label">Favorites</div>
+                            
+                            <div class="stat-item mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-secondary">Cart Items</span>
+                                    <span class="fw-bold text-primary" id="profileCartCount">0</span>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-secondary">Login Status</span>
+                                    <span class="badge bg-success">Active</span>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-secondary">Session</span>
+                                    <span class="badge bg-primary">Authenticated</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
+                    
                     <!-- Quick Actions -->
-                    <div class="info-card">
-                        <h5><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                    <div class="card-modern">
+                        <div class="card-header-modern">
+                            <h5 class="mb-0">
+                                <i class="fas fa-bolt me-2 text-primary"></i>
+                                Quick Actions
+                            </h5>
+                        </div>
                         
-                        <div class="action-buttons">
-                            <a href="/my-orders" class="btn-custom">
-                                <i class="fas fa-list"></i>
-                                View Orders
-                            </a>
-                            
-                            <a href="/shop" class="btn-secondary-custom">
-                                <i class="fas fa-shopping-cart"></i>
-                                Continue Shopping
-                            </a>
-                            
-                            <button class="btn-secondary-custom" onclick="showEditForm()">
-                                <i class="fas fa-edit"></i>
-                                Edit Profile
-                            </button>
-                            
-                            <!-- Admin Quick Actions -->
-                            <div sec:authorize="hasRole('ADMIN')" class="w-100">
-                                <a href="/admin/dashboard" class="btn-custom w-100 mt-2">
-                                    <i class="fas fa-tachometer-alt"></i>
-                                    Admin Dashboard
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <a href="/my-orders" class="btn btn-outline-primary">
+                                    <i class="fas fa-shopping-bag me-2"></i>
+                                    View Order History
                                 </a>
+                                
+                                <a href="/shop" class="btn btn-outline-primary">
+                                    <i class="fas fa-book me-2"></i>
+                                    Browse Books
+                                </a>
+                                
+                                <a href="/cart" class="btn btn-outline-primary">
+                                    <i class="fas fa-shopping-cart me-2"></i>
+                                    View Cart
+                                </a>
+                                
+                                <a href="/help" class="btn btn-outline-secondary">
+                                    <i class="fas fa-question-circle me-2"></i>
+                                    Get Help
+                                </a>
+                                
+                                <!-- Admin Access for Admin Users -->
+                                <div sec:authorize="hasRole('ADMIN')">
+                                    <hr class="my-3">
+                                    <a href="/admin/dashboard" class="btn btn-warning">
+                                        <i class="fas fa-shield-alt me-2"></i>
+                                        Admin Dashboard
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Account Help -->
-                    <div class="info-card">
-                        <h5><i class="fas fa-question-circle me-2"></i>Need Help?</h5>
-                        <p class="mb-3">Have questions about your account or need assistance?</p>
-                        <a href="/help" class="btn-secondary-custom">
-                            <i class="fas fa-life-ring"></i>
-                            Get Support
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Password Change Modal -->
-    <div class="modal fade" id="passwordModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Change Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form action="/profile/change-password" method="post">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="currentPassword" class="form-label">Current Password</label>
-                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newPassword" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update Password</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Profile Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Profile</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form action="/profile/update" method="post">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" 
-                                   th:value="${user?.username}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" 
-                                   th:value="${user?.phone}">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Information Section -->
+    <section class="features-section" style="padding-top: 0;">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h5><i class="fas fa-graduation-cap me-2"></i>Pahana Education</h5>
-                    <p class="mb-3">Your trusted partner in educational excellence. Providing quality books and resources for students and educators.</p>
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h4 class="mb-0">
+                        <i class="fas fa-info-circle me-2 text-primary"></i>
+                        Getting Started
+                    </h4>
                 </div>
                 
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/shop">Shop</a></li>
-                        <li><a href="/help">Help</a></li>
-                        <li><a href="/my-orders">My Orders</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>Account</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/profile">My Profile</a></li>
-                        <li><a href="/my-orders">Order History</a></li>
-                        <li><a href="/cart">Shopping Cart</a></li>
-                        <li><a href="/help">Support</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-3 mb-4">
-                    <h5>Contact Info</h5>
-                    <p><i class="fas fa-map-marker-alt me-2"></i>123 Education Street, Colombo</p>
-                    <p><i class="fas fa-phone me-2"></i>+94 11 234 5678</p>
-                    <p><i class="fas fa-envelope me-2"></i>info@pahanaedu.lk</p>
-                </div>
-            </div>
-            
-            <hr class="my-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <p>&copy; 2025 Pahana Education. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="#" class="me-3">Privacy Policy</a>
-                    <a href="#" class="me-3">Terms of Service</a>
-                    <a href="#">Support</a>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="feature-card text-center">
+                                <div class="feature-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h6>Browse Books</h6>
+                                <p class="small text-secondary">Explore our collection of academic and professional books</p>
+                                <a href="/shop" class="btn btn-outline-primary btn-sm">Start Browsing</a>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="feature-card text-center">
+                                <div class="feature-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <h6>Add to Cart</h6>
+                                <p class="small text-secondary">Select books and add them to your shopping cart</p>
+                                <a href="/cart" class="btn btn-outline-primary btn-sm">View Cart</a>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="feature-card text-center">
+                                <div class="feature-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <h6>Secure Checkout</h6>
+                                <p class="small text-secondary">Complete your purchase with our secure checkout process</p>
+                                <a href="/help" class="btn btn-outline-primary btn-sm">Get Help</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Profile Functionality -->
     <script>
-        // Update cart count on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCartCount();
-        });
-        
+        // Shopping cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
         function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
             const cartBadge = document.getElementById('cartCount');
             if (cartBadge) {
                 cartBadge.textContent = totalItems;
-                cartBadge.style.display = totalItems > 0 ? 'inline' : 'none';
             }
         }
-        
-        function showPasswordForm() {
-            new bootstrap.Modal(document.getElementById('passwordModal')).show();
-        }
-        
-        function showEditForm() {
-            new bootstrap.Modal(document.getElementById('editModal')).show();
-        }
-        
-        // Form validation
-        document.getElementById('passwordModal').addEventListener('submit', function(e) {
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Profile editing functionality
+        function toggleEditMode() {
+            const displayElements = document.querySelectorAll('.display-mode');
+            const editElements = document.querySelectorAll('.edit-mode');
             
-            if (newPassword !== confirmPassword) {
-                e.preventDefault();
-                alert('New passwords do not match!');
-            }
+            displayElements.forEach(element => {
+                element.classList.toggle('d-none');
+            });
+            
+            editElements.forEach(element => {
+                element.classList.toggle('d-none');
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            
+            // Auto-dismiss alerts after 5 seconds
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    if (alert.classList.contains('show')) {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }
+                });
+            }, 5000);
         });
     </script>
+
+    <style>
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .avatar-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--accent-600) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+        }
+        
+        .profile-field-container {
+            position: relative;
+        }
+        
+        .edit-mode {
+            transition: all 0.3s ease;
+        }
+        
+        .display-mode {
+            transition: all 0.3s ease;
+        }
+        
+        .edit-mode input,
+        .edit-mode textarea {
+            border: 2px solid var(--primary-300);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-mode input:focus,
+        .edit-mode textarea:focus {
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 0.2rem rgba(124, 116, 242, 0.25);
+        }
+        
+        .security-item {
+            padding: 1rem;
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            background: var(--neutral-50);
+        }
+        
+        .stat-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--neutral-200);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .timeline-icon {
+            position: absolute;
+            left: -2rem;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.875rem;
+        }
+        
+        .timeline-content {
+            padding-left: 1rem;
+        }
+    </style>
 </body>
 </html>

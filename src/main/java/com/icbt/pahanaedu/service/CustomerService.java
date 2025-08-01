@@ -324,19 +324,58 @@ public class CustomerService {
      * Find or create customer for guest checkout
      */
     public Customer findOrCreateCustomer(String fullName, String phone, String email, String address) {
-        Optional<Customer> existingCustomer = findByPhone(phone);
+        // First try to find by phone
+        Optional<Customer> existingCustomerByPhone = findByPhone(phone);
         
-        if (existingCustomer.isPresent()) {
-            Customer customer = existingCustomer.get();
-            // Update customer info if provided
-            if (email != null && !email.trim().isEmpty()) {
-                customer.setEmail(email.trim());
+        if (existingCustomerByPhone.isPresent()) {
+            Customer customer = existingCustomerByPhone.get();
+            
+            // Only update email if it's different and not already taken by another customer
+            if (email != null && !email.trim().isEmpty() && !email.trim().equals(customer.getEmail())) {
+                // Check if the new email is already taken by another customer
+                Optional<Customer> customerWithEmail = getCustomerByEmail(email.trim());
+                if (customerWithEmail.isEmpty() || customerWithEmail.get().getId().equals(customer.getId())) {
+                    customer.setEmail(email.trim());
+                }
+                // If email is taken by another customer, we keep the existing email
             }
+            
+            // Update address if provided
             if (address != null && !address.trim().isEmpty()) {
                 customer.setAddress(address.trim());
             }
-            return customerRepository.save(customer);
+            
+            try {
+                return customerRepository.save(customer);
+            } catch (Exception e) {
+                // If save fails due to constraints, return the customer without email update
+                System.out.println("Warning: Could not update customer email due to constraint: " + e.getMessage());
+                // Reload the customer from database to get current state
+                return customerRepository.findById(customer.getId()).orElse(customer);
+            }
         } else {
+            // Check if email already exists when creating new customer
+            if (email != null && !email.trim().isEmpty()) {
+                Optional<Customer> existingCustomerByEmail = getCustomerByEmail(email.trim());
+                if (existingCustomerByEmail.isPresent()) {
+                    // Email exists, but phone is different - this might be the same person with different phone
+                    // Return the existing customer found by email
+                    Customer customer = existingCustomerByEmail.get();
+                    
+                    // Update address if provided
+                    if (address != null && !address.trim().isEmpty()) {
+                        customer.setAddress(address.trim());
+                    }
+                    
+                    try {
+                        return customerRepository.save(customer);
+                    } catch (Exception e) {
+                        System.out.println("Warning: Could not update existing customer: " + e.getMessage());
+                        return customer;
+                    }
+                }
+            }
+            
             // Create new customer
             Customer newCustomer = new Customer();
             
@@ -355,7 +394,17 @@ public class CustomerService {
             newCustomer.setRegistrationDate(LocalDateTime.now());
             newCustomer.setActive(true);
             
-            return customerRepository.save(newCustomer);
+            try {
+                return customerRepository.save(newCustomer);
+            } catch (Exception e) {
+                System.out.println("Error creating new customer: " + e.getMessage());
+                // If creation fails, try to find any existing customer with similar details
+                Optional<Customer> fallbackCustomer = getCustomerByEmail(email);
+                if (fallbackCustomer.isPresent()) {
+                    return fallbackCustomer.get();
+                }
+                throw new RuntimeException("Could not create or find customer: " + e.getMessage());
+            }
         }
     }
     

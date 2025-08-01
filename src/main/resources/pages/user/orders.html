@@ -4,440 +4,313 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders - Pahana Edu Bookshop</title>
+    
+    <!-- Modern Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS Dependencies -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Professional Academic Color Palette */
-        :root {
-            --oxford-blue: #002147;
-            --ivory-cream: #F8F5EC;
-            --dusty-rose: #C4A69F;
-            --muted-sage: #A8B5A2;
-            --antique-gold: #C6A664;
-            --charcoal-gray: #3E3E3E;
-            --maroon-red: #6C2C2F;
-            
-            /* Extended palette for gradients and states */
-            --oxford-blue-light: #1a3659;
-            --oxford-blue-dark: #001122;
-            --ivory-cream-dark: #F0ECE1;
-            --dusty-rose-light: #D4B6AF;
-            --sage-dark: #98A592;
-            --gold-light: #D6B674;
-        }
-        
-        /* Global Styles */
-        body {
-            background-color: var(--ivory-cream);
-            color: var(--charcoal-gray);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
-        }
-        
-        /* Navigation */
-        .navbar {
-            background: linear-gradient(135deg, var(--oxford-blue) 0%, var(--oxford-blue-light) 100%) !important;
-            border-bottom: 3px solid var(--antique-gold);
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(0, 33, 71, 0.15);
-        }
-        
-        .navbar-brand {
-            color: var(--ivory-cream) !important;
-            font-weight: 700;
-            font-size: 1.5rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .navbar-nav .nav-link {
-            color: var(--ivory-cream) !important;
-            font-weight: 500;
-            margin: 0 0.5rem;
-            padding: 0.75rem 1rem !important;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link.active {
-            background: var(--antique-gold);
-            color: var(--oxford-blue) !important;
-            transform: translateY(-2px);
-        }
-        
-        /* Page Header */
-        .page-header {
-            background: linear-gradient(135deg, var(--oxford-blue-light) 0%, var(--muted-sage) 100%);
-            color: var(--ivory-cream);
-            padding: 60px 0 40px 0;
-        }
-        
-        /* Order Cards */
-        .order-card {
-            background: var(--ivory-cream);
-            border: 2px solid var(--ivory-cream-dark);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 8px 32px rgba(0, 33, 71, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .order-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 40px rgba(0, 33, 71, 0.15);
-            border-color: var(--antique-gold);
-        }
-        
-        .order-header {
-            display: flex;
-            justify-content: between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--ivory-cream-dark);
-        }
-        
-        .order-id {
-            color: var(--oxford-blue);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-        
-        .order-date {
-            color: var(--charcoal-gray);
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-        
-        .order-status {
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .status-completed {
-            background: var(--muted-sage);
-            color: var(--ivory-cream);
-        }
-        
-        .status-pending {
-            background: var(--antique-gold);
-            color: var(--oxford-blue);
-        }
-        
-        .status-cancelled {
-            background: var(--maroon-red);
-            color: var(--ivory-cream);
-        }
-        
-        .order-items {
-            margin-bottom: 1.5rem;
-        }
-        
-        .order-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--ivory-cream-dark);
-        }
-        
-        .order-item:last-child {
-            border-bottom: none;
-        }
-        
-        .item-info {
-            flex-grow: 1;
-        }
-        
-        .item-title {
-            font-weight: 600;
-            color: var(--oxford-blue);
-            margin-bottom: 0.25rem;
-        }
-        
-        .item-quantity {
-            color: var(--charcoal-gray);
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-        
-        .item-price {
-            font-weight: 600;
-            color: var(--oxford-blue);
-        }
-        
-        .order-total {
-            text-align: right;
-            padding-top: 1rem;
-            border-top: 2px solid var(--antique-gold);
-        }
-        
-        .total-amount {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--oxford-blue);
-        }
-        
-        .btn-custom {
-            background: linear-gradient(135deg, var(--oxford-blue), var(--oxford-blue-light));
-            border: none;
-            color: var(--ivory-cream);
-            padding: 0.75rem 2rem;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-custom:hover {
-            background: linear-gradient(135deg, var(--oxford-blue-light), var(--muted-sage));
-            color: var(--ivory-cream);
-            transform: translateY(-2px);
-            text-decoration: none;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: var(--ivory-cream);
-            border: 2px solid var(--ivory-cream-dark);
-            border-radius: 16px;
-        }
-        
-        .empty-icon {
-            font-size: 4rem;
-            color: var(--dusty-rose);
-            opacity: 0.6;
-            margin-bottom: 1.5rem;
-        }
-        
-        /* Footer */
-        .footer-custom {
-            background: var(--oxford-blue);
-            color: var(--ivory-cream);
-            border-top: 4px solid var(--antique-gold);
-            margin-top: 4rem;
-        }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/modern-design-system.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg sticky-top">
+    <!-- Modern Navigation -->
+    <nav class="navbar-modern fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-book-open me-2"></i>Pahana Edu Bookshop
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/shop"><i class="fas fa-store me-1"></i>Shop</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/help"><i class="fas fa-question-circle me-1"></i>Help</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item position-relative">
-                        <a class="nav-link" href="/cart">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <a class="navbar-brand-modern" href="/">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Pahana Edu Bookshop</span>
+                </a>
+
+                <div class="d-none d-lg-flex align-items-center gap-4">
+                    <nav class="d-flex gap-2">
+                        <a class="nav-link-modern" href="/">
+                            <i class="fas fa-home"></i>Home
+                        </a>
+                        <a class="nav-link-modern" href="/shop">
+                            <i class="fas fa-store"></i>Shop
+                        </a>
+                        <a class="nav-link-modern" href="/help">
+                            <i class="fas fa-life-ring"></i>Help
+                        </a>
+                        <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <a class="position-relative" href="/cart">
+                        <button class="btn btn-outline-primary btn-sm">
                             <i class="fas fa-shopping-cart me-1"></i>Cart
-                            <span class="cart-badge" id="cartCount">0</span>
+                        </button>
+                        <span class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount">0</span>
+                    </a>
+
+                    <!-- Login Button for Non-Authenticated Users -->
+                    <div sec:authorize="!isAuthenticated()">
+                        <a href="/login" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
                         </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user me-1"></i><span sec:authentication="name">User</span>
-                        </a>
-                        <ul class="dropdown-menu" style="border: 2px solid var(--antique-gold);">
-                            <li><a class="dropdown-item" href="/user/dashboard">
-                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
-                            <li><a class="dropdown-item active" href="/my-orders">
-                                <i class="fas fa-shopping-bag me-2"></i>My Orders</a></li>
-                            <li><a class="dropdown-item" href="/profile">
-                                <i class="fas fa-user-cog me-2"></i>Profile</a></li>
-                            <li sec:authorize="hasRole('ADMIN')"><hr class="dropdown-divider"></li>
-                            <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" href="/admin/dashboard">
-                                <i class="fas fa-cogs me-2"></i>Admin Panel</a></li>
+                    </div>
+
+                    <!-- User Dropdown for Authenticated Users -->
+                    <div sec:authorize="isAuthenticated()" class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span sec:authentication="name">User</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 modern-dropdown">
+                            <li>
+                                <a class="dropdown-item py-2" href="/user/dashboard">
+                                    <i class="fas fa-tachometer-alt me-2 text-primary"></i>Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="/my-orders">
+                                    <i class="fas fa-shopping-bag me-2 text-primary"></i>My Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="/profile">
+                                    <i class="fas fa-user-cog me-2 text-primary"></i>Profile
+                                </a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a class="dropdown-item py-2" href="/admin/dashboard">
+                                    <i class="fas fa-shield-alt me-2 text-warning"></i>Admin Panel
+                                </a>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout">
-                                <i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            <li>
+                                <a class="dropdown-item py-2 text-danger" href="/logout">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
                         </ul>
-                    </li>
-                </ul>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex flex-column gap-2 mt-3 d-lg-none">
+                    <a class="nav-link-modern" href="/">
+                        <i class="fas fa-home"></i>Home
+                    </a>
+                    <a class="nav-link-modern" href="/shop">
+                        <i class="fas fa-store"></i>Shop
+                    </a>
+                    <a class="nav-link-modern" href="/help">
+                        <i class="fas fa-life-ring"></i>Help
+                    </a>
+                    <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
+                        <i class="fas fa-tachometer-alt"></i>Dashboard
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="page-header">
+    <!-- Modern Hero Section -->
+    <section class="hero-section">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1 class="display-5 fw-bold mb-3">
-                        <i class="fas fa-shopping-bag me-3"></i>My Orders
-                    </h1>
-                    <p class="lead mb-0 opacity-90">Track your purchases and reading collection history</p>
+            <div class="hero-content text-center">
+                <div class="hero-badge animate-fade-in-up">
+                    <i class="fas fa-shopping-bag"></i>
+                    Order History
                 </div>
-                <div class="col-md-4 text-end">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-end mb-0" style="--bs-breadcrumb-divider-color: var(--antique-gold);">
-                            <li class="breadcrumb-item">
-                                <a href="/user/dashboard" style="color: var(--antique-gold); text-decoration: none;">
-                                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active" style="color: var(--ivory-cream);" aria-current="page">
-                                <i class="fas fa-shopping-bag me-1"></i>Orders
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
+                
+                <h1 class="hero-title animate-fade-in-up" style="animation-delay: 0.1s">
+                    My Orders
+                </h1>
+                
+                <p class="hero-subtitle animate-fade-in-up" style="animation-delay: 0.2s">
+                    Track and view your purchase history and order status
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Orders Content -->
-    <section class="py-5">
+    <!-- Orders Content Section -->
+    <section class="features-section">
         <div class="container">
-            <!-- Orders List -->
-            <div th:if="${orders != null and #lists.size(orders) > 0}">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 style="color: var(--oxford-blue); font-weight: 700;">
-                                <i class="fas fa-list me-2"></i>Order History
-                            </h5>
-                            <span style="color: var(--charcoal-gray); opacity: 0.8;">
-                                <span th:text="${#lists.size(orders)}">0</span> orders found
-                            </span>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-modern">
+                        <div class="card-header-modern">
+                            <h4 class="mb-0">
+                                <i class="fas fa-list me-2 text-primary"></i>
+                                Order History
+                            </h4>
+                            <span class="badge bg-primary" sec:authentication="name">Welcome, User</span>
                         </div>
                         
-                        <!-- Order Cards -->
-                        <div th:each="order : ${orders}" class="order-card">
-                            <div class="order-header">
-                                <div class="row w-100 align-items-center">
-                                    <div class="col-md-4">
-                                        <div class="order-id">
-                                            <i class="fas fa-receipt me-2"></i>
-                                            Order #<span th:text="${order.id}">ORDER-123</span>
-                                        </div>
-                                        <div class="order-date">
-                                            <i class="fas fa-calendar me-1"></i>
-                                            <span th:text="${#temporals.format(order.orderDate, 'MMM dd, yyyy HH:mm')}">Jan 01, 2024 10:30</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 text-center">
-                                        <span class="order-status" 
-                                              th:class="'order-status status-' + ${#strings.toLowerCase(order.status)}"
-                                              th:text="${order.status}">
-                                            COMPLETED
-                                        </span>
-                                    </div>
-                                    <div class="col-md-4 text-end">
-                                        <div class="total-amount">
-                                            <i class="fas fa-rupee-sign me-1"></i>
-                                            <span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)}">0.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Order Items -->
-                            <div class="order-items">
-                                <div th:each="item : ${order.items}" class="order-item">
-                                    <div class="item-info">
-                                        <div class="item-title" th:text="${item.title}">Book Title</div>
-                                        <div class="item-quantity">
-                                            Quantity: <span th:text="${item.quantity}">1</span>
-                                        </div>
-                                    </div>
-                                    <div class="item-price">
-                                        <i class="fas fa-rupee-sign me-1"></i>
-                                        <span th:text="${#numbers.formatDecimal(item.price * item.quantity, 1, 2)}">0.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Order Actions -->
-                            <div class="order-total">
-                                <div class="row align-items-center">
-                                    <div class="col-md-6">
-                                        <small style="color: var(--charcoal-gray); opacity: 0.8;">
-                                            Customer: <span th:text="${order.customerName}">Customer Name</span>
-                                        </small>
-                                    </div>
-                                    <div class="col-md-6 text-end">
-                                        <strong>Total: 
-                                            <span class="total-amount">
-                                                <i class="fas fa-rupee-sign me-1"></i>
-                                                <span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)}">0.00</span>
-                                            </span>
-                                        </strong>
-                                    </div>
+                        <div class="card-body">
+                            <!-- No Orders State -->
+                            <div class="text-center py-5">
+                                <div class="empty-state">
+                                    <i class="fas fa-shopping-bag text-muted mb-3" style="font-size: 4rem;"></i>
+                                    <h4 class="text-muted mb-3">No orders yet</h4>
+                                    <p class="text-secondary mb-4">
+                                        You haven't placed any orders yet. Start shopping to see your order history here!
+                                    </p>
+                                    <a href="/shop" class="btn-modern btn-primary btn-lg">
+                                        <i class="fas fa-search"></i>
+                                        Start Shopping
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Empty State -->
-            <div th:if="${orders == null or #lists.size(orders) == 0}" class="empty-state">
-                <i class="fas fa-shopping-cart empty-icon"></i>
-                <h4 style="color: var(--oxford-blue); font-weight: 700; margin-bottom: 1rem;">No Orders Yet</h4>
-                <p style="color: var(--charcoal-gray); opacity: 0.8; margin-bottom: 2rem;">
-                    You haven't placed any orders yet. Start exploring our collection to find your next great read!
-                </p>
-                <div class="d-flex justify-content-center gap-3 flex-wrap">
-                    <a href="/shop" class="btn-custom">
-                        <i class="fas fa-store me-2"></i>Browse Books
-                    </a>
-                    <a href="/user/dashboard" class="btn-custom" style="background: var(--dusty-rose); border-color: var(--dusty-rose);">
-                        <i class="fas fa-tachometer-alt me-2"></i>Back to Dashboard
-                    </a>
+        </div>
+    </section>
+
+    <!-- Quick Actions Section -->
+    <section class="features-section" style="padding-top: 0;">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h3>Quick Actions</h3>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h5 class="feature-title">View Cart</h5>
+                        <p class="feature-description">Check items currently in your shopping cart.</p>
+                        <a href="/cart" class="btn btn-outline-primary btn-sm">View Cart</a>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h5 class="feature-title">Browse Books</h5>
+                        <p class="feature-description">Explore our collection of academic and professional books.</p>
+                        <a href="/shop" class="btn btn-outline-primary btn-sm">Browse Books</a>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <h5 class="feature-title">My Profile</h5>
+                        <p class="feature-description">Manage your account settings and personal information.</p>
+                        <a href="/profile" class="btn btn-outline-primary btn-sm">View Profile</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer-custom py-4">
+    <!-- Information Section -->
+    <section class="features-section" style="padding-top: 0;">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h6 class="mb-2" style="color: var(--antique-gold);">
-                        <i class="fas fa-book-open me-2"></i>Pahana Edu Bookshop
-                    </h6>
-                    <p class="small mb-0 opacity-75">Fostering knowledge, nurturing minds.</p>
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h4 class="mb-0">
+                        <i class="fas fa-info-circle me-2 text-primary"></i>
+                        Order Information
+                    </h4>
                 </div>
-                <div class="col-md-6 text-end">
-                    <div class="d-flex justify-content-end gap-3">
-                        <a href="/" style="color: var(--ivory-cream); opacity: 0.8; text-decoration: none;">
-                            <i class="fas fa-home me-1"></i>Home
-                        </a>
-                        <a href="/shop" style="color: var(--ivory-cream); opacity: 0.8; text-decoration: none;">
-                            <i class="fas fa-store me-1"></i>Shop
-                        </a>
-                        <a href="/help" style="color: var(--ivory-cream); opacity: 0.8; text-decoration: none;">
-                            <i class="fas fa-question-circle me-1"></i>Help
+                
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-truck text-primary me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="mb-1">Free Delivery</h6>
+                                    <p class="text-secondary small mb-0">
+                                        We offer free delivery across Sri Lanka for all orders. Your books will be delivered safely to your doorstep.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-shield-alt text-success me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="mb-1">Secure Ordering</h6>
+                                    <p class="text-secondary small mb-0">
+                                        All orders are processed securely through our encrypted checkout system for your safety.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-clock text-info me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="mb-1">Quick Processing</h6>
+                                    <p class="text-secondary small mb-0">
+                                        Orders are typically processed within 24 hours and delivered within 2-3 business days.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-headset text-warning me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="mb-1">Customer Support</h6>
+                                    <p class="text-secondary small mb-0">
+                                        Need help with your order? Visit our help center or contact our customer support team.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="/help" class="btn btn-outline-secondary">
+                            <i class="fas fa-question-circle me-2"></i>
+                            Get Help & Support
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Shopping cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            const cartBadge = document.getElementById('cartCount');
+            if (cartBadge) {
+                cartBadge.textContent = totalItems;
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+    </script>
 </body>
 </html>

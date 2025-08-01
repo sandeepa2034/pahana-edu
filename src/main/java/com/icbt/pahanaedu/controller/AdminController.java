@@ -416,26 +416,4 @@ public class AdminController {
         // Return relative URL
         return "/images/books/" + filename;
     }
-
-    /**
-     * Admin Profile Page
-     */
-    @GetMapping("/profile")
-    public String adminProfile(Authentication authentication, Model model) {
-        String username = authentication.getName();
-        User user = userService.findByUsername(username).orElse(null);
-        
-        if (user == null) {
-            return "redirect:/login";
-        }
-        
-        model.addAttribute("user", user);
-        model.addAttribute("appName", "Pahana Education");
-        
-        // Add admin-specific stats
-        Map<String, Object> adminStats = getDashboardStatistics();
-        model.addAttribute("adminStats", adminStats);
-        
-        return "profile"; // Reuse the same profile page but with admin context
-    }
 }

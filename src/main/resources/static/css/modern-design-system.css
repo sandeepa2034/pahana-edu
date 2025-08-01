@@ -264,6 +264,15 @@ body {
   background: var(--bg-secondary);
 }
 
+.card-header-modern {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--neutral-200);
+  background: var(--bg-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .card-body {
   padding: var(--space-6);
 }
@@ -272,6 +281,17 @@ body {
   padding: var(--space-6);
   border-top: 1px solid var(--neutral-200);
   background: var(--bg-secondary);
+}
+
+/* Empty State */
+.empty-state {
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+}
+
+.empty-state i {
+  display: block;
+  margin: 0 auto var(--space-6);
 }
 
 /* Modern Form Controls */
@@ -523,6 +543,118 @@ body {
 
 .book-cover-4 {
   background: linear-gradient(135deg, #F59E0B, #D97706) !important;
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+
+.hero-section {
+  background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+  padding: var(--space-24) 0 var(--space-16);
+  margin-top: 80px; /* Account for fixed navbar */
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%237c74f2" fill-opacity="0.05"><circle cx="30" cy="30" r="4"/></g></svg>') repeat;
+  opacity: 0.5;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: rgba(124, 116, 242, 0.1);
+  border: 1px solid rgba(124, 116, 242, 0.2);
+  border-radius: var(--radius-full);
+  color: var(--primary-700);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  margin-bottom: var(--space-6);
+}
+
+.hero-title {
+  font-size: var(--text-5xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: var(--space-6);
+}
+
+.hero-subtitle {
+  font-size: var(--text-xl);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-8);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========================================
+   FEATURES SECTION
+   ======================================== */
+
+.features-section {
+  padding: var(--space-16) 0;
+  background: var(--bg-primary);
+}
+
+.feature-card {
+  background: white;
+  padding: var(--space-8);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--neutral-200);
+  transition: all var(--transition-normal);
+  height: 100%;
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-300);
+}
+
+.feature-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-6);
+  font-size: var(--text-2xl);
+  color: white;
+}
+
+.feature-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.feature-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-6);
 }
 
 /* ========================================

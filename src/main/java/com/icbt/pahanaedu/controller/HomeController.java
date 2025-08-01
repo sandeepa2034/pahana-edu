@@ -1,7 +1,9 @@
 package com.icbt.pahanaedu.controller;
 
 import com.icbt.pahanaedu.model.Item;
+import com.icbt.pahanaedu.model.User;
 import com.icbt.pahanaedu.service.ItemService;
+import com.icbt.pahanaedu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,15 +13,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
 
     @Autowired
     private ItemService itemService;
+    
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/")
     public String home(Model model, Authentication authentication) {
@@ -137,5 +146,84 @@ public class HomeController {
     public String checkout(Model model) {
         model.addAttribute("appName", "Pahana Edu Bookshop - Checkout");
         return "checkout";
+    }
+
+    /**
+     * Show user profile page
+     */
+    @GetMapping("/profile")
+    public String profile(Model model, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        
+        // Get current user details
+        String username = authentication.getName();
+        Optional<User> userOpt = userService.findByUsername(username);
+        
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            model.addAttribute("user", user);
+            model.addAttribute("appName", "Pahana Edu Bookshop - Profile");
+            model.addAttribute("username", user.getUsername());
+        } else {
+            model.addAttribute("error", "User not found");
+            return "redirect:/login";
+        }
+        
+        return "profile";
+    }
+    
+    /**
+     * Update user profile
+     */
+    @PostMapping("/profile/update")
+    public String updateProfile(@ModelAttribute User updatedUser, Authentication authentication, 
+                               RedirectAttributes redirectAttributes) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        
+        try {
+            String username = authentication.getName();
+            Optional<User> userOpt = userService.findByUsername(username);
+            
+            if (userOpt.isPresent()) {
+                User existingUser = userOpt.get();
+                
+                // Update only the profile fields, preserve security fields
+                existingUser.setEmail(updatedUser.getEmail());
+                existingUser.setFirstName(updatedUser.getFirstName());
+                existingUser.setLastName(updatedUser.getLastName());
+                existingUser.setAddress(updatedUser.getAddress());
+                existingUser.setCity(updatedUser.getCity());
+                existingUser.setCountry(updatedUser.getCountry());
+                existingUser.setPhone(updatedUser.getPhone());
+                
+                userService.updateUser(existingUser);
+                redirectAttributes.addFlashAttribute("success", "Profile updated successfully!");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "User not found");
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error updating profile: " + e.getMessage());
+        }
+        
+        return "redirect:/profile";
+    }
+
+    /**
+     * Show user orders page
+     */
+    @GetMapping("/my-orders")
+    public String myOrders(Model model, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        
+        model.addAttribute("appName", "Pahana Edu Bookshop - My Orders");
+        model.addAttribute("username", authentication.getName());
+        
+        return "user/orders";
     }
 }

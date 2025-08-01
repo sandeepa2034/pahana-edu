@@ -28,361 +28,809 @@
   <body>
     <!-- Modern Navigation -->
     <nav class="navbar-modern fixed-top">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <a class="navbar-brand-modern" href="/">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span th:text="${appName}">Pahana Edu Bookshop</span>
-                </a>
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand-modern" href="/">
+            <i class="fas fa-graduation-cap"></i>
+            <span th:text="${appName}">Pahana Edu Bookshop</span>
+          </a>
 
-                <div class="d-none d-lg-flex align-items-center gap-4">
-                    <nav class="d-flex gap-2">
-                        <a class="nav-link-modern" href="/">
-                            <i class="fas fa-home"></i>Home
-                        </a>
-                        <a class="nav-link-modern" href="/shop">
-                            <i class="fas fa-store"></i>Shop
-                        </a>
-                        <a class="nav-link-modern active" href="/help">
-                            <i class="fas fa-life-ring"></i>Help
-                        </a>
-                        <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
-                            <i class="fas fa-tachometer-alt"></i>Dashboard
-                        </a>
-                    </nav>
-                </div>
+          <div class="d-none d-lg-flex align-items-center gap-4">
+            <nav class="d-flex gap-2">
+              <a class="nav-link-modern" href="/">
+                <i class="fas fa-home"></i>Home
+              </a>
+              <a class="nav-link-modern" href="/shop">
+                <i class="fas fa-store"></i>Shop
+              </a>
+              <a class="nav-link-modern active" href="/help">
+                <i class="fas fa-life-ring"></i>Help
+              </a>
+              <a
+                sec:authorize="isAuthenticated()"
+                class="nav-link-modern"
+                href="/user/dashboard"
+              >
+                <i class="fas fa-tachometer-alt"></i>Dashboard
+              </a>
+            </nav>
+          </div>
 
-                <div class="d-flex align-items-center gap-3">
-                    <a class="position-relative" href="/cart">
-                        <button class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-shopping-cart me-1"></i>Cart
-                        </button>
-                        <span class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount">0</span>
-                    </a>
+          <div class="d-flex align-items-center gap-3">
+            <a class="position-relative" href="/cart">
+              <button class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-shopping-cart me-1"></i>Cart
+              </button>
+              <span
+                class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                id="cartCount"
+                >0</span
+              >
+            </a>
 
-                    <!-- Login Button for Non-Authenticated Users -->
-                    <div sec:authorize="!isAuthenticated()">
-                        <a href="/login" class="btn btn-primary">
-                            <i class="fas fa-sign-in-alt me-2"></i>Login
-                        </a>
-                    </div>
-
-                    <!-- User Dropdown for Authenticated Users -->
-                    <div sec:authorize="isAuthenticated()" class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user-circle me-1"></i>
-                            <span sec:authentication="name">User</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 modern-dropdown">
-                            <li>
-                                <a class="dropdown-item py-2" href="/user/dashboard">
-                                    <i class="fas fa-tachometer-alt me-2 text-primary"></i>Dashboard
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item py-2" href="/my-orders">
-                                    <i class="fas fa-shopping-bag me-2 text-primary"></i>My Orders
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item py-2" href="/profile">
-                                    <i class="fas fa-user-cog me-2 text-primary"></i>Profile
-                                </a>
-                            </li>
-                            <li sec:authorize="hasRole('ADMIN')">
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li sec:authorize="hasRole('ADMIN')">
-                                <a class="dropdown-item py-2" href="/admin/dashboard">
-                                    <i class="fas fa-shield-alt me-2 text-warning"></i>Admin Panel
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                                <a class="dropdown-item py-2 text-danger" href="/logout">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="collapse" 
-                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
-                    <i class="fas fa-bars"></i>
-                </button>
+            <!-- Login Button for Non-Authenticated Users -->
+            <div sec:authorize="!isAuthenticated()">
+              <a href="/login" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </a>
             </div>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="d-flex flex-column gap-2 mt-3 d-lg-none">
-                    <a class="nav-link-modern" href="/">
-                        <i class="fas fa-home"></i>Home
-                    </a>
-                    <a class="nav-link-modern" href="/shop">
-                        <i class="fas fa-store"></i>Shop
-                    </a>
-                    <a class="nav-link-modern active" href="/help">
-                        <i class="fas fa-life-ring"></i>Help
-                    </a>
-                    <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
-                        <i class="fas fa-tachometer-alt"></i>Dashboard
-                    </a>
-                </div>
+            <!-- User Dropdown for Authenticated Users -->
+            <div sec:authorize="isAuthenticated()" class="dropdown">
+              <button
+                class="btn btn-primary dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fas fa-user-circle me-1"></i>
+                <span sec:authentication="name">User</span>
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow-lg border-0 modern-dropdown"
+              >
+                <li>
+                  <a class="dropdown-item py-2" href="/user/dashboard">
+                    <i class="fas fa-tachometer-alt me-2 text-primary"></i
+                    >Dashboard
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" href="/my-orders">
+                    <i class="fas fa-shopping-bag me-2 text-primary"></i>My
+                    Orders
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" href="/profile">
+                    <i class="fas fa-user-cog me-2 text-primary"></i>Profile
+                  </a>
+                </li>
+                <li sec:authorize="hasRole('ADMIN')">
+                  <hr class="dropdown-divider" />
+                </li>
+                <li sec:authorize="hasRole('ADMIN')">
+                  <a class="dropdown-item py-2" href="/admin/dashboard">
+                    <i class="fas fa-shield-alt me-2 text-warning"></i>Admin
+                    Panel
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 text-danger" href="/logout">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                  </a>
+                </li>
+              </ul>
             </div>
+          </div>
+
+          <button
+            class="btn btn-outline-primary d-lg-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
         </div>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="d-flex flex-column gap-2 mt-3 d-lg-none">
+            <a class="nav-link-modern" href="/">
+              <i class="fas fa-home"></i>Home
+            </a>
+            <a class="nav-link-modern" href="/shop">
+              <i class="fas fa-store"></i>Shop
+            </a>
+            <a class="nav-link-modern active" href="/help">
+              <i class="fas fa-life-ring"></i>Help
+            </a>
+            <a
+              sec:authorize="isAuthenticated()"
+              class="nav-link-modern"
+              href="/user/dashboard"
+            >
+              <i class="fas fa-tachometer-alt"></i>Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
     </nav>
 
     <!-- Page Header -->
-    <section class="help-header">
+    <section class="hero-section">
       <div class="container">
-        <div class="text-center">
-          <h1 class="display-4 fw-bold mb-3">Help & Support</h1>
-          <p class="lead mb-0 opacity-90">
-            Get assistance with your academic bookshop experience
+        <div class="hero-content text-center">
+          <div class="hero-badge animate-fade-in-up">
+            <i class="fas fa-life-ring"></i>
+            Help & Support Center
+          </div>
+
+          <h1
+            class="hero-title animate-fade-in-up"
+            style="animation-delay: 0.1s"
+          >
+            How Can We Help You?
+          </h1>
+
+          <p
+            class="hero-subtitle animate-fade-in-up"
+            style="animation-delay: 0.2s"
+          >
+            Find answers to your questions and get the support you need for your
+            academic journey
           </p>
+
+          <!-- Quick Search -->
+          <div
+            class="search-box animate-fade-in-up"
+            style="animation-delay: 0.3s; max-width: 500px; margin: 2rem auto 0"
+          >
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Search for help topics..."
+              id="helpSearch"
+            />
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Help Content -->
-    <section class="py-5">
+    <section class="features-section">
       <div class="container">
+        <!-- Quick Help Cards -->
+        <div class="row g-4 mb-5">
+          <div class="col-md-4">
+            <div class="feature-card text-center">
+              <div class="feature-icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <h5 class="feature-title">Shopping Guide</h5>
+              <p class="feature-description">
+                Learn how to browse, select, and purchase your academic books
+              </p>
+              <a href="#faq1" class="btn-modern btn-primary btn-sm"
+                >Learn More</a
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature-card text-center">
+              <div class="feature-icon">
+                <i class="fas fa-user-circle"></i>
+              </div>
+              <h5 class="feature-title">Account Help</h5>
+              <p class="feature-description">
+                Get help with account creation, login, and profile management
+              </p>
+              <a href="#faq2" class="btn-modern btn-primary btn-sm"
+                >Learn More</a
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature-card text-center">
+              <div class="feature-icon">
+                <i class="fas fa-credit-card"></i>
+              </div>
+              <h5 class="feature-title">Payment Support</h5>
+              <p class="feature-description">
+                Information about payment methods and transaction security
+              </p>
+              <a href="#faq5" class="btn-modern btn-primary btn-sm"
+                >Learn More</a
+              >
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-lg-8 mx-auto">
             <!-- FAQ Section -->
-            <h2 class="section-title">Frequently Asked Questions</h2>
-
-            <div class="accordion" id="helpAccordion">
-              <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button
-                    class="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq1"
-                  >
-                    How do I browse and purchase books?
-                  </button>
+            <div class="card-modern mb-5">
+              <div class="card-header-modern">
+                <h2 class="mb-0">
+                  <i class="fas fa-question-circle me-2 text-primary"></i>
+                  Frequently Asked Questions
                 </h2>
-                <div
-                  id="faq1"
-                  class="accordion-collapse collapse show"
-                  data-bs-parent="#helpAccordion"
-                >
-                  <div class="accordion-body">
-                    <p>To browse and purchase books:</p>
-                    <ol>
-                      <li>
-                        Visit our <a href="/shop">Shop page</a> to view all
-                        available books
-                      </li>
-                      <li>
-                        Use filters to search by category, price range, or
-                        keywords
-                      </li>
-                      <li>
-                        Click "Add to Cart" for books you want to purchase
-                      </li>
-                      <li>Review your cart and proceed to checkout</li>
-                      <li>No account creation required for purchases!</li>
-                    </ol>
-                  </div>
-                </div>
               </div>
-
-              <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq2"
+              <div class="card-body p-0">
+                <div class="accordion" id="helpAccordion">
+                  <div
+                    class="accordion-item border-0 mb-3 rounded-lg overflow-hidden"
                   >
-                    Do I need to create an account to shop?
-                  </button>
-                </h2>
-                <div
-                  id="faq2"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#helpAccordion"
-                >
-                  <div class="accordion-body">
-                    <p>
-                      <strong>No!</strong> You can browse and purchase books as
-                      a guest without creating an account.
-                    </p>
-                    <p>However, creating an account allows you to:</p>
-                    <ul>
-                      <li>Save your favorite books</li>
-                      <li>Track your order history</li>
-                      <li>Receive personalized recommendations</li>
-                      <li>Get updates on new arrivals</li>
-                    </ul>
+                    <h2 class="accordion-header">
+                      <button
+                        class="accordion-button bg-transparent border-0 p-4 fw-semibold text-dark"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq1"
+                      >
+                        <i class="fas fa-shopping-bag me-3 text-primary"></i>
+                        How do I browse and purchase books?
+                      </button>
+                    </h2>
+                    <div
+                      id="faq1"
+                      class="accordion-collapse collapse show"
+                      data-bs-parent="#helpAccordion"
+                    >
+                      <div class="accordion-body px-4 pb-4">
+                        <div
+                          class="alert alert-info border-0 bg-primary bg-opacity-10 mb-3"
+                        >
+                          <i class="fas fa-info-circle me-2"></i>
+                          <strong>Quick Tip:</strong> No account required for
+                          shopping!
+                        </div>
+                        <p class="mb-3">To browse and purchase books:</p>
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                              <span class="badge bg-primary me-3 mt-1">1</span>
+                              <div>
+                                <strong>Browse Our Catalog</strong>
+                                <p class="small text-muted mb-0">
+                                  Visit our
+                                  <a href="/shop" class="text-primary"
+                                    >Shop page</a
+                                  >
+                                  to view all available books
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                              <span class="badge bg-primary me-3 mt-1">2</span>
+                              <div>
+                                <strong>Filter & Search</strong>
+                                <p class="small text-muted mb-0">
+                                  Use filters to search by category, price
+                                  range, or keywords
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                              <span class="badge bg-primary me-3 mt-1">3</span>
+                              <div>
+                                <strong>Add to Cart</strong>
+                                <p class="small text-muted mb-0">
+                                  Click "Add to Cart" for books you want to
+                                  purchase
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                              <span class="badge bg-primary me-3 mt-1">4</span>
+                              <div>
+                                <strong>Checkout</strong>
+                                <p class="small text-muted mb-0">
+                                  Review your cart and proceed to secure
+                                  checkout
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq3"
+                  <div
+                    class="accordion-item border-0 mb-3 rounded-lg overflow-hidden"
                   >
-                    What categories of books do you offer?
-                  </button>
-                </h2>
-                <div
-                  id="faq3"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#helpAccordion"
-                >
-                  <div class="accordion-body">
-                    <p>We offer books in various categories including:</p>
-                    <ul>
-                      <li>
-                        <strong>Programming:</strong> Software development,
-                        coding languages
-                      </li>
-                      <li>
-                        <strong>Computer Science:</strong> Algorithms, data
-                        structures, theory
-                      </li>
-                      <li>
-                        <strong>Mathematics:</strong> Pure and applied
-                        mathematics
-                      </li>
-                      <li>
-                        <strong>Physics:</strong> Theoretical and applied
-                        physics
-                      </li>
-                      <li>
-                        <strong>Database:</strong> Database design and
-                        management
-                      </li>
-                      <li>
-                        <strong>Software Engineering:</strong> Best practices
-                        and methodologies
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+                    <h2 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed bg-transparent border-0 p-4 fw-semibold text-dark"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq2"
+                      >
+                        <i class="fas fa-user-plus me-3 text-success"></i>
+                        Do I need to create an account to shop?
+                      </button>
+                    </h2>
+                    <div
+                      id="faq2"
+                      class="accordion-collapse collapse"
+                      data-bs-parent="#helpAccordion"
+                    >
+                      <div class="accordion-body px-4 pb-4">
+                        <div
+                          class="alert alert-success border-0 bg-success bg-opacity-10 mb-3"
+                        >
+                          <i class="fas fa-check-circle me-2"></i>
+                          <strong>Great News:</strong> No account required for
+                          shopping!
+                        </div>
+                        <p class="mb-3">
+                          You can browse and purchase books as a guest without
+                          creating an account.
+                        </p>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq4"
+                        <div class="card bg-light border-0 p-3 mb-3">
+                          <h6 class="text-primary mb-2">
+                            <i class="fas fa-star me-2"></i>
+                            Benefits of Creating an Account
+                          </h6>
+                          <div class="row g-2">
+                            <div class="col-md-6">
+                              <div class="d-flex align-items-center">
+                                <i class="fas fa-heart text-danger me-2"></i>
+                                <small>Save your favorite books</small>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="d-flex align-items-center">
+                                <i class="fas fa-history text-info me-2"></i>
+                                <small>Track your order history</small>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="d-flex align-items-center">
+                                <i class="fas fa-magic text-warning me-2"></i>
+                                <small>Get personalized recommendations</small>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="d-flex align-items-center">
+                                <i class="fas fa-bell text-primary me-2"></i>
+                                <small>Receive updates on new arrivals</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="accordion-item border-0 mb-3 rounded-lg overflow-hidden"
                   >
-                    How do I search for specific books?
-                  </button>
-                </h2>
-                <div
-                  id="faq4"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#helpAccordion"
-                >
-                  <div class="accordion-body">
-                    <p>You can find books using several methods:</p>
-                    <ul>
-                      <li>
-                        <strong>Search Bar:</strong> Enter book title, author
-                        name, or keywords
-                      </li>
-                      <li>
-                        <strong>Category Filter:</strong> Browse books by
-                        specific categories
-                      </li>
-                      <li>
-                        <strong>Price Range:</strong> Filter books within your
-                        budget
-                      </li>
-                      <li>
-                        <strong>Sort Options:</strong> Sort by title, author, or
-                        price
-                      </li>
-                    </ul>
+                    <h2 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed bg-transparent border-0 p-4 fw-semibold text-dark"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq3"
+                      >
+                        <i class="fas fa-book-open me-3 text-info"></i>
+                        What categories of books do you offer?
+                      </button>
+                    </h2>
+                    <div
+                      id="faq3"
+                      class="accordion-collapse collapse"
+                      data-bs-parent="#helpAccordion"
+                    >
+                      <div class="accordion-body px-4 pb-4">
+                        <p class="mb-4">
+                          We specialize in academic and technical books across
+                          various fields:
+                        </p>
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <div
+                              class="card border-0 bg-gradient-primary bg-opacity-10 p-3"
+                            >
+                              <div class="d-flex align-items-center">
+                                <i
+                                  class="fas fa-code text-primary me-3"
+                                  style="font-size: 1.2rem"
+                                ></i>
+                                <div>
+                                  <h6 class="mb-1 text-primary">Programming</h6>
+                                  <small class="text-muted"
+                                    >Software development, coding
+                                    languages</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div
+                              class="card border-0 bg-gradient-info bg-opacity-10 p-3"
+                            >
+                              <div class="d-flex align-items-center">
+                                <i
+                                  class="fas fa-laptop-code text-info me-3"
+                                  style="font-size: 1.2rem"
+                                ></i>
+                                <div>
+                                  <h6 class="mb-1 text-info">
+                                    Computer Science
+                                  </h6>
+                                  <small class="text-muted"
+                                    >Algorithms, data structures, theory</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div
+                              class="card border-0 bg-gradient-success bg-opacity-10 p-3"
+                            >
+                              <div class="d-flex align-items-center">
+                                <i
+                                  class="fas fa-calculator text-success me-3"
+                                  style="font-size: 1.2rem"
+                                ></i>
+                                <div>
+                                  <h6 class="mb-1 text-success">Mathematics</h6>
+                                  <small class="text-muted"
+                                    >Pure and applied mathematics</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div
+                              class="card border-0 bg-gradient-warning bg-opacity-10 p-3"
+                            >
+                              <div class="d-flex align-items-center">
+                                <i
+                                  class="fas fa-atom text-warning me-3"
+                                  style="font-size: 1.2rem"
+                                ></i>
+                                <div>
+                                  <h6 class="mb-1 text-warning">Physics</h6>
+                                  <small class="text-muted"
+                                    >Theoretical and applied physics</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div
+                              class="card border-0 bg-gradient-danger bg-opacity-10 p-3"
+                            >
+                              <div class="d-flex align-items-center">
+                                <i
+                                  class="fas fa-database text-danger me-3"
+                                  style="font-size: 1.2rem"
+                                ></i>
+                                <div>
+                                  <h6 class="mb-1 text-danger">Database</h6>
+                                  <small class="text-muted"
+                                    >Database design and management</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div
+                              class="card border-0 bg-gradient-secondary bg-opacity-10 p-3"
+                            >
+                              <div class="d-flex align-items-center">
+                                <i
+                                  class="fas fa-cogs text-secondary me-3"
+                                  style="font-size: 1.2rem"
+                                ></i>
+                                <div>
+                                  <h6 class="mb-1 text-secondary">
+                                    Software Engineering
+                                  </h6>
+                                  <small class="text-muted"
+                                    >Best practices and methodologies</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq5"
+                  <div
+                    class="accordion-item border-0 mb-3 rounded-lg overflow-hidden"
                   >
-                    What payment methods do you accept?
-                  </button>
-                </h2>
-                <div
-                  id="faq5"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#helpAccordion"
-                >
-                  <div class="accordion-body">
-                    <p>
-                      We accept multiple payment methods for your convenience:
-                    </p>
-                    <ul>
-                      <li>Cash (for in-store purchases)</li>
-                      <li>Credit/Debit Cards</li>
-                      <li>Digital Payments (mobile wallets)</li>
-                      <li>Bank Transfers</li>
-                    </ul>
+                    <h2 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed bg-transparent border-0 p-4 fw-semibold text-dark"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq4"
+                      >
+                        <i class="fas fa-search me-3 text-warning"></i>
+                        How do I search for specific books?
+                      </button>
+                    </h2>
+                    <div
+                      id="faq4"
+                      class="accordion-collapse collapse"
+                      data-bs-parent="#helpAccordion"
+                    >
+                      <div class="accordion-body px-4 pb-4">
+                        <p class="mb-4">
+                          You can find books using several powerful search
+                          methods:
+                        </p>
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <div class="border rounded-lg p-3 h-100">
+                              <div class="d-flex align-items-center mb-2">
+                                <div
+                                  class="bg-primary bg-opacity-10 rounded-circle p-2 me-3"
+                                >
+                                  <i class="fas fa-search text-primary"></i>
+                                </div>
+                                <h6 class="mb-0">Search Bar</h6>
+                              </div>
+                              <small class="text-muted"
+                                >Enter book title, author name, or keywords for
+                                instant results</small
+                              >
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="border rounded-lg p-3 h-100">
+                              <div class="d-flex align-items-center mb-2">
+                                <div
+                                  class="bg-success bg-opacity-10 rounded-circle p-2 me-3"
+                                >
+                                  <i class="fas fa-filter text-success"></i>
+                                </div>
+                                <h6 class="mb-0">Category Filter</h6>
+                              </div>
+                              <small class="text-muted"
+                                >Browse books by specific academic
+                                categories</small
+                              >
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="border rounded-lg p-3 h-100">
+                              <div class="d-flex align-items-center mb-2">
+                                <div
+                                  class="bg-info bg-opacity-10 rounded-circle p-2 me-3"
+                                >
+                                  <i class="fas fa-dollar-sign text-info"></i>
+                                </div>
+                                <h6 class="mb-0">Price Range</h6>
+                              </div>
+                              <small class="text-muted"
+                                >Filter books within your budget range</small
+                              >
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="border rounded-lg p-3 h-100">
+                              <div class="d-flex align-items-center mb-2">
+                                <div
+                                  class="bg-warning bg-opacity-10 rounded-circle p-2 me-3"
+                                >
+                                  <i class="fas fa-sort text-warning"></i>
+                                </div>
+                                <h6 class="mb-0">Sort Options</h6>
+                              </div>
+                              <small class="text-muted"
+                                >Sort by title, author, or price for easy
+                                browsing</small
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="accordion-item border-0 mb-3 rounded-lg overflow-hidden"
+                  >
+                    <h2 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed bg-transparent border-0 p-4 fw-semibold text-dark"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq5"
+                      >
+                        <i class="fas fa-credit-card me-3 text-success"></i>
+                        What payment methods do you accept?
+                      </button>
+                    </h2>
+                    <div
+                      id="faq5"
+                      class="accordion-collapse collapse"
+                      data-bs-parent="#helpAccordion"
+                    >
+                      <div class="accordion-body px-4 pb-4">
+                        <div
+                          class="alert alert-success border-0 bg-success bg-opacity-10 mb-3"
+                        >
+                          <i class="fas fa-shield-alt me-2"></i>
+                          <strong>Secure Payments:</strong> All transactions are
+                          protected with 256-bit SSL encryption
+                        </div>
+                        <p class="mb-4">
+                          We accept multiple payment methods for your
+                          convenience:
+                        </p>
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <div
+                              class="card border-success border-opacity-25 p-3"
+                            >
+                              <div class="d-flex align-items-center">
+                                <div
+                                  class="bg-success bg-opacity-10 rounded-circle p-2 me-3"
+                                >
+                                  <i class="fas fa-money-bill text-success"></i>
+                                </div>
+                                <div>
+                                  <h6 class="mb-1 text-success">
+                                    Cash Payment
+                                  </h6>
+                                  <small class="text-muted"
+                                    >For in-store purchases</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div
+                              class="card border-primary border-opacity-25 p-3"
+                            >
+                              <div class="d-flex align-items-center">
+                                <div
+                                  class="bg-primary bg-opacity-10 rounded-circle p-2 me-3"
+                                >
+                                  <i
+                                    class="fas fa-credit-card text-primary"
+                                  ></i>
+                                </div>
+                                <div>
+                                  <h6 class="mb-1 text-primary">
+                                    Credit/Debit Cards
+                                  </h6>
+                                  <small class="text-muted"
+                                    >Visa, MasterCard, Amex</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="card border-info border-opacity-25 p-3">
+                              <div class="d-flex align-items-center">
+                                <div
+                                  class="bg-info bg-opacity-10 rounded-circle p-2 me-3"
+                                >
+                                  <i class="fas fa-mobile-alt text-info"></i>
+                                </div>
+                                <div>
+                                  <h6 class="mb-1 text-info">
+                                    Digital Payments
+                                  </h6>
+                                  <small class="text-muted"
+                                    >Mobile wallets & e-payments</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div
+                              class="card border-warning border-opacity-25 p-3"
+                            >
+                              <div class="d-flex align-items-center">
+                                <div
+                                  class="bg-warning bg-opacity-10 rounded-circle p-2 me-3"
+                                >
+                                  <i class="fas fa-university text-warning"></i>
+                                </div>
+                                <div>
+                                  <h6 class="mb-1 text-warning">
+                                    Bank Transfer
+                                  </h6>
+                                  <small class="text-muted"
+                                    >Direct bank transfers</small
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Contact Section -->
-            <div class="mt-5">
-              <h3 class="section-title">Still Need Help?</h3>
-              <div class="row g-4">
-                <div class="col-md-6">
-                  <div class="contact-card">
-                    <i class="fas fa-store contact-icon store"></i>
-                    <h5>Visit Our Store</h5>
-                    <p class="mb-0">
-                      123 Main Street<br />
-                      Colombo 07, Sri Lanka<br />
-                      <strong>Hours:</strong> Mon-Sat 9AM-6PM
-                    </p>
+              <!-- Contact Section -->
+              <div class="card-modern">
+                <div class="card-header-modern">
+                  <h3 class="mb-0">
+                    <i class="fas fa-headset me-2 text-primary"></i>
+                    Still Need Help?
+                  </h3>
+                </div>
+                <div class="card-body">
+                  <p class="text-muted mb-4">
+                    Can't find what you're looking for? Our support team is here
+                    to help!
+                  </p>
+                  <div class="row g-4">
+                    <div class="col-md-6">
+                      <div class="contact-card">
+                        <div class="contact-icon store">
+                          <i class="fas fa-store"></i>
+                        </div>
+                        <h5 class="feature-title">Visit Our Store</h5>
+                        <div class="text-start">
+                          <p class="mb-2">
+                            <i
+                              class="fas fa-map-marker-alt text-primary me-2"
+                            ></i>
+                            123 Main Street<br />
+                            <span class="ms-4">Colombo 07, Sri Lanka</span>
+                          </p>
+                          <p class="mb-0">
+                            <i class="fas fa-clock text-success me-2"></i>
+                            <strong>Hours:</strong> Mon-Sat 9AM-6PM
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="contact-card">
+                        <div class="contact-icon phone">
+                          <i class="fas fa-phone"></i>
+                        </div>
+                        <h5 class="feature-title">Contact Us</h5>
+                        <div class="text-start">
+                          <p class="mb-2">
+                            <i class="fas fa-phone text-primary me-2"></i>
+                            <strong>Phone:</strong> +94 11 234 5678
+                          </p>
+                          <p class="mb-2">
+                            <i class="fas fa-envelope text-info me-2"></i>
+                            <strong>Email:</strong> info@pahanaedu.lk
+                          </p>
+                          <p class="mb-0">
+                            <i class="fab fa-whatsapp text-success me-2"></i>
+                            <strong>WhatsApp:</strong> +94 77 123 4567
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="contact-card">
-                    <i class="fas fa-phone contact-icon phone"></i>
-                    <h5>Contact Us</h5>
-                    <p class="mb-0">
-                      <strong>Phone:</strong> +94 11 234 5678<br />
-                      <strong>Email:</strong> info@pahanaedu.lk<br />
-                      <strong>WhatsApp:</strong> +94 77 123 4567
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="mt-5 text-center">
-              <h4 class="section-title">Quick Actions</h4>
-              <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="/shop" class="btn btn-primary-custom">
-                  <i class="fas fa-shopping-bag me-2"></i> Start Shopping
-                </a>
-                <a href="/" class="btn btn-outline-custom">
-                  <i class="fas fa-home me-2"></i> Back to Home
-                </a>
-                <a href="/login" class="btn btn-sage">
-                  <i class="fas fa-user me-2"></i> Login / Register
-                </a>
               </div>
             </div>
           </div>
@@ -409,5 +857,71 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Help search functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("helpSearch");
+        const accordionItems = document.querySelectorAll(".accordion-item");
+
+        if (searchInput) {
+          searchInput.addEventListener("input", function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+
+            accordionItems.forEach((item) => {
+              const button = item.querySelector(".accordion-button");
+              const content = item.querySelector(".accordion-body");
+              const buttonText = button.textContent.toLowerCase();
+              const contentText = content.textContent.toLowerCase();
+
+              if (
+                buttonText.includes(searchTerm) ||
+                contentText.includes(searchTerm)
+              ) {
+                item.style.display = "block";
+
+                // Highlight search term if found
+                if (
+                  searchTerm &&
+                  (buttonText.includes(searchTerm) ||
+                    contentText.includes(searchTerm))
+                ) {
+                  item.classList.add("highlight-search");
+                } else {
+                  item.classList.remove("highlight-search");
+                }
+              } else {
+                item.style.display = searchTerm ? "none" : "block";
+                item.classList.remove("highlight-search");
+              }
+            });
+          });
+        }
+
+        // Smooth scroll to FAQ items when clicked from quick help cards
+        document.querySelectorAll('a[href^="#faq"]').forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement) {
+              // Open the accordion item
+              const collapseElement = targetElement;
+              const bsCollapse = new bootstrap.Collapse(collapseElement, {
+                show: true,
+              });
+
+              // Scroll to the element
+              setTimeout(() => {
+                targetElement.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }, 300);
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>

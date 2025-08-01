@@ -14,6 +14,9 @@ public class Bill {
 
     @Id
     private String id;
+    
+    // Bill number for display and reference
+    private String billNumber;
 
     // Customer information
     @DBRef
@@ -448,5 +451,26 @@ public class Bill {
                 ", orderStatus='" + orderStatus + '\'' +
                 ", orderDate=" + orderDate +
                 '}';
+    }
+    
+    // Bill number methods
+    public String getBillNumber() {
+        return billNumber;
+    }
+
+    public void setBillNumber(String billNumber) {
+        this.billNumber = billNumber;
+    }
+    
+    /**
+     * Generate a unique bill number based on current date and time
+     */
+    public void generateBillNumber() {
+        if (this.billNumber == null || this.billNumber.isEmpty()) {
+            LocalDateTime now = LocalDateTime.now();
+            this.billNumber = String.format("PEB-%04d%02d%02d-%02d%02d%02d",
+                    now.getYear(), now.getMonthValue(), now.getDayOfMonth(),
+                    now.getHour(), now.getMinute(), now.getSecond());
+        }
     }
 }
