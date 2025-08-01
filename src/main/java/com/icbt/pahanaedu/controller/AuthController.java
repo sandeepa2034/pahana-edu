@@ -199,26 +199,6 @@ public class AuthController {
     }
 
     /**
-     * User profile page
-     */
-    @GetMapping("/profile")
-    public String showProfile(Authentication authentication, Model model) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return "redirect:/login";
-        }
-
-        String username = authentication.getName();
-        User user = userService.findByUsername(username).orElse(null);
-
-        if (user == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("user", user);
-        return "profile";
-    }
-
-    /**
      * Access denied page
      */
     @GetMapping("/access-denied")

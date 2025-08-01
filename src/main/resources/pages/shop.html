@@ -81,12 +81,28 @@
         
         .book-cover-modern {
             height: 280px;
-            background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%);
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+        }
+        
+        /* Book Cover Color Variants */
+        .book-cover-1 {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700)) !important;
+        }
+
+        .book-cover-2 {
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important;
+        }
+
+        .book-cover-3 {
+            background: linear-gradient(135deg, #10B981, #059669) !important;
+        }
+
+        .book-cover-4 {
+            background: linear-gradient(135deg, #F59E0B, #D97706) !important;
         }
         
         .book-cover-modern::before {
@@ -99,12 +115,22 @@
             background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.1) 100%);
         }
         
-        .book-icon-modern {
-            font-size: 4rem;
-            color: var(--primary-600);
-            opacity: 0.8;
+        .book-cover-content {
+            text-align: center;
+            padding: var(--space-4);
+            color: white;
             z-index: 2;
             position: relative;
+        }
+
+        .book-cover-title {
+            font-size: var(--text-sm);
+            line-height: 1.4;
+            max-height: 3.5rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
         }
         
         .book-info {
@@ -341,12 +367,12 @@
                         </ul>
                     </li>
                     
-                    <!-- Login (Not Authenticated) -->
+                    <!-- Login (Not Authenticated)
                     <li sec:authorize="!isAuthenticated()" class="nav-item">
                         <a class="btn btn-primary btn-sm px-3" href="/login">
                             <i class="fas fa-sign-in-alt me-1"></i>Login
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -450,7 +476,7 @@
                             <i class="fas fa-filter me-2 text-primary-500"></i>Filter Books
                         </h5>
                         
-                        <!-- Categories -->
+                        <!-- Categories
                         <div class="mb-4">
                             <h6 class="fw-semibold text-neutral-700 mb-3">Categories</h6>
                             <div class="d-grid gap-2">
@@ -466,7 +492,7 @@
                                     Category Name
                                 </a>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- Price Range -->
                         <div class="mb-4">
@@ -545,11 +571,17 @@
                     <!-- Books Grid -->
                     <div class="row g-4">
                         <!-- Dynamic Items -->
-                        <div th:if="${items != null and #lists.size(items) > 0}" th:each="item : ${items}" class="col-xl-4 col-lg-6 col-md-6">
+                        <div th:if="${items != null and #lists.size(items) > 0}" th:each="item,itemStat : ${items}" class="col-xl-4 col-lg-6 col-md-6">
                             <div class="book-card-modern h-100">
-                                <!-- Book Cover -->
-                                <div class="book-cover-modern">
-                                    <i class="fas fa-book-open book-icon-modern"></i>
+                                <!-- Book Cover with dynamic colors -->
+                                <div class="book-cover-modern book-cover-placeholder" 
+                                     th:class="'book-cover-modern book-cover-placeholder book-cover-' + (${itemStat.index % 4} + 1)">
+                                    <div class="book-cover-content">
+                                        <i class="fas fa-book-open text-white fs-1 mb-3"></i>
+                                        <div class="book-cover-title text-white fw-bold text-center" th:text="${item.title}">
+                                            Book Title
+                                        </div>
+                                    </div>
                                     
                                     <!-- Availability Badge -->
                                     <div class="position-absolute top-0 end-0 m-3">

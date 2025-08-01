@@ -1,53 +1,501 @@
-# Pahana Edu Billing System
+# Pahana Edu Bookshop - Billing Management System
 
 ![Java](https://img.shields.io/badge/Java-23-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.5-green)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-success)
 ![Maven](https://img.shields.io/badge/Maven-Build-blue)
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-Template-green)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3.0-purple)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-A comprehensive web-based billing management system for Pahana Edu Bookshop in Colombo City. Built with Spring Boot, MongoDB Atlas, and Thymeleaf to manage customer accounts and billing information efficiently. The application provides a modern, responsive interface for both customers and administrators.
+A comprehensive web-based billing and inventory management system for Pahana Edu Bookshop located in Colombo, Sri Lanka. Built with modern Spring Boot architecture, MongoDB Atlas cloud database, and responsive Thymeleaf templates to provide a seamless experience for both customers and administrators.
 
 ## 🚀 Features
 
-### Core Functional Tasks
-✅ **User Authentication**
-- Spring Security with encrypted passwords (BCrypt)
-- Login form with input validation
-- Logout and session timeout handling
+### ✅ **Customer Features**
+- **Browse Books Catalog**: Search and filter books by title, author, category, and price range
+- **Shopping Cart**: Add/remove items, update quantities, view cart summary
+- **Secure Checkout**: Multiple payment methods (Card, PayPal, Bank Transfer, Cash on Delivery)
+- **Order Management**: View order history, track order status
+- **Profile Management**: Update personal information, shipping addresses
+- **Help Center**: FAQ section, contact support, search help articles
 
-✅ **Customer Account Management**
-- Add, edit, and view customer accounts
-- Search customer by account number or name
-- Phone number validation and management
-- Customer billing history tracking
+### ✅ **Administrator Features**
+- **Customer Management**: Create, edit, delete customer accounts with search functionality
+- **Inventory Management**: Full CRUD operations for books (title, author, price, stock, category)
+- **Order Processing**: View all orders, update order status, process refunds
+- **Dashboard Analytics**: System statistics, low stock alerts, sales overview
+- **User Role Management**: Admin and customer role assignments
+- **System Configuration**: Application settings and security management
 
-✅ **Book/Item Management**
-- CRUD operations for books and items (title, author, price, stock)
-- Display book catalog with sorting/search
-- Inventory management for bookshop stock
+### ✅ **Technical Features**
+- **Authentication & Security**: Spring Security with BCrypt password encryption
+- **Database Integration**: MongoDB Atlas cloud database with Spring Data MongoDB
+- **Responsive UI**: Bootstrap 5.3.0 with modern glass-morphism design
+- **RESTful APIs**: Comprehensive REST endpoints for all operations
+- **Input Validation**: Server-side validation with Jakarta Bean Validation
+- **Error Handling**: Graceful error handling with user-friendly messages
+- **Session Management**: Secure session handling with timeout configuration
 
-✅ **Bill Calculation**
-- Input: quantity purchased → Output: total amount
-- Auto-fetch book/item price for calculation
-- Display itemized breakdown with total
-- Generate printable/PDF bills for customers
+## 📋 TODO Tasks
 
-✅ **Database Integration (Spring Data MongoDB)**
-- Use MongoDB for data persistence
-- Entities: Customer, Book/Item, Bill, User
-- Customer account details with phone number as primary key
-- Relationships and field validation via annotations
+### 🔄 **Pending Implementation**
+- **PDF Bill Generation**: Generate downloadable PDF invoices after checkout completion
 
-✅ **User Interface**
-- HTML + Thymeleaf with Bootstrap styling
-- Customer-facing: Browse books, view cart, purchase
-- Admin dashboard: Customers, Books, Billing, Reports, Help
-- Error/success alerts using th:if
+## 🛠️ Technology Stack
 
-✅ **Help Section**
+### **Backend**
+- **Java 23**: Latest Java LTS version
+- **Spring Boot 3.2.5**: Application framework
+- **Spring Security 6**: Authentication and authorization
+- **Spring Data MongoDB**: Database abstraction layer
+- **MongoDB Atlas**: Cloud database service
+- **Jakarta Validation**: Input validation
+- **Maven**: Dependency management and build tool
+
+### **Frontend**
+- **Thymeleaf**: Server-side template engine
+- **Bootstrap 5.3.0**: CSS framework for responsive design
+- **Font Awesome 6.4.0**: Icon library
+- **Inter Font**: Modern typography
+- **Custom CSS**: Glass-morphism design system
+
+### **Development Tools**
+- **Spring Boot DevTools**: Hot reload and development utilities
+- **Checkstyle**: Code quality enforcement
+- **JUnit 5 & Mockito**: Unit and integration testing
+
+## 📁 Project Structure
+
+```
+pahana-edu/
+├── src/
+│   ├── main/
+│   │   ├── java/com/icbt/pahanaedu/
+│   │   │   ├── PahanaEduApplication.java        # Main application class
+│   │   │   ├── controller/                      # Web controllers
+│   │   │   │   ├── HomeController.java          # Home, shop, profile routing
+│   │   │   │   ├── AuthController.java          # Login/register functionality
+│   │   │   │   ├── AdminController.java         # Admin dashboard operations
+│   │   │   │   ├── CustomerController.java      # Customer management
+│   │   │   │   └── api/                         # REST API controllers
+│   │   │   │       ├── ApiController.java       # General API endpoints
+│   │   │   │       ├── CustomerController.java  # Customer API
+│   │   │   │       └── ItemController.java      # Item management API
+│   │   │   ├── model/                           # MongoDB document models
+│   │   │   │   ├── Bill.java                    # Order/billing model with OrderItem
+│   │   │   │   ├── Customer.java                # Customer profile model
+│   │   │   │   ├── Item.java                    # Book/product model
+│   │   │   │   └── User.java                    # Authentication user model
+│   │   │   ├── repository/                      # MongoDB repositories
+│   │   │   │   ├── BillRepository.java          # Order data access
+│   │   │   │   ├── CustomerRepository.java      # Customer data access
+│   │   │   │   ├── ItemRepository.java          # Item data access
+│   │   │   │   └── UserRepository.java          # User authentication data
+│   │   │   ├── service/                         # Business logic layer
+│   │   │   │   ├── CustomerService.java         # Customer business operations
+│   │   │   │   ├── ItemService.java             # Inventory management logic
+│   │   │   │   └── UserService.java             # User management logic
+│   │   │   └── config/                          # Configuration classes
+│   │   │       ├── AppConfig.java               # Application configuration
+│   │   │       └── SecurityConfig.java          # Spring Security setup
+│   │   └── resources/
+│   │       ├── application.properties           # Main configuration
+│   │       ├── application-dev.properties       # Development configuration
+│   │       ├── pages/                          # Thymeleaf templates
+│   │       │   ├── index.html                  # Landing page
+│   │       │   ├── shop.html                   # Book catalog
+│   │       │   ├── cart.html                   # Shopping cart
+│   │       │   ├── checkout.html               # Checkout process
+│   │       │   ├── login.html                  # User authentication
+│   │       │   ├── register.html               # User registration
+│   │       │   ├── profile.html                # User profile management
+│   │       │   ├── help.html                   # Help center
+│   │       │   ├── admin/                      # Admin templates
+│   │       │   │   ├── dashboard.html          # Admin overview
+│   │       │   │   ├── customers.html          # Customer management
+│   │       │   │   ├── items.html              # Inventory management
+│   │       │   │   └── orders.html             # Order processing
+│   │       │   ├── user/                       # User-specific templates
+│   │       │   │   ├── dashboard.html          # User dashboard
+│   │       │   │   └── orders.html             # Order history
+│   │       │   └── error/                      # Error pages
+│   │       │       └── access-denied.html      # Access denied page
+│   │       ├── static/                         # Static assets
+│   │       │   ├── css/                        # Stylesheets
+│   │       │   │   ├── modern-design-system.css # Design system
+│   │       │   │   ├── admin-dashboard.css     # Admin styling
+│   │       │   │   ├── checkout.css            # Checkout styling
+│   │       │   │   ├── help.css                # Help page styling
+│   │       │   │   ├── index.css               # Landing page styling
+│   │       │   │   ├── login.css               # Login page styling
+│   │       │   │   ├── register.css            # Registration styling
+│   │       │   │   └── user-dashboard.css      # User dashboard styling
+│   │       │   ├── js/                         # JavaScript files
+│   │       │   └── images/                     # Image assets
+│   │       │       └── books/                  # Book cover images
+│   │       └── templates/                      # Additional templates
+│   │           ├── help.html                   # Help template
+│   │           ├── profile.html                # Profile template
+│   │           ├── admin/dashboard.html        # Admin dashboard template
+│   │           └── user/orders.html            # User orders template
+│   └── test/                                   # Test files
+│       ├── java/com/icbt/pahanaedu/           # Test source
+│       └── resources/                          # Test resources
+│           └── application-test.properties     # Test configuration
+├── docs/                                       # Documentation
+│   ├── ADMIN-FUNCTIONALITY-SUMMARY.md         # Admin features documentation
+│   ├── COLOR-CONSISTENCY-FIXES-SUMMARY.md     # UI consistency guide
+│   ├── NAVIGATION-STANDARDIZATION-SUMMARY.md  # Navigation standards
+│   ├── UI-UX-MODERNIZATION-SUMMARY.md         # UI modernization guide
+│   └── USE-CASE-DIAGRAM.md                    # System use case diagram
+├── mongodb/                                    # Database scripts
+│   ├── README.md                              # MongoDB setup guide
+│   ├── sample-data/                           # Sample data files
+│   └── scripts/                               # Database scripts
+│       ├── fix-phone-index.js                 # Phone index fix script
+│       └── init-db.js                         # Database initialization
+├── target/                                     # Maven build output
+├── pom.xml                                     # Maven configuration
+├── checkstyle.xml                             # Code style configuration
+└── README.md                                  # This file
+```
+
+## ⚙️ Configuration
+
+### **Database Configuration (application.properties)**
+```properties
+# MongoDB Atlas Cloud Configuration
+spring.data.mongodb.uri=mongodb+srv://[username]:[password]@[cluster].mongodb.net/pahana_edu_db
+spring.data.mongodb.auto-index-creation=false
+
+# Server Configuration
+server.port=8080
+server.servlet.context-path=/
+
+# Thymeleaf Template Configuration
+spring.thymeleaf.cache=false
+spring.thymeleaf.prefix=classpath:/pages/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.mode=HTML
+
+# Security Configuration
+spring.security.user.name=admin
+spring.security.user.password=admin123
+spring.security.user.roles=ADMIN
+```
+
+### **Development Configuration (application-dev.properties)**
+- Hot reload enabled with Spring Boot DevTools
+- Debug logging for development
+- LiveReload for automatic browser refresh
+
+## 🗄️ Database Models
+
+### **Customer Model**
+```java
+@Document(collection = "customers")
+public class Customer {
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNumber;
+    private String address;
+    private String city;
+    private String postalCode;
+    private String country;
+    private LocalDateTime registrationDate;
+    private LocalDateTime lastPurchaseDate;
+    private Double totalSpent;
+    private Integer totalOrders;
+}
+```
+
+### **Item Model**
+```java
+@Document(collection = "items")
+public class Item {
+    private String id;
+    private String title;
+    private String author;
+    private String description;
+    private Double price;
+    private Integer stock;
+    private String category;
+    private String isbn;
+    private String publisher;
+    private Boolean available;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
+}
+```
+
+### **Bill Model**
+```java
+@Document(collection = "bills")
+public class Bill {
+    private String id;
+    private Customer customer;
+    private String customerName;
+    private String customerEmail;
+    private String customerPhone;
+    private List<OrderItem> items;
+    private Double subtotal;
+    private Double tax;
+    private Double shipping;
+    private Double discount;
+    private Double total;
+    private String status;
+    private String paymentMethod;
+    private LocalDateTime orderDate;
+    private String shippingAddress;
+}
+```
+
+### **User Model (Authentication)**
+```java
+@Document(collection = "users")
+public class User implements UserDetails {
+    private String id;
+    private String username;
+    private String phone;
+    private String password;
+    private String role; // ADMIN or USER
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String city;
+    private String country;
+}
+```
+
+## 🔧 Installation & Setup
+
+### **Prerequisites**
+- **Java 23** or higher
+- **Maven 3.8+** for dependency management
+- **MongoDB Atlas Account** (cloud database)
+- **Modern Web Browser** (Chrome, Firefox, Safari, Edge)
+
+### **Step 1: Clone Repository**
+```bash
+git clone https://github.com/LastMinute-Labs/pahana-edu.git
+cd pahana-edu
+```
+
+### **Step 2: Configure Database**
+1. Create a MongoDB Atlas account at [mongodb.com/atlas](https://mongodb.com/atlas)
+2. Create a new cluster and database named `pahana_edu_db`
+3. Update `src/main/resources/application.properties` with your MongoDB URI:
+```properties
+spring.data.mongodb.uri=mongodb+srv://[your-username]:[your-password]@[your-cluster].mongodb.net/pahana_edu_db
+```
+
+### **Step 3: Build and Run**
+```bash
+# Build the project
+mvn clean compile
+
+# Run the application
+mvn spring-boot:run
+```
+
+### **Step 4: Access Application**
+- **Application URL**: http://localhost:8080
+- **Admin Login**: admin / admin123
+- **Customer Registration**: Available on the registration page
+
+## 🏃‍♂️ Running the Application
+
+### **Using Maven**
+```bash
+# Development mode with hot reload
+mvn spring-boot:run
+
+# Production build
+mvn clean package
+java -jar target/pahana-edu-0.0.1-SNAPSHOT.jar
+```
+
+### **Using IDE**
+1. Import as Maven project
+2. Run `PahanaEduApplication.java` main method
+3. Access http://localhost:8080
+
+## 📊 API Endpoints
+
+### **Customer Management APIs**
+```
+GET    /admin/customers                 # List all customers
+POST   /admin/customers/create         # Create new customer
+GET    /admin/customers/{id}/edit      # Get customer for editing
+POST   /admin/customers/{id}/update    # Update customer
+DELETE /admin/customers/{id}/delete    # Delete customer
+GET    /admin/customers/search         # Search customers
+```
+
+### **Item Management APIs**
+```
+GET    /admin/items                    # List all items
+POST   /admin/items/create            # Create new item
+GET    /admin/items/{id}/edit         # Get item for editing
+POST   /admin/items/{id}/update       # Update item
+DELETE /admin/items/{id}/delete       # Delete item
+GET    /shop                          # Public item catalog
+GET    /shop/search                   # Search items
+```
+
+### **Order Management APIs**
+```
+GET    /admin/orders                  # View all orders
+POST   /customers/api/checkout        # Process customer order
+GET    /user/orders                   # Customer order history
+POST   /admin/orders/{id}/update-status # Update order status
+```
+
+### **Authentication APIs**
+```
+GET    /login                         # Login page
+POST   /login                         # Process login
+GET    /register                      # Registration page
+POST   /register                      # Process registration
+POST   /logout                        # Logout user
+```
+
+## 🎨 UI/UX Features
+
+### **Modern Design System**
+- **Glass Morphism**: Translucent cards with backdrop blur effects
+- **Responsive Layout**: Mobile-first design with Bootstrap 5.3.0
+- **Color Consistency**: Unified color palette across all pages
+- **Typography**: Inter font family for modern readability
+- **Icon System**: Font Awesome 6.4.0 for consistent iconography
+
+### **User Experience**
+- **Intuitive Navigation**: Consistent navigation across all pages
+- **Real-time Feedback**: Success/error messages for user actions
+- **Loading States**: Visual feedback during form submissions
+- **Search & Filtering**: Advanced search with multiple filter options
+- **Accessibility**: ARIA labels and keyboard navigation support
+
+## 🧪 Testing
+
+### **Test Structure**
+```
+src/test/java/com/icbt/pahanaedu/
+├── model/                             # Model unit tests
+├── service/                           # Service layer tests
+├── controller/                        # Controller integration tests
+├── config/                           # Test configuration
+└── PahanaEduApplicationTests.java    # Application context tests
+```
+
+### **Running Tests**
+```bash
+# Run all tests
+mvn test
+
+# Run specific test class
+mvn test -Dtest=CustomerServiceTest
+
+# Run tests with coverage
+mvn test jacoco:report
+```
+
+## 🔒 Security Features
+
+### **Authentication & Authorization**
+- **Spring Security 6**: Role-based access control
+- **BCrypt Password Encryption**: Secure password storage
+- **Session Management**: Secure session handling with timeout
+- **CSRF Protection**: Cross-site request forgery protection
+- **Input Validation**: Server-side validation with Jakarta Bean Validation
+
+### **Data Protection**
+- **Sanitized Inputs**: All user inputs validated and sanitized
+- **Error Handling**: Graceful error handling without data exposure
+- **Admin Access Control**: Protected admin routes with role verification
+- **Database Security**: MongoDB Atlas with encrypted connections
+
+## 📈 Performance & Scalability
+
+### **Optimization Features**
+- **Connection Pooling**: MongoDB connection optimization
+- **Static Resource Caching**: CSS/JS caching for performance
+- **Template Caching**: Thymeleaf template caching in production
+- **Database Indexing**: Optimized queries with proper indexing
+- **Lazy Loading**: Efficient data loading strategies
+
+## 🚀 Deployment
+
+### **Production Deployment**
+1. **Build Production JAR**:
+   ```bash
+   mvn clean package -Dmaven.test.skip=true
+   ```
+
+2. **Environment Configuration**:
+   - Set production MongoDB URI
+   - Configure server port and context path
+   - Enable template caching
+   - Set appropriate logging levels
+
+3. **Run Application**:
+   ```bash
+   java -jar target/pahana-edu-0.0.1-SNAPSHOT.jar
+   ```
+
+### **Cloud Deployment Options**
+- **Heroku**: Easy deployment with Git integration
+- **AWS Elastic Beanstalk**: Scalable cloud deployment
+- **Google Cloud Run**: Containerized deployment
+- **Azure App Service**: Microsoft cloud platform
+
+## 📝 Contributing
+
+### **Development Guidelines**
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/new-feature`
+3. Commit changes: `git commit -m 'Add new feature'`
+4. Push to branch: `git push origin feature/new-feature`
+5. Submit a pull request
+
+### **Code Standards**
+- Follow Checkstyle configuration in `checkstyle.xml`
+- Write unit tests for new features
+- Update documentation for API changes
+- Follow Spring Boot best practices
+
+## 📚 Documentation
+
+### **Additional Resources**
+- **Admin Functionality**: `docs/ADMIN-FUNCTIONALITY-SUMMARY.md`
+- **UI/UX Guidelines**: `docs/UI-UX-MODERNIZATION-SUMMARY.md`
+- **Navigation Standards**: `docs/NAVIGATION-STANDARDIZATION-SUMMARY.md`
+- **Use Case Diagram**: `docs/USE-CASE-DIAGRAM.md`
+- **MongoDB Setup**: `mongodb/README.md`
+
+## 📞 Support
+
+### **Contact Information**
+- **Project Repository**: https://github.com/LastMinute-Labs/pahana-edu
+- **Organization**: ICBT Campus - Software Engineering Project
+- **Location**: Colombo, Sri Lanka
+
+### **Getting Help**
+- Check the documentation in the `docs/` folder
+- Review the help center at `/help` endpoint
+- Contact support through the application's help section
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+**© 2025 Pahana Edu Bookshop. All rights reserved.**
 - Instructions for browsing books, account creation, and billing
 - Customer support information
 - Displayed as a static HTML or Thymeleaf page

@@ -5,298 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${appName}">Pahana Edu Bookshop - Help</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Professional Academic Color Palette */
-        :root {
-            --oxford-blue: #002147;
-            --ivory-cream: #F8F5EC;
-            --dusty-rose: #C4A69F;
-            --muted-sage: #A8B5A2;
-            --antique-gold: #C6A664;
-            --charcoal-gray: #3E3E3E;
-            --maroon-red: #6C2C2F;
-            
-            /* Extended palette for gradients and states */
-            --oxford-blue-light: #1a3659;
-            --oxford-blue-dark: #001122;
-            --ivory-cream-dark: #F0ECE1;
-            --dusty-rose-light: #D4B6AF;
-            --sage-dark: #98A592;
-            --gold-light: #D6B674;
-        }
-        
-        /* Global Styles */
-        body {
-            background-color: var(--ivory-cream);
-            color: var(--charcoal-gray);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
-        }
-        
-        /* Navigation */
-        .navbar {
-            background: linear-gradient(135deg, var(--oxford-blue) 0%, var(--oxford-blue-light) 100%) !important;
-            border-bottom: 3px solid var(--antique-gold);
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(0, 33, 71, 0.15);
-        }
-        
-        .navbar-brand {
-            color: var(--ivory-cream) !important;
-            font-weight: 700;
-            font-size: 1.5rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .navbar-nav .nav-link {
-            color: var(--ivory-cream) !important;
-            font-weight: 500;
-            margin: 0 0.5rem;
-            padding: 0.75rem 1rem !important;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link.active {
-            background: var(--antique-gold);
-            color: var(--oxford-blue) !important;
-            transform: translateY(-2px);
-        }
-        
-        /* Help Header */
-        .help-header {
-            background: linear-gradient(135deg, var(--oxford-blue-light) 0%, var(--muted-sage) 100%);
-            color: var(--ivory-cream);
-            padding: 80px 0 60px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .help-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" fill="rgba(198,166,100,0.1)"><path d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,128C672,107,768,85,864,90.7C960,96,1008,128,1032,144L1056,160L1056,320L1032,320C1008,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"/></svg>') no-repeat bottom;
-            background-size: cover;
-        }
-        
-        .help-header .container {
-            position: relative;
-            z-index: 2;
-        }
-        
-        /* Section Titles */
-        .section-title {
-            color: var(--oxford-blue);
-            font-weight: 700;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--antique-gold), var(--dusty-rose));
-            border-radius: 2px;
-        }
-        
-        /* Accordion Styling */
-        .accordion-item {
-            background: var(--ivory-cream);
-            border: 2px solid var(--ivory-cream-dark);
-            border-radius: 12px !important;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 33, 71, 0.1);
-        }
-        
-        .accordion-button {
-            background: var(--ivory-cream);
-            color: var(--oxford-blue);
-            font-weight: 600;
-            border: none;
-            padding: 1.5rem;
-            border-radius: 12px !important;
-        }
-        
-        .accordion-button:not(.collapsed) {
-            background: linear-gradient(135deg, var(--antique-gold), var(--gold-light));
-            color: var(--oxford-blue);
-            box-shadow: none;
-        }
-        
-        .accordion-button:focus {
-            box-shadow: 0 0 0 0.25rem rgba(198, 166, 100, 0.25);
-            border-color: var(--antique-gold);
-        }
-        
-        .accordion-button::after {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23002147'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-        }
-        
-        .accordion-body {
-            background: var(--ivory-cream);
-            color: var(--charcoal-gray);
-            padding: 1.5rem;
-        }
-        
-        /* Contact Cards */
-        .contact-card {
-            background: var(--ivory-cream);
-            border: 2px solid var(--ivory-cream-dark);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            height: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(0, 33, 71, 0.1);
-        }
-        
-        .contact-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--antique-gold);
-            box-shadow: 0 8px 32px rgba(0, 33, 71, 0.15);
-        }
-        
-        .contact-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .contact-icon.store { color: var(--oxford-blue); }
-        .contact-icon.phone { color: var(--muted-sage); }
-        .contact-icon.email { color: var(--dusty-rose); }
-        
-        .contact-card h5 {
-            color: var(--oxford-blue);
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        
-        /* Buttons */
-        .btn-primary-custom {
-            background: linear-gradient(135deg, var(--oxford-blue), var(--oxford-blue-light));
-            border: none;
-            color: var(--ivory-cream);
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(0, 33, 71, 0.3);
-        }
-        
-        .btn-primary-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 33, 71, 0.4);
-            background: linear-gradient(135deg, var(--oxford-blue-light), var(--muted-sage));
-            color: var(--ivory-cream);
-        }
-        
-        .btn-outline-custom {
-            background: transparent;
-            border: 2px solid var(--dusty-rose);
-            color: var(--dusty-rose);
-            padding: 10px 22px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-outline-custom:hover {
-            background: var(--dusty-rose);
-            color: var(--ivory-cream);
-            transform: translateY(-2px);
-        }
-        
-        .btn-sage {
-            background: linear-gradient(135deg, var(--muted-sage), var(--sage-dark));
-            border: none;
-            color: var(--ivory-cream);
-            padding: 10px 22px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-sage:hover {
-            background: linear-gradient(135deg, var(--sage-dark), var(--muted-sage));
-            color: var(--ivory-cream);
-            transform: translateY(-2px);
-        }
-        
-        /* Links */
-        a {
-            color: var(--oxford-blue);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        a:hover {
-            color: var(--antique-gold);
-        }
-        
-        /* Footer */
-        .footer-custom {
-            background: var(--oxford-blue);
-            color: var(--ivory-cream);
-            border-top: 4px solid var(--antique-gold);
-        }
-        
-        /* Lists */
-        ul li, ol li {
-            margin-bottom: 0.5rem;
-        }
-        
-        strong {
-            color: var(--oxford-blue);
-        }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/modern-design-system.css">
+    <link rel="stylesheet" href="/css/help.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <!-- Modern Navigation -->
+    <nav class="navbar-modern fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="/" th:text="${appName}">Pahana Edu Bookshop</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <a class="navbar-brand-modern" href="/">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span th:text="${appName}">Pahana Edu Bookshop</span>
+                </a>
+
+                <div class="d-none d-lg-flex align-items-center gap-4">
+                    <nav class="d-flex gap-2">
+                        <a class="nav-link-modern" href="/">
+                            <i class="fas fa-home"></i>Home
+                        </a>
+                        <a class="nav-link-modern" href="/shop">
+                            <i class="fas fa-store"></i>Shop
+                        </a>
+                        <a class="nav-link-modern active" href="/help">
+                            <i class="fas fa-life-ring"></i>Help
+                        </a>
+                        <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <a class="position-relative" href="/cart">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-shopping-cart me-1"></i>Cart
+                        </button>
+                        <span class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount">0</span>
+                    </a>
+
+                    <!-- Login Button for Non-Authenticated Users -->
+                    <div sec:authorize="!isAuthenticated()">
+                        <a href="/login" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+
+                    <!-- User Dropdown for Authenticated Users -->
+                    <div sec:authorize="isAuthenticated()" class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span sec:authentication="name">User</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 modern-dropdown">
+                            <li>
+                                <a class="dropdown-item py-2" href="/user/dashboard">
+                                    <i class="fas fa-tachometer-alt me-2 text-primary"></i>Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="/my-orders">
+                                    <i class="fas fa-shopping-bag me-2 text-primary"></i>My Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="/profile">
+                                    <i class="fas fa-user-cog me-2 text-primary"></i>Profile
+                                </a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a class="dropdown-item py-2" href="/admin/dashboard">
+                                    <i class="fas fa-shield-alt me-2 text-warning"></i>Admin Panel
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item py-2 text-danger" href="/logout">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                <div class="d-flex flex-column gap-2 mt-3 d-lg-none">
+                    <a class="nav-link-modern" href="/">
+                        <i class="fas fa-home"></i>Home
+                    </a>
+                    <a class="nav-link-modern" href="/shop">
+                        <i class="fas fa-store"></i>Shop
+                    </a>
+                    <a class="nav-link-modern active" href="/help">
+                        <i class="fas fa-life-ring"></i>Help
+                    </a>
+                    <a sec:authorize="isAuthenticated()" class="nav-link-modern" href="/user/dashboard">
+                        <i class="fas fa-tachometer-alt"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/shop"><i class="fas fa-store"></i> Shop</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/help"><i class="fas fa-question-circle"></i> Help</a>
+
+                    <!-- Login Button for Non-Authenticated Users -->
+                    <li sec:authorize="!isAuthenticated()" class="nav-item">
+                        <a class="btn btn-primary navbar-btn" href="/login">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item position-relative">
-                        <a class="nav-link" href="/cart">
-                            <i class="fas fa-shopping-cart me-1"></i>Cart
-                            <span class="cart-badge" id="cartCount">0</span>
-                        </a>
-                    </li>
-                    <!-- Show user links if authenticated -->
-                    <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user me-1"></i><span sec:authentication="name">User</span>
-                        </a>
-                        <ul class="dropdown-menu" style="border: 2px solid var(--antique-gold);">
-                            <li><a class="dropdown-item" href="/user/dashboard">
-                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
-                            <li><a class="dropdown-item" href="/my-orders">
+            </div>
+        </div>
+    </nav>
                                 <i class="fas fa-shopping-bag me-2"></i>My Orders</a></li>
                             <li><a class="dropdown-item" href="/profile">
                                 <i class="fas fa-user-cog me-2"></i>Profile</a></li>

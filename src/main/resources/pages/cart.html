@@ -1,663 +1,505 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - Pahana Education</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --primary-blue: #002147;
-            --cream-white: #F8F5EC;
-            --dusty-rose: #C4A69F;
-            --sage-green: #A8B5A2;
-            --antique-gold: #C6A664;
-            --charcoal: #3E3E3E;
-            --maroon: #6C2C2F;
-        }
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart - Pahana Edu Bookshop</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <!-- Modern Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--cream-white) 0%, #f0f0f0 100%);
-            min-height: 100vh;
-        }
+    <!-- CSS Dependencies -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/css/modern-design-system.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Modern Navigation -->
+    <nav class="navbar-modern fixed-top">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand-modern" href="/">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Pahana Edu Bookshop</span>
+          </a>
 
-        /* Navigation */
-        .navbar {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--maroon) 100%);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem 0;
-        }
+          <div class="d-none d-lg-flex align-items-center gap-4">
+            <nav class="d-flex gap-2">
+              <a class="nav-link-modern" href="/">
+                <i class="fas fa-home"></i>Home
+              </a>
+              <a class="nav-link-modern" href="/shop">
+                <i class="fas fa-store"></i>Shop
+              </a>
+              <a class="nav-link-modern" href="/help">
+                <i class="fas fa-life-ring"></i>Help
+              </a>
+              <a
+                sec:authorize="isAuthenticated()"
+                class="nav-link-modern"
+                href="/user/dashboard"
+              >
+                <i class="fas fa-tachometer-alt"></i>Dashboard
+              </a>
+            </nav>
+          </div>
 
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: white !important;
-            text-decoration: none;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--antique-gold) !important;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--maroon) 100%);
-            color: white;
-            padding: 4rem 0 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .breadcrumb {
-            background: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .breadcrumb-item a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-        }
-
-        .breadcrumb-item.active {
-            color: var(--antique-gold);
-        }
-
-        /* Cart Section */
-        .cart-section {
-            padding: 3rem 0;
-        }
-
-        .cart-item {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .cart-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .cart-item-image {
-            width: 100px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .quantity-btn {
-            background: var(--sage-green);
-            border: none;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .quantity-btn:hover {
-            background: var(--primary-blue);
-            transform: scale(1.1);
-        }
-
-        .quantity-input {
-            width: 60px;
-            text-align: center;
-            border: 2px solid var(--sage-green);
-            border-radius: 8px;
-            padding: 8px;
-            font-weight: 600;
-        }
-
-        .price-tag {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-
-        .remove-btn {
-            background: var(--maroon);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .remove-btn:hover {
-            background: #8B3A3A;
-            color: white;
-        }
-
-        /* Cart Summary */
-        .cart-summary {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            position: sticky;
-            top: 2rem;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .summary-row:last-child {
-            border-bottom: none;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary-blue);
-        }
-
-        .checkout-btn {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--maroon) 100%);
-            border: none;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
-        }
-
-        .checkout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 33, 71, 0.3);
-            color: white;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .empty-cart-icon {
-            font-size: 4rem;
-            color: var(--sage-green);
-            margin-bottom: 1rem;
-        }
-
-        .continue-shopping-btn {
-            background: var(--sage-green);
-            border: none;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .continue-shopping-btn:hover {
-            background: var(--primary-blue);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* Footer */
-        .footer {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--maroon) 100%);
-            color: white;
-            padding: 3rem 0 1rem;
-            margin-top: 4rem;
-        }
-
-        .footer h5 {
-            color: var(--antique-gold);
-            margin-bottom: 1rem;
-        }
-
-        .footer a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: var(--antique-gold);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 2rem 0 1rem;
-            }
-
-            .cart-item {
-                margin-bottom: 1rem;
-            }
-
-            .cart-summary {
-                margin-top: 2rem;
-                position: static;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-graduation-cap me-2"></i>Pahana Education
+          <div class="d-flex align-items-center gap-3">
+            <a class="position-relative" href="/cart">
+              <button class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-shopping-cart me-1"></i>Cart
+              </button>
+              <span
+                class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                id="cartCount"
+                >0</span
+              >
             </a>
-            
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fas fa-bars text-white"></i>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/shop">Shop</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/help">Help</a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav ms-auto">
-                    <!-- Cart -->
-                    <li class="nav-item">
-                        <a class="nav-link position-relative" href="/cart">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill" 
-                                  style="background: var(--antique-gold); font-size: 0.7rem;">0</span>
-                        </a>
-                    </li>
-                    
-                    <!-- User Menu -->
-                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i><span sec:authentication="name">User</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/profile">My Profile</a></li>
-                            <li><a class="dropdown-item" href="/my-orders">My Orders</a></li>
-                            <li><a class="dropdown-item" href="/user/dashboard">Dashboard</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form th:action="@{/logout}" method="post" style="display: inline;">
-                                    <button type="submit" class="dropdown-item">Logout</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <!-- Login/Register for guests -->
-                    <li class="nav-item" sec:authorize="!isAuthenticated()">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                </ul>
+
+            <!-- Login Button for Non-Authenticated Users -->
+            <div sec:authorize="!isAuthenticated()">
+              <a href="/login" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </a>
             </div>
+
+            <!-- User Dropdown for Authenticated Users -->
+            <div sec:authorize="isAuthenticated()" class="dropdown">
+              <button
+                class="btn btn-primary dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fas fa-user-circle me-1"></i>
+                <span sec:authentication="name">User</span>
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow-lg border-0 modern-dropdown"
+              >
+                <li>
+                  <a class="dropdown-item py-2" href="/user/dashboard">
+                    <i class="fas fa-tachometer-alt me-2 text-primary"></i
+                    >Dashboard
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" href="/my-orders">
+                    <i class="fas fa-shopping-bag me-2 text-primary"></i>My
+                    Orders
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" href="/profile">
+                    <i class="fas fa-user-cog me-2 text-primary"></i>Profile
+                  </a>
+                </li>
+                <li sec:authorize="hasRole('ADMIN')">
+                  <hr class="dropdown-divider" />
+                </li>
+                <li sec:authorize="hasRole('ADMIN')">
+                  <a class="dropdown-item py-2" href="/admin/dashboard">
+                    <i class="fas fa-shield-alt me-2 text-warning"></i>Admin
+                    Panel
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 text-danger" href="/logout">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-outline-primary d-lg-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
         </div>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="d-flex flex-column gap-2 mt-3 d-lg-none">
+            <a class="nav-link-modern" href="/">
+              <i class="fas fa-home"></i>Home
+            </a>
+            <a class="nav-link-modern" href="/shop">
+              <i class="fas fa-store"></i>Shop
+            </a>
+            <a class="nav-link-modern" href="/help">
+              <i class="fas fa-life-ring"></i>Help
+            </a>
+            <a
+              sec:authorize="isAuthenticated()"
+              class="nav-link-modern"
+              href="/user/dashboard"
+            >
+              <i class="fas fa-tachometer-alt"></i>Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Modern Hero Section -->
     <section class="hero-section">
-        <div class="container">
-            <div class="hero-content">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
-                        <li class="breadcrumb-item active">Shopping Cart</li>
-                    </ol>
-                </nav>
-                <h1 class="display-4 fw-bold mb-3">Shopping Cart</h1>
-                <p class="lead mb-0">Review your selected books before checkout</p>
-            </div>
+      <div class="container">
+        <div class="hero-content text-center">
+          <div class="hero-badge animate-fade-in-up">
+            <i class="fas fa-shopping-cart"></i>
+            Your Shopping Cart
+          </div>
+
+          <h1
+            class="hero-title animate-fade-in-up"
+            style="animation-delay: 0.1s"
+          >
+            Review Your Selection
+          </h1>
+
+          <p
+            class="hero-subtitle animate-fade-in-up"
+            style="animation-delay: 0.2s"
+          >
+            Check your chosen books and proceed to secure checkout
+          </p>
         </div>
+      </div>
     </section>
 
-    <!-- Cart Section -->
-    <section class="cart-section">
-        <div class="container">
-            <div class="row">
-                <!-- Cart Items -->
-                <div class="col-lg-8">
-                    <div id="cartItems">
-                        <!-- Cart items will be loaded here by JavaScript -->
-                    </div>
-                    
-                    <!-- Empty Cart Message -->
-                    <div id="emptyCart" class="empty-cart" style="display: none;">
-                        <div class="empty-cart-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <h3 class="mb-3">Your cart is empty</h3>
-                        <p class="text-muted mb-4">Looks like you haven't added any books to your cart yet. Start shopping to find your perfect educational resources!</p>
-                        <a href="/shop" class="continue-shopping-btn">
-                            <i class="fas fa-book me-2"></i>Continue Shopping
-                        </a>
-                    </div>
+    <!-- Cart Content Section -->
+    <section class="features-section">
+      <div class="container">
+        <div class="row">
+          <!-- Cart Items -->
+          <div class="col-lg-8">
+            <div class="card-modern">
+              <div class="card-header-modern">
+                <h4 class="mb-0">
+                  <i class="fas fa-list me-2 text-primary"></i>
+                  Cart Items
+                </h4>
+                <button
+                  class="btn btn-outline-danger btn-sm"
+                  onclick="clearCart()"
+                  id="clearCartBtn"
+                  style="display: none"
+                >
+                  <i class="fas fa-trash me-1"></i>Clear Cart
+                </button>
+              </div>
+
+              <div class="card-body p-0">
+                <!-- Empty Cart State -->
+                <div id="emptyCart" class="text-center py-5">
+                  <div class="empty-state">
+                    <i
+                      class="fas fa-shopping-cart text-muted mb-3"
+                      style="font-size: 4rem"
+                    ></i>
+                    <h4 class="text-muted mb-3">Your cart is empty</h4>
+                    <p class="text-secondary mb-4">
+                      Discover our amazing collection of books and add them to
+                      your cart.
+                    </p>
+                    <a href="/shop" class="btn-modern btn-primary btn-lg">
+                      <i class="fas fa-search"></i>
+                      Browse Books
+                    </a>
+                  </div>
                 </div>
-                
-                <!-- Cart Summary -->
-                <div class="col-lg-4">
-                    <div id="cartSummary" class="cart-summary" style="display: none;">
-                        <h4 class="mb-4 text-center">Order Summary</h4>
-                        
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span id="subtotal">$0.00</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Shipping:</span>
-                            <span id="shipping">Free</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Tax:</span>
-                            <span id="tax">$0.00</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Total:</span>
-                            <span id="total">$0.00</span>
-                        </div>
-                        
-                        <button class="checkout-btn" onclick="proceedToCheckout()">
-                            <i class="fas fa-lock me-2"></i>Proceed to Checkout
-                        </button>
-                        
-                        <div class="text-center mt-3">
-                            <a href="/shop" class="text-decoration-none">
-                                <i class="fas fa-arrow-left me-2"></i>Continue Shopping
-                            </a>
-                        </div>
-                    </div>
+
+                <!-- Cart Items Container -->
+                <div id="cartItems" style="display: none">
+                  <!-- Cart items will be dynamically inserted here -->
                 </div>
+              </div>
             </div>
+          </div>
+
+          <!-- Order Summary -->
+          <div class="col-lg-4">
+            <div class="card-modern" id="orderSummary" style="display: none">
+              <div class="card-header-modern">
+                <h4 class="mb-0">
+                  <i class="fas fa-calculator me-2 text-primary"></i>
+                  Order Summary
+                </h4>
+              </div>
+
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                  <span>Subtotal (<span id="itemCount">0</span> items)</span>
+                  <span class="fw-bold"
+                    >LKR <span id="subtotal">0.00</span></span
+                  >
+                </div>
+
+                <div class="d-flex justify-content-between mb-3">
+                  <span>Shipping</span>
+                  <span class="text-success fw-bold">Free</span>
+                </div>
+
+                <hr />
+
+                <div class="d-flex justify-content-between mb-4">
+                  <span class="h5 mb-0">Total</span>
+                  <span class="h5 mb-0 text-primary fw-bold"
+                    >LKR <span id="total">0.00</span></span
+                  >
+                </div>
+
+                <a
+                  href="/checkout"
+                  class="btn-modern btn-primary w-100 btn-lg mb-3"
+                >
+                  <i class="fas fa-credit-card me-2"></i>
+                  Proceed to Checkout
+                </a>
+
+                <a href="/shop" class="btn-modern btn-secondary w-100">
+                  <i class="fas fa-arrow-left me-2"></i>
+                  Continue Shopping
+                </a>
+              </div>
+            </div>
+
+            <!-- Security Badge -->
+            <div class="card-modern mt-4">
+              <div class="card-body text-center">
+                <i
+                  class="fas fa-shield-alt text-success mb-2"
+                  style="font-size: 2rem"
+                ></i>
+                <h6 class="mb-2">Secure Checkout</h6>
+                <p class="text-secondary small mb-0">
+                  Your payment information is protected with 256-bit SSL
+                  encryption
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Continue Shopping Section
+    <section class="features-section" style="padding-top: 0;">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h5><i class="fas fa-graduation-cap me-2"></i>Pahana Education</h5>
-                    <p class="mb-3">Your trusted partner in educational excellence. Providing quality books and resources for students and educators.</p>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle">
-                            <i class="fab fa-instagram"></i>
-                        </a>
+            <div class="text-center">
+                <h3 class="mb-4">Explore More Books</h3>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h5 class="feature-title">Academic Textbooks</h5>
+                            <p class="feature-description">Comprehensive textbooks for all academic levels and subjects.</p>
+                            <a href="/shop?category=academic" class="btn btn-outline-primary btn-sm">Browse</a>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/shop">Shop</a></li>
-                        <li><a href="/help">Help</a></li>
-                        <li><a href="/login">Login</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>Categories</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/shop?category=academic">Academic</a></li>
-                        <li><a href="/shop?category=fiction">Fiction</a></li>
-                        <li><a href="/shop?category=reference">Reference</a></li>
-                        <li><a href="/shop?category=children">Children's Books</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-3 mb-4">
-                    <h5>Contact Info</h5>
-                    <p><i class="fas fa-map-marker-alt me-2"></i>123 Education Street, Colombo</p>
-                    <p><i class="fas fa-phone me-2"></i>+94 11 234 5678</p>
-                    <p><i class="fas fa-envelope me-2"></i>info@pahanaedu.lk</p>
-                </div>
-            </div>
-            
-            <hr class="my-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <p>&copy; 2025 Pahana Education. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="#" class="me-3">Privacy Policy</a>
-                    <a href="#" class="me-3">Terms of Service</a>
-                    <a href="#">Support</a>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <h5 class="feature-title">Programming & Tech</h5>
+                            <p class="feature-description">Latest programming languages and technology guides.</p>
+                            <a href="/shop?category=programming" class="btn btn-outline-primary btn-sm">Browse</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h5 class="feature-title">Reference Materials</h5>
+                            <p class="feature-description">Essential reference books for research and study.</p>
+                            <a href="/shop?category=reference" class="btn btn-outline-primary btn-sm">Browse</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </section> -->
 
-    <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Cart Functionality -->
     <script>
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCartDisplay();
-            updateCartCount();
-        });
-        
-        function updateCartDisplay() {
-            const cartItemsContainer = document.getElementById('cartItems');
-            const emptyCartDiv = document.getElementById('emptyCart');
-            const cartSummaryDiv = document.getElementById('cartSummary');
-            
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '';
-                emptyCartDiv.style.display = 'block';
-                cartSummaryDiv.style.display = 'none';
-                return;
-            }
-            
-            emptyCartDiv.style.display = 'none';
-            cartSummaryDiv.style.display = 'block';
-            
-            let cartHTML = '';
-            let subtotal = 0;
-            
-            cart.forEach((item, index) => {
-                const itemTotal = item.price * item.quantity;
-                subtotal += itemTotal;
-                
-                cartHTML += `
-                    <div class="cart-item">
-                        <div class="p-4">
+      // Shopping cart functionality
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      function updateCartDisplay() {
+        const cartItemsContainer = document.getElementById("cartItems");
+        const emptyCartSection = document.getElementById("emptyCart");
+        const orderSummarySection = document.getElementById("orderSummary");
+        const clearCartBtn = document.getElementById("clearCartBtn");
+
+        if (cart.length === 0) {
+          cartItemsContainer.style.display = "none";
+          emptyCartSection.style.display = "block";
+          orderSummarySection.style.display = "none";
+          clearCartBtn.style.display = "none";
+        } else {
+          cartItemsContainer.style.display = "block";
+          emptyCartSection.style.display = "none";
+          orderSummarySection.style.display = "block";
+          clearCartBtn.style.display = "inline-block";
+
+          let cartHTML = "";
+          let subtotal = 0;
+
+          cart.forEach((item, index) => {
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
+
+            cartHTML += `
+                        <div class="border-bottom p-4">
                             <div class="row align-items-center">
-                                <div class="col-md-2 col-sm-3 mb-3 mb-md-0">
-                                    <img src="https://via.placeholder.com/100x120?text=Book" 
-                                         alt="${item.title}" class="cart-item-image">
+                                <div class="col-md-2">
+                                    <div class="book-cover-placeholder book-cover-${
+                                      (index % 4) + 1
+                                    }" style="width: 80px; height: 100px; margin: 0 auto;">
+                                        <div class="book-cover-content">
+                                            <i class="fas fa-book text-white"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                
-                                <div class="col-md-4 col-sm-9 mb-3 mb-md-0">
-                                    <h5 class="fw-bold mb-2">${item.title}</h5>
-                                    <p class="text-muted mb-1">Educational Book</p>
-                                    <span class="price-tag">$${item.price.toFixed(2)}</span>
+                                <div class="col-md-4">
+                                    <h6 class="fw-bold mb-1">${item.title}</h6>
+                                    <p class="text-secondary small mb-0">Academic Book</p>
                                 </div>
-                                
-                                <div class="col-md-3 col-sm-6 mb-3 mb-md-0">
-                                    <div class="quantity-controls">
-                                        <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">
+                                <div class="col-md-2 text-center">
+                                    <span class="fw-bold text-primary">LKR ${item.price.toFixed(
+                                      2
+                                    )}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="quantity-controls d-flex align-items-center justify-content-center">
+                                        <button class="btn btn-outline-secondary btn-sm" onclick="updateQuantity(${index}, ${
+              item.quantity - 1
+            })">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                        <input type="number" class="quantity-input" value="${item.quantity}" 
-                                               min="1" max="99" onchange="setQuantity(${index}, this.value)">
-                                        <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">
+                                        <span class="mx-3 fw-bold">${
+                                          item.quantity
+                                        }</span>
+                                        <button class="btn btn-outline-secondary btn-sm" onclick="updateQuantity(${index}, ${
+              item.quantity + 1
+            })">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
-                                
-                                <div class="col-md-2 col-sm-4 mb-3 mb-md-0 text-center">
-                                    <div class="fw-bold text-primary mb-2">$${itemTotal.toFixed(2)}</div>
-                                </div>
-                                
-                                <div class="col-md-1 col-sm-2 text-center">
-                                    <button class="remove-btn" onclick="removeFromCart(${index})" title="Remove item">
+                                <div class="col-md-2 text-center">
+                                    <div class="fw-bold mb-2">LKR ${itemTotal.toFixed(
+                                      2
+                                    )}</div>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart(${index})">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
-            });
-            
-            cartItemsContainer.innerHTML = cartHTML;
-            
-            // Update summary
-            const tax = subtotal * 0.1; // 10% tax
-            const total = subtotal + tax;
-            
-            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
-            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+                    `;
+          });
+
+          cartItemsContainer.innerHTML = cartHTML;
+
+          // Update order summary
+          document.getElementById("itemCount").textContent = cart.reduce(
+            (total, item) => total + item.quantity,
+            0
+          );
+          document.getElementById("subtotal").textContent = subtotal.toFixed(2);
+          document.getElementById("total").textContent = subtotal.toFixed(2);
         }
-        
-        function updateQuantity(index, change) {
-            if (index >= 0 && index < cart.length) {
-                cart[index].quantity = Math.max(1, cart[index].quantity + change);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartDisplay();
-                updateCartCount();
-                showAlert('Quantity updated', 'success');
-            }
+
+        updateCartCount();
+      }
+
+      function updateQuantity(index, newQuantity) {
+        if (newQuantity <= 0) {
+          removeFromCart(index);
+        } else {
+          cart[index].quantity = newQuantity;
+          localStorage.setItem("cart", JSON.stringify(cart));
+          updateCartDisplay();
         }
-        
-        function setQuantity(index, newQuantity) {
-            const quantity = parseInt(newQuantity);
-            if (quantity >= 1 && quantity <= 99) {
-                cart[index].quantity = quantity;
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartDisplay();
-                updateCartCount();
-                showAlert('Quantity updated', 'success');
-            }
+      }
+
+      function removeFromCart(index) {
+        const removedItem = cart[index];
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartDisplay();
+        showAlert(`"${removedItem.title}" removed from cart`, "info");
+      }
+
+      function clearCart() {
+        if (confirm("Are you sure you want to clear your cart?")) {
+          cart = [];
+          localStorage.setItem("cart", JSON.stringify(cart));
+          updateCartDisplay();
+          showAlert("Cart cleared successfully", "info");
         }
-        
-        function removeFromCart(index) {
-            if (confirm('Are you sure you want to remove this item from your cart?')) {
-                const removedItem = cart[index];
-                cart.splice(index, 1);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartDisplay();
-                updateCartCount();
-                showAlert(`"${removedItem.title}" removed from cart`, 'info');
-            }
+      }
+
+      function updateCartCount() {
+        const totalItems = cart.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        const cartBadge = document.getElementById("cartCount");
+        if (cartBadge) {
+          cartBadge.textContent = totalItems;
         }
-        
-        function updateCartCount() {
-            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-            const cartBadge = document.getElementById('cartCount');
-            if (cartBadge) {
-                cartBadge.textContent = totalItems;
-                cartBadge.style.display = totalItems > 0 ? 'inline' : 'none';
-            }
-        }
-        
-        function proceedToCheckout() {
-            if (cart.length === 0) {
-                showAlert('Your cart is empty!', 'warning');
-                return;
-            }
-            
-            // Redirect to checkout page
-            window.location.href = '/checkout';
-        }
-        
-        function showAlert(message, type) {
-            // Create alert element
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-            alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
-            alert.innerHTML = `
+      }
+
+      function showAlert(message, type) {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.top = "20px";
+        alertDiv.style.right = "20px";
+        alertDiv.style.zIndex = "9999";
+        alertDiv.innerHTML = `
                 ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
-            
-            document.body.appendChild(alert);
-            
-            // Auto remove after 3 seconds
-            setTimeout(() => {
-                if (alert.parentNode) {
-                    alert.remove();
-                }
-            }, 3000);
-        }
+        document.body.appendChild(alertDiv);
+
+        setTimeout(() => {
+          if (alertDiv.parentNode) {
+            alertDiv.parentNode.removeChild(alertDiv);
+          }
+        }, 3000);
+      }
+
+      // Initialize cart display on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCartDisplay();
+      });
     </script>
-</body>
+  </body>
 </html>

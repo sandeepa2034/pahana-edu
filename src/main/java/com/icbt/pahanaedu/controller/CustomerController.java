@@ -8,11 +8,15 @@ import com.icbt.pahanaedu.repository.BillRepository;
 import com.icbt.pahanaedu.service.CustomerService;
 import com.icbt.pahanaedu.service.ItemService;
 import com.icbt.pahanaedu.service.UserService;
+import com.icbt.pahanaedu.service.PdfBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -44,6 +48,9 @@ public class CustomerController {
 
     @Autowired
     private BillRepository billRepository;
+    
+    @Autowired
+    private PdfBillService pdfBillService;
 
     /**
      * List all customers (Admin only)
@@ -218,31 +225,6 @@ public class CustomerController {
     }
 
     /**
-     * User's order history
-     */
-    @GetMapping("/my-orders")
-    public String myOrders(Authentication authentication, Model model) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return "redirect:/login";
-        }
-
-        String username = authentication.getName();
-        Optional<User> user = userService.findByUsername(username);
-        
-        if (user.isEmpty()) {
-            return "redirect:/login";
-        }
-
-        // For now, we'll try to match by username or need to implement user-customer association
-        // This is a simplified approach - you might want to add a userId field to Customer
-        List<Bill> orders = customerService.getOrdersByCustomerName(username);
-        
-        model.addAttribute("orders", orders);
-        model.addAttribute("user", user.get());
-        return "user/orders";
-    }
-
-    /**
      * API endpoint to check if phone number exists
      */
     @GetMapping("/api/check-phone")
@@ -294,8 +276,13 @@ public class CustomerController {
             // Create bill
             Bill bill = new Bill();
             bill.setCustomer(customer);
+            bill.setCustomerName(customer.getFullName());
+            bill.setCustomerPhone(customer.getPhoneNumber());
+            bill.setCustomerEmail(customer.getEmail());
             bill.setOrderDate(LocalDateTime.now());
             bill.setOrderStatus("CONFIRMED");
+            bill.setPaymentStatus("PENDING");
+            bill.generateBillNumber(); // Generate unique bill number
             
             double totalAmount = 0.0;
             List<Bill.OrderItem> billItems = new java.util.ArrayList<>();
@@ -303,12 +290,14 @@ public class CustomerController {
             for (Map<String, Object> cartItem : cartItems) {
                 String itemId = (String) cartItem.get("id");
                 String title = (String) cartItem.get("title");
+                String author = (String) cartItem.get("author");
                 Double price = ((Number) cartItem.get("price")).doubleValue();
                 Integer quantity = ((Number) cartItem.get("quantity")).intValue();
                 
                 Bill.OrderItem billItem = new Bill.OrderItem();
                 billItem.setItemId(itemId);
                 billItem.setItemTitle(title);
+                billItem.setItemAuthor(author);
                 billItem.setItemPrice(price);
                 billItem.setQuantity(quantity);
                 billItem.setLineTotal(price * quantity);
@@ -318,7 +307,9 @@ public class CustomerController {
             }
             
             bill.setItems(billItems);
+            bill.setSubtotal(totalAmount);
             bill.setTotalAmount(totalAmount);
+            bill.calculateTotals(); // Ensure all totals are calculated
             
             // Save the bill
             Bill savedBill = billRepository.save(bill);
@@ -328,7 +319,8 @@ public class CustomerController {
             
             response.put("success", true);
             response.put("message", "Order placed successfully!");
-            response.put("orderId", savedBill.getId());
+            response.put("billId", savedBill.getId());
+            response.put("billNumber", savedBill.getBillNumber());
             response.put("totalAmount", totalAmount);
 
             return ResponseEntity.ok(response);
@@ -337,6 +329,37 @@ public class CustomerController {
             response.put("success", false);
             response.put("message", "Error processing order: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
+        }
+    }
+    
+    /**
+     * Download bill as PDF
+     */
+    @GetMapping("/api/bill/{billId}/pdf")
+    @ResponseBody
+    public ResponseEntity<byte[]> downloadBillPdf(@PathVariable String billId) {
+        try {
+            // Find the bill
+            Optional<Bill> billOpt = billRepository.findById(billId);
+            if (billOpt.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            Bill bill = billOpt.get();
+            
+            // Generate PDF
+            byte[] pdfData = pdfBillService.generateBillPdf(bill);
+            
+            // Set headers for PDF download
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "bill-" + bill.getBillNumber() + ".pdf");
+            headers.setContentLength(pdfData.length);
+            
+            return new ResponseEntity<>(pdfData, headers, HttpStatus.OK);
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

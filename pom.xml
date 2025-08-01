@@ -123,6 +123,27 @@
             <version>1.19.1</version>
             <scope>test</scope>
         </dependency>
+        
+        <!-- iText PDF Generation - Core -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>8.0.2</version>
+        </dependency>
+        
+        <!-- iText PDF Layout -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>8.0.2</version>
+        </dependency>
+
+        <!-- iText PDF IO -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>io</artifactId>
+            <version>8.0.2</version>
+        </dependency>
 
     </dependencies>
 
