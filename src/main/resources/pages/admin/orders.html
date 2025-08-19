@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Management - Pahana Edu Bookshop</title>
+
+    <!-- Modern Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Dependencies -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/css/modern-design-system.css" rel="stylesheet" />
+    <link href="/css/admin-dashboard.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Modern Navigation -->
+    <nav class="navbar-modern fixed-top">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand-modern" href="/admin/dashboard">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin Portal</span>
+          </a>
+
+          <div class="d-none d-lg-flex align-items-center gap-4">
+            <nav class="d-flex gap-2">
+              <a class="nav-link-modern" href="/admin/dashboard">
+                <i class="fas fa-tachometer-alt"></i>Dashboard
+              </a>
+              <a class="nav-link-modern" href="/admin/customers">
+                <i class="fas fa-users"></i>Customers
+              </a>
+              <a class="nav-link-modern active" href="/admin/orders">
+                <i class="fas fa-shopping-bag"></i>Orders
+              </a>
+              <a class="nav-link-modern" href="/admin/items">
+                <i class="fas fa-book"></i>Books
+              </a>
+            </nav>
+          </div>
+
+          <div class="d-flex align-items-center gap-3">
+            <a
+              href="/"
+              class="btn btn-outline-primary btn-sm"
+              title="Visit Site"
+            >
+              <i class="fas fa-external-link-alt me-1"></i>Visit Site
+            </a>
+
+            <div class="dropdown">
+              <button
+                class="btn btn-primary dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fas fa-user-shield me-1"></i>
+                <span sec:authentication="name">Admin</span>
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow-lg border-0 modern-dropdown"
+              >
+                <li>
+                  <a class="dropdown-item py-2" href="/profile">
+                    <i class="fas fa-user-cog me-2 text-primary"></i>Profile
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 text-danger" href="/logout">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-outline-primary d-lg-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="d-flex flex-column gap-2 mt-3 d-lg-none">
+            <a class="nav-link-modern" href="/admin/dashboard">
+              <i class="fas fa-tachometer-alt"></i>Dashboard
+            </a>
+            <a class="nav-link-modern" href="/admin/customers">
+              <i class="fas fa-users"></i>Customers
+            </a>
+            <a class="nav-link-modern active" href="/admin/orders">
+              <i class="fas fa-shopping-bag"></i>Orders
+            </a>
+            <a class="nav-link-modern" href="/admin/items">
+              <i class="fas fa-book"></i>Books
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="hero-section-admin py-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <div class="hero-content">
+              <div
+                class="badge-modern mb-3"
+                style="background: var(--info-light); color: var(--info)"
+              >
+                <i class="fas fa-shopping-bag me-2"></i>Order Management
+              </div>
+              <h1
+                class="display-4 fw-bold mb-3"
+                style="color: var(--text-primary)"
+              >
+                Order Management
+              </h1>
+              <p class="lead mb-4" style="color: var(--text-secondary)">
+                Track and manage customer orders, update order status, process
+                payments, and handle shipping logistics.
+              </p>
+              <div class="d-flex gap-3">
+                <!-- <button
+                  class="btn-modern btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#createOrderModal"
+                >
+                  <i class="fas fa-plus me-2"></i>Create Order
+                </button> -->
+                <a href="/admin/customers" class="btn-modern btn-secondary">
+                  <i class="fas fa-users me-2"></i>View Customers
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 text-end">
+            <div class="hero-stats card-modern p-4">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div
+                  class="stats-icon-small"
+                  style="background: var(--info-light); color: var(--info)"
+                >
+                  <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0 text-secondary">Total Orders</h6>
+                  <span class="fw-bold fs-4" th:text="${orders?.size() ?: 0}"
+                    >0</span
+                  >
+                </div>
+              </div>
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="stats-icon-small"
+                  style="
+                    background: var(--success-light);
+                    color: var(--success);
+                  "
+                >
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0 text-secondary">Completed</h6>
+                  <span class="badge-success">Processing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Main Content -->
+    <section class="py-5">
+      <div class="container">
+        <!-- Search and Filter Section -->
+        <div class="card-modern mb-4">
+          <div class="card-body">
+            <div class="row g-3 align-items-center">
+              <div class="col-md-4">
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="searchOrders"
+                    placeholder="Search by order ID, customer name..."
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <select class="form-select" id="filterStatus">
+                  <option value="">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="processing">Processing</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <input type="date" class="form-select" id="filterDate" />
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex gap-2">
+                  <button
+                    class="btn btn-outline-primary"
+                    onclick="exportOrders()"
+                  >
+                    <i class="fas fa-download me-1"></i>Export
+                  </button>
+                  <button
+                    class="btn btn-outline-secondary"
+                    onclick="printOrders()"
+                  >
+                    <i class="fas fa-print me-1"></i>Print
+                  </button>
+                  <button
+                    class="btn btn-outline-secondary"
+                    onclick="refreshOrders()"
+                  >
+                    <i class="fas fa-sync-alt me-1"></i>Refresh
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="card-modern">
+          <div class="card-header">
+            <div class="d-flex align-items-center justify-content-between">
+              <h5 class="mb-0">
+                <i class="fas fa-shopping-bag me-2 text-primary"></i>Order
+                Management
+              </h5>
+              <span
+                class="badge"
+                style="
+                  background: var(--primary-100);
+                  color: var(--primary-700);
+                "
+              >
+                <span th:text="${orders?.size() ?: 0}">0</span> orders
+              </span>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0" id="ordersTable">
+                <thead class="table-light">
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Debug information -->
+                  <tr>
+                    <td colspan="7" class="text-center py-3">
+                      <div th:if="${orders != null}">
+                        <strong
+                          >DEBUG: Orders object exists, Size:
+                          <span th:text="${orders.size()}">0</span></strong
+                        >
+                      </div>
+                      <div th:if="${orders == null}">
+                        <strong>DEBUG: Orders object is null</strong>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr th:if="${orders == null or orders.empty}">
+                    <td colspan="7" class="text-center py-5 text-muted">
+                      <i class="fas fa-shopping-bag fa-3x mb-3 opacity-25"></i>
+                      <div>
+                        <h6>No orders found</h6>
+                        <p class="mb-0">
+                          Orders will appear here once customers start making
+                          purchases
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr th:each="order : ${orders}" class="order-row">
+                    <td>
+                      <div class="fw-semibold text-primary">
+                        #<span th:text="${order.id}">ORD001</span>
+                      </div>
+                      <small class="text-muted"
+                        >Order ID:
+                        <span th:text="${order.id}">Order ID</span></small
+                      >
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-placeholder me-3">
+                          <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                          <div
+                            class="fw-semibold"
+                            th:text="${order.customerName}"
+                          >
+                            Customer Name
+                          </div>
+                          <small
+                            class="text-muted"
+                            th:text="${order.customerEmail}"
+                            >customer@example.com</small
+                          >
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span th:text="${order.totalItems ?: 1}">1</span> item(s)
+                      <br />
+                      <small class="text-muted">Order Items</small>
+                    </td>
+                    <td>
+                      <div
+                        class="fw-bold"
+                        th:text="'Rs. ' + ${order.totalAmount}"
+                      >
+                        Rs. 0.00
+                      </div>
+                      <small
+                        class="text-muted"
+                        th:text="${order.paymentMethod ?: 'Not specified'}"
+                        >Payment method</small
+                      >
+                    </td>
+                    <td>
+                      <span
+                        th:text="${order.orderDate != null ? #temporals.format(order.orderDate, 'MMM dd, yyyy') : 'N/A'}"
+                        >Jan 15, 2024</span
+                      >
+                      <br />
+                      <small
+                        class="text-muted"
+                        th:text="${order.orderDate != null ? #temporals.format(order.orderDate, 'HH:mm') : ''}"
+                        >10:30</small
+                      >
+                    </td>
+                    <td>
+                      <span
+                        th:class="${'badge ' + (order.orderStatus == 'COMPLETED' ? 'badge-success' : (order.orderStatus == 'PENDING' ? 'badge-warning' : (order.orderStatus == 'CANCELLED' ? 'badge-danger' : 'badge-info')))}"
+                        th:text="${#strings.capitalize(#strings.toLowerCase(order.orderStatus ?: 'pending'))}"
+                        >Pending</span
+                      >
+                    </td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <button
+                          class="btn btn-outline-primary view-order-btn"
+                          th:data-order-id="${order.id}"
+                          title="View Details"
+                        >
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button
+                          class="btn btn-outline-secondary edit-order-btn"
+                          th:data-order-id="${order.id}"
+                          title="Edit Order"
+                        >
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button
+                          class="btn btn-outline-success print-invoice-btn"
+                          th:data-order-id="${order.id}"
+                          title="Print Invoice"
+                        >
+                          <i class="fas fa-print"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Create Order Modal -->
+    <div
+      class="modal fade"
+      id="createOrderModal"
+      tabindex="-1"
+      aria-labelledby="createOrderModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div
+          class="modal-content"
+          style="
+            border-radius: var(--radius-xl);
+            border: none;
+            box-shadow: var(--shadow-xl);
+          "
+        >
+          <div
+            class="modal-header"
+            style="
+              background: var(--bg-secondary);
+              border-bottom: 1px solid var(--neutral-200);
+            "
+          >
+            <h5 class="modal-title" id="createOrderModalLabel">
+              <i class="fas fa-plus me-2 text-primary"></i>Create New Order
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body p-4">
+            <form id="createOrderForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="customer" class="form-label fw-medium"
+                    >Customer</label
+                  >
+                  <select
+                    class="form-modern"
+                    id="customer"
+                    name="customer"
+                    required
+                  >
+                    <option value="">Select Customer</option>
+                    <option
+                      th:each="customer : ${customers}"
+                      th:value="${customer.id}"
+                      th:text="${customer.firstName + ' ' + customer.lastName}"
+                    >
+                      Customer Name
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="orderDate" class="form-label fw-medium"
+                    >Order Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-modern"
+                    id="orderDate"
+                    name="orderDate"
+                    required
+                  />
+                </div>
+                <div class="col-12">
+                  <label for="items" class="form-label fw-medium">Items</label>
+                  <div id="orderItems">
+                    <div class="item-row d-flex gap-2 mb-2">
+                      <select
+                        class="form-modern flex-grow-1"
+                        name="bookId"
+                        required
+                      >
+                        <option value="">Select Book</option>
+                        <option
+                          th:each="book : ${books}"
+                          th:value="${book.id}"
+                          th:text="${book.title}"
+                        >
+                          Book Title
+                        </option>
+                      </select>
+                      <input
+                        type="number"
+                        class="form-modern"
+                        name="quantity"
+                        placeholder="Qty"
+                        min="1"
+                        required
+                        style="width: 80px"
+                      />
+                      <button
+                        type="button"
+                        class="btn btn-outline-danger btn-sm"
+                        onclick="removeItem(this)"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary btn-sm"
+                    onclick="addItem()"
+                  >
+                    <i class="fas fa-plus me-1"></i>Add Item
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <label for="paymentMethod" class="form-label fw-medium"
+                    >Payment Method</label
+                  >
+                  <select
+                    class="form-modern"
+                    id="paymentMethod"
+                    name="paymentMethod"
+                    required
+                  >
+                    <option value="">Select Payment Method</option>
+                    <option value="cash">Cash</option>
+                    <option value="card">Credit/Debit Card</option>
+                    <option value="bank_transfer">Bank Transfer</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="status" class="form-label fw-medium"
+                    >Order Status</label
+                  >
+                  <select
+                    class="form-modern"
+                    id="status"
+                    name="status"
+                    required
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="processing" selected>Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label for="notes" class="form-label fw-medium"
+                    >Notes (Optional)</label
+                  >
+                  <textarea
+                    class="form-modern"
+                    id="notes"
+                    name="notes"
+                    rows="3"
+                    placeholder="Additional notes about the order..."
+                  ></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div
+            class="modal-footer"
+            style="
+              background: var(--bg-secondary);
+              border-top: 1px solid var(--neutral-200);
+            "
+          >
+            <button
+              type="button"
+              class="btn-modern btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn-modern btn-primary"
+              onclick="saveOrder()"
+            >
+              <i class="fas fa-save me-2"></i>Create Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simple Footer -->
+    <footer
+      class="text-center py-4 mt-5"
+      style="background-color: #f8f9fa; border-top: 1px solid #dee2e6"
+    >
+      <div class="container">
+        <p class="mb-0 text-muted">
+          © 2025 Pahana Edu Bookshop. All rights reserved. Built with care for
+          education.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Avatar placeholder styling
+      document.addEventListener("DOMContentLoaded", function () {
+        const style = document.createElement("style");
+        style.textContent = `
+                .avatar-placeholder {
+                    width: 40px;
+                    height: 40px;
+                    background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
+                    border-radius: var(--radius-lg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 1rem;
+                    flex-shrink: 0;
+                }
+            `;
+        document.head.appendChild(style);
+
+        // Set today's date as default
+        document.getElementById("orderDate").valueAsDate = new Date();
+      });
+
+      // Search functionality
+      document
+        .getElementById("searchOrders")
+        .addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          const rows = document.querySelectorAll(".order-row");
+
+          rows.forEach((row) => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? "" : "none";
+          });
+        });
+
+      // Dynamic item management
+      function addItem() {
+        const container = document.getElementById("orderItems");
+        const itemRow = document.querySelector(".item-row").cloneNode(true);
+
+        // Clear values
+        itemRow
+          .querySelectorAll("select, input")
+          .forEach((field) => (field.value = ""));
+
+        container.appendChild(itemRow);
+      }
+
+      function removeItem(button) {
+        const container = document.getElementById("orderItems");
+        if (container.children.length > 1) {
+          button.closest(".item-row").remove();
+        }
+      }
+
+      // Order management functions
+      function viewOrder(orderId) {
+        console.log("View order:", orderId);
+      }
+
+      function editOrder(orderId) {
+        console.log("Edit order:", orderId);
+      }
+
+      function printInvoice(orderId) {
+        console.log("Print invoice for order:", orderId);
+      }
+
+      function saveOrder() {
+        const form = document.getElementById("createOrderForm");
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        // Collect all items
+        const items = [];
+        document.querySelectorAll(".item-row").forEach((row) => {
+          const bookId = row.querySelector('select[name="bookId"]').value;
+          const quantity = row.querySelector('input[name="quantity"]').value;
+          if (bookId && quantity) {
+            items.push({ bookId, quantity });
+          }
+        });
+
+        console.log("Save order with items:", items);
+
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("createOrderModal")
+        );
+        modal.hide();
+        form.reset();
+      }
+
+      function exportOrders() {
+        console.log("Export orders");
+      }
+
+      function printOrders() {
+        console.log("Print orders");
+      }
+
+      function refreshOrders() {
+        window.location.reload();
+      }
+    </script>
+  </body>
+</html>
