@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart - Pahana Edu Bookshop</title>
+
+    <!-- Modern Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Dependencies -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/css/modern-design-system.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Modern Navigation -->
+    <nav class="navbar-modern fixed-top">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand-modern" href="/">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Pahana Edu Bookshop</span>
+          </a>
+
+          <div class="d-none d-lg-flex align-items-center gap-4">
+            <nav class="d-flex gap-2">
+              <a class="nav-link-modern" href="/">
+                <i class="fas fa-home"></i>Home
+              </a>
+              <a class="nav-link-modern" href="/shop">
+                <i class="fas fa-store"></i>Shop
+              </a>
+              <a class="nav-link-modern" href="/help">
+                <i class="fas fa-life-ring"></i>Help
+              </a>
+              <a
+                sec:authorize="isAuthenticated()"
+                class="nav-link-modern"
+                href="/user/dashboard"
+              >
+                <i class="fas fa-tachometer-alt"></i>Dashboard
+              </a>
+            </nav>
+          </div>
+
+          <div class="d-flex align-items-center gap-3">
+            <a class="position-relative" href="/cart">
+              <button class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-shopping-cart me-1"></i>Cart
+              </button>
+              <span
+                class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                id="cartCount"
+                >0</span
+              >
+            </a>
+
+            <!-- Login Button for Non-Authenticated Users -->
+            <div sec:authorize="!isAuthenticated()">
+              <a href="/login" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </a>
+            </div>
+
+            <!-- User Dropdown for Authenticated Users -->
+            <div sec:authorize="isAuthenticated()" class="dropdown">
+              <button
+                class="btn btn-primary dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fas fa-user-circle me-1"></i>
+                <span sec:authentication="name">User</span>
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow-lg border-0 modern-dropdown"
+              >
+                <li>
+                  <a class="dropdown-item py-2" href="/user/dashboard">
+                    <i class="fas fa-tachometer-alt me-2 text-primary"></i
+                    >Dashboard
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" href="/my-orders">
+                    <i class="fas fa-shopping-bag me-2 text-primary"></i>My
+                    Orders
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" href="/profile">
+                    <i class="fas fa-user-cog me-2 text-primary"></i>Profile
+                  </a>
+                </li>
+                <li sec:authorize="hasRole('ADMIN')">
+                  <hr class="dropdown-divider" />
+                </li>
+                <li sec:authorize="hasRole('ADMIN')">
+                  <a class="dropdown-item py-2" href="/admin/dashboard">
+                    <i class="fas fa-shield-alt me-2 text-warning"></i>Admin
+                    Panel
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 text-danger" href="/logout">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-outline-primary d-lg-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="d-flex flex-column gap-2 mt-3 d-lg-none">
+            <a class="nav-link-modern" href="/">
+              <i class="fas fa-home"></i>Home
+            </a>
+            <a class="nav-link-modern" href="/shop">
+              <i class="fas fa-store"></i>Shop
+            </a>
+            <a class="nav-link-modern" href="/help">
+              <i class="fas fa-life-ring"></i>Help
+            </a>
+            <a
+              sec:authorize="isAuthenticated()"
+              class="nav-link-modern"
+              href="/user/dashboard"
+            >
+              <i class="fas fa-tachometer-alt"></i>Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Modern Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-content text-center">
+          <div class="hero-badge animate-fade-in-up">
+            <i class="fas fa-shopping-cart"></i>
+            Your Shopping Cart
+          </div>
+
+          <h1
+            class="hero-title animate-fade-in-up"
+            style="animation-delay: 0.1s"
+          >
+            Review Your Selection
+          </h1>
+
+          <p
+            class="hero-subtitle animate-fade-in-up"
+            style="animation-delay: 0.2s"
+          >
+            Check your chosen books and proceed to secure checkout
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cart Content Section -->
+    <section class="features-section">
+      <div class="container">
+        <div class="row">
+          <!-- Cart Items -->
+          <div class="col-lg-8">
+            <div class="card-modern">
+              <div class="card-header-modern">
+                <h4 class="mb-0">
+                  <i class="fas fa-list me-2 text-primary"></i>
+                  Cart Items
+                </h4>
+                <button
+                  class="btn btn-outline-danger btn-sm"
+                  onclick="clearCart()"
+                  id="clearCartBtn"
+                  style="display: none"
+                >
+                  <i class="fas fa-trash me-1"></i>Clear Cart
+                </button>
+              </div>
+
+              <div class="card-body p-0">
+                <!-- Empty Cart State -->
+                <div id="emptyCart" class="text-center py-5">
+                  <div class="empty-state">
+                    <i
+                      class="fas fa-shopping-cart text-muted mb-3"
+                      style="font-size: 4rem"
+                    ></i>
+                    <h4 class="text-muted mb-3">Your cart is empty</h4>
+                    <p class="text-secondary mb-4">
+                      Discover our amazing collection of books and add them to
+                      your cart.
+                    </p>
+                    <a href="/shop" class="btn-modern btn-primary btn-lg">
+                      <i class="fas fa-search"></i>
+                      Browse Books
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Cart Items Container -->
+                <div id="cartItems" style="display: none">
+                  <!-- Cart items will be dynamically inserted here -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Summary -->
+          <div class="col-lg-4">
+            <div class="card-modern" id="orderSummary" style="display: none">
+              <div class="card-header-modern">
+                <h4 class="mb-0">
+                  <i class="fas fa-calculator me-2 text-primary"></i>
+                  Order Summary
+                </h4>
+              </div>
+
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                  <span>Subtotal (<span id="itemCount">0</span> items)</span>
+                  <span class="fw-bold"
+                    >LKR <span id="subtotal">0.00</span></span
+                  >
+                </div>
+
+                <div class="d-flex justify-content-between mb-3">
+                  <span>Shipping</span>
+                  <span class="text-success fw-bold">Free</span>
+                </div>
+
+                <hr />
+
+                <div class="d-flex justify-content-between mb-4">
+                  <span class="h5 mb-0">Total</span>
+                  <span class="h5 mb-0 text-primary fw-bold"
+                    >LKR <span id="total">0.00</span></span
+                  >
+                </div>
+
+                <a
+                  href="/checkout"
+                  class="btn-modern btn-primary w-100 btn-lg mb-3"
+                >
+                  <i class="fas fa-credit-card me-2"></i>
+                  Proceed to Checkout
+                </a>
+
+                <a href="/shop" class="btn-modern btn-secondary w-100">
+                  <i class="fas fa-arrow-left me-2"></i>
+                  Continue Shopping
+                </a>
+              </div>
+            </div>
+
+            <!-- Security Badge -->
+            <div class="card-modern mt-4">
+              <div class="card-body text-center">
+                <i
+                  class="fas fa-shield-alt text-success mb-2"
+                  style="font-size: 2rem"
+                ></i>
+                <h6 class="mb-2">Secure Checkout</h6>
+                <p class="text-secondary small mb-0">
+                  Your payment information is protected with 256-bit SSL
+                  encryption
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Continue Shopping Section
+    <section class="features-section" style="padding-top: 0;">
+        <div class="container">
+            <div class="text-center">
+                <h3 class="mb-4">Explore More Books</h3>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h5 class="feature-title">Novels</h5>
+                            <p class="feature-description">Discover captivating stories and narratives for all readers.</p>
+                            <a href="/shop?category=novels" class="btn btn-outline-primary btn-sm">Browse</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <h5 class="feature-title">History</h5>
+                            <p class="feature-description">Explore historical events, biographies, and timelines.</p>
+                            <a href="/shop?category=history" class="btn btn-outline-primary btn-sm">Browse</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <h5 class="feature-title">Sci-Fi</h5>
+                            <p class="feature-description">Journey into futuristic and scientific adventures.</p>
+                            <a href="/shop?category=scifi" class="btn btn-outline-primary btn-sm">Browse</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Shopping cart functionality
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      function updateCartDisplay() {
+        const cartItemsContainer = document.getElementById("cartItems");
+        const emptyCartSection = document.getElementById("emptyCart");
+        const orderSummarySection = document.getElementById("orderSummary");
+        const clearCartBtn = document.getElementById("clearCartBtn");
+
+        if (cart.length === 0) {
+          cartItemsContainer.style.display = "none";
+          emptyCartSection.style.display = "block";
+          orderSummarySection.style.display = "none";
+          clearCartBtn.style.display = "none";
+        } else {
+          cartItemsContainer.style.display = "block";
+          emptyCartSection.style.display = "none";
+          orderSummarySection.style.display = "block";
+          clearCartBtn.style.display = "inline-block";
+
+          let cartHTML = "";
+          let subtotal = 0;
+
+          cart.forEach((item, index) => {
+            subtotal += item.price;
+
+            cartHTML += `
+                        <div class="border-bottom p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <div class="book-cover-placeholder book-cover-${
+                                      (index % 4) + 1
+                                    }" style="width: 80px; height: 100px; margin: 0 auto;">
+                                        <div class="book-cover-content">
+                                            <i class="fas fa-book text-white"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6 class="fw-bold mb-1">${item.title}</h6>
+                                    <p class="text-secondary small mb-0">Academic Book</p>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <span class="fw-bold text-primary">LKR ${item.price.toFixed(
+                                      2
+                                    )}</span>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="fw-bold mb-2">LKR ${item.price.toFixed(
+                                      2
+                                    )}</div>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart(${index})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+          });
+
+          cartItemsContainer.innerHTML = cartHTML;
+
+          // Update order summary
+          document.getElementById("itemCount").textContent = cart.reduce(
+            (total, item) => total + item.quantity,
+            0
+          );
+          document.getElementById("subtotal").textContent = subtotal.toFixed(2);
+          document.getElementById("total").textContent = subtotal.toFixed(2);
+        }
+
+        updateCartCount();
+      }
+
+      function removeFromCart(index) {
+        const removedItem = cart[index];
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartDisplay();
+        showAlert(`"${removedItem.title}" removed from cart`, "info");
+      }
+
+      function clearCart() {
+        if (confirm("Are you sure you want to clear your cart?")) {
+          cart = [];
+          localStorage.setItem("cart", JSON.stringify(cart));
+          updateCartDisplay();
+          showAlert("Cart cleared successfully", "info");
+        }
+      }
+
+      function updateCartCount() {
+        const totalItems = cart.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        const cartBadge = document.getElementById("cartCount");
+        if (cartBadge) {
+          cartBadge.textContent = totalItems;
+        }
+      }
+
+      function showAlert(message, type) {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.top = "20px";
+        alertDiv.style.right = "20px";
+        alertDiv.style.zIndex = "9999";
+        alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+        document.body.appendChild(alertDiv);
+
+        setTimeout(() => {
+          if (alertDiv.parentNode) {
+            alertDiv.parentNode.removeChild(alertDiv);
+          }
+        }, 3000);
+      }
+
+      // Initialize cart display on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCartDisplay();
+      });
+    </script>
+  </body>
+</html>
